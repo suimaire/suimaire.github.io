@@ -1,13 +1,13 @@
 # 예시 _config.yml
-title: "Suimaire 수업 자료"
-description: "Deep Learning 수업 노트 및 과제"
+title: "2025 HSHS basic of Bioinformation"
+description: "with Biopython"
 url: "https://suimaire.github.io"
 remote_theme: pmarsceill/just-the-docs
 nav:
   - Home: index.md
   - Lectures:
-    - "1. Optimization": lectures/day1.md
-    - "2. Neural Networks": lectures/day2.md
-    - "3. CNN with DNA": lectures/day3.md
+    - "Step 1. 컴퓨터 기초 다지기": lectures/day1.md
+    - "Step 2. 유전 정보를 찾아보자": lectures/day2.md
+    - "Step 3. CNN with DNA": lectures/day3.md
   - Assignments: assignments.md
   - Syllabus: syllabus.md
