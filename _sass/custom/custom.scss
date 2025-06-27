@@ -1,0 +1,9 @@
+/* _sass/custom/custom.scss */
+/* 본문·제목용 둥근 글꼴 적용 */
+body,
+.site-nav,
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Nanum Pen Script", "Segoe UI", sans-serif;
+}
+
+/* 코드 블록은 그대로 monospace 유지 */
