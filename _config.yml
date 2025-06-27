@@ -3,11 +3,12 @@ title: "2025 HSHS basic of Bioinformation"
 description: "with Biopython"
 url: "https://suimaire.github.io"
 remote_theme: pmarsceill/just-the-docs
-nav:
+nav_order:
   - Home: index.md
-  - Lectures:
-    - "Step 1. 컴퓨터 기초 다지기": lectures/day1.md
-    - "Step 2. 유전 정보를 찾아보자": lectures/day2.md
-    - "Step 3. CNN with DNA": lectures/day3.md
+  - Day 1
+  - Day 2
+  - Day 3
+  - Day 4
+  - Day 5
   - Assignments: assignments.md
   - Syllabus: syllabus.md
