@@ -40,7 +40,7 @@ nav_order: 2
 amino_acids = ["Ala", "Gly", "Val", "Leu"]
 for aa in amino_acids:
     print(aa)
-
+```
 - 최적화 개요  
 - Gradient Descent  
 - Learning Rate 스케줄링  
