@@ -1,5 +1,6 @@
 ---
 title: Home
+nav_order: 1
 ---
 
 # 2025 HSHS basic of bioinformatics 
