@@ -1,14 +1,15 @@
 ---
 ---
 
-/* ① just-the-docs 기본 CSS 먼저 끌어오기 */
+/* just-the-docs 기본 CSS 먼저 불러오기 */
 @import "just-the-docs";
 
-/* ② 폰트 오버라이드 */
+/* ① 한·영 듀얼 폰트 지정 */
 :root {
-  /* 본문·사이드바·제목에 공통 적용 */
-  --font-body:    "Coming Soon", "Nanum Pen Script", sans-serif;
-  --font-header:  "Coming Soon", "Nanum Pen Script", sans-serif;
-}
+  --font-body:
+    "Coming Soon",        /* 영어 */
+    "Nanum Pen Script",   /* 한글 */
+    cursive, sans-serif;
 
-/* ③ 코드 블록은 그대로 모노스페이스 */
+  --font-header: var(--font-body);
+}
