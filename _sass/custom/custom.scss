@@ -1,11 +1,15 @@
 /* _sass/custom/custom.scss */
-/* 본문·제목용 둥근 글꼴 적용 */
-body,
-.site-nav,
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Coming Soon", cursive;
-  font-weight: 400;
-  font-style: normal;
+
+/* 본문·사이드바·제목까지 모두 적용 */
+:root {
+  --font-family-base:
+    "Coming Soon",       /* 1순위: 영어 */
+    "Nanum Pen Script",  /* 2순위: 한글 (영문 없는 글꼴) */
+    -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* 코드 블록은 그대로 monospace 유지 */
+/* 굵은 제목에서 폰트가 빠지는 걸 방지하려면 header 변수도 덮어쓰기 */
+:root {
+  --font-family-heading: var(--font-family-base);
+}
