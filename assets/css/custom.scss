@@ -1,11 +1,31 @@
 ---
 ---
 
-/* 한·영 듀얼 폰트 */
+/* 1) 직접 호스팅한 나눔바른펜 등록 */
+@font-face {
+  font-family: "NanumBarunPen";
+  src: url("/assets/fonts/NanumBarunPen-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;    /* FOUT 최소화 */
+}
+
+@font-face {
+  font-family: "NanumBarunPen";
+  src: url("/assets/fonts/NanumBarunPen-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2) just-the-docs 기본 CSS를 그대로 사용 (import 필요 X) */
+
+/* 3) 한·영 듀얼 폰트 오버라이드 */
 :root {
   --font-body:
-    "Coming Soon",
-    "Nanum Pen Script",
+    "Coming Soon",          /* 영문 */
+    "NanumBarunPen",        /* 한글 */
     cursive, sans-serif;
+
   --font-header: var(--font-body);
 }
