@@ -1,15 +1,11 @@
 ---
 ---
 
-/* just-the-docs 기본 CSS 먼저 불러오기 */
-@import "just-the-docs";
-
-/* ① 한·영 듀얼 폰트 지정 */
+/* 한·영 듀얼 폰트 */
 :root {
   --font-body:
-    "Coming Soon",        /* 영어 */
-    "Nanum Pen Script",   /* 한글 */
+    "Coming Soon",
+    "Nanum Pen Script",
     cursive, sans-serif;
-
   --font-header: var(--font-body);
 }
