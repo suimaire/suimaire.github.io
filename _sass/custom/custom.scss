@@ -1,11 +1,9 @@
 /* _sass/custom/custom.scss */
-/* 본문·제목용 둥근 글꼴 적용 */
 body,
 .site-nav,
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Coming Soon", "Nanum Pen Script", cursive;
-  font-weight: 400;
-  font-style: normal;
+  font-family:
+    "Coming Soon",          /* 영어 */
+    "Nanum Pen Script",     /* 한글 */
+    cursive, sans-serif;
 }
-
-/* 코드 블록은 그대로 monospace 유지 */
