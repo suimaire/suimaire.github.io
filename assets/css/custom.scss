@@ -1,31 +1,33 @@
 ---
 ---
 
-/* 1) 직접 호스팅한 나눔바른펜 등록 */
-@font-face {
-  font-family: "NanumSquareNeo";
-  src: url("/assets/fonts/NanumSquareNeo-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;    /* FOUT 최소화 */
-}
+/* 0. Google Fonts로 불러온 'Coming Soon'은 head_custom.html에 이미 링크돼 있다고 가정 */
 
+/* 1. 자가 호스팅 Nanum Square Neo (Regular + Bold) */
 @font-face {
   font-family: "NanumSquareNeo";
-  src: url("/assets/fonts/NanumSquareNeo-Bold.ttf") format("truetype");
+  src: url("/assets/fonts/NanumSquareNeoR.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "NanumSquareNeo";
+  src: url("/assets/fonts/NanumSquareNeoB.ttf") format("truetype");
   font-weight: 700;
-  font-style: normal;
   font-display: swap;
 }
 
-/* 2) just-the-docs 기본 CSS를 그대로 사용 (import 필요 X) */
-
-/* 3) 한·영 듀얼 폰트 오버라이드 */
-:root {
-  --font-body:
+/* 2. 사이트 전체 글꼴 지정 (헤더/본문/사이드바) */
+body,
+.site-nav,
+h1, h2, h3, h4, h5, h6 {
+  font-family:
     "Coming Soon",          /* 영문 */
-    "NanumSquareNeo",        /* 한글 */
-    cursive, sans-serif;
+    "NanumSquareNeo",       /* 한글 */
+    sans-serif;             /* 폴백 */
+}
 
-  --font-header: var(--font-body);
+/* 3. 코드 블록은 그대로 고정폭 */
+pre, code {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
