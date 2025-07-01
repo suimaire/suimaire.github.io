@@ -20,3 +20,7 @@ h1, h2, h3, h4, h5, h6 {
     "NanumSquareNeo",    /* 한글 */
     sans-serif;
 }
+/* 연한 회색 머리글 번호 */
+.heading-number {
+  color: #9aa0a6 !important;   // !important로 한 번 더 안전장치
+}
