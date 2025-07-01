@@ -24,3 +24,20 @@ h1, h2, h3, h4, h5, h6 {
 .heading-number {
   color: #9aa0a6 !important;   // !important로 한 번 더 안전장치
 }
+/* ===== 커스텀 머리글 번호 색 ===== */
+
+/* 1) 테마가 쓰는 CSS 변수를 우리가 재정의 */
+:root {
+  --heading-number-color: #9aa0a6;     /* 원하는 연한 회색 */
+}
+
+/* 2) 혹시 링크가 다시 색을 칠한다면, 상속만 하도록 */
+a.heading-anchor {
+  color: inherit !important;
+}
+
+/* 3) 테마보다 높은 특이도로 한 번 더 안전장치 */
+a.heading-anchor > .heading-number,
+.heading-number {
+  color: #9aa0a6 !important;
+}
