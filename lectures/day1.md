@@ -138,7 +138,7 @@ nav_order: 2
 - `File` 클릭 → `New Notebook` 클릭해 새 노트북 생성
 - `+코드` 버튼을 누르면 코드를 입력할 수 있는 노트북이 나옵니다. (기본으로 1개의 코드 셀이 생성되어 있습니다.)
 - print 명령어를 사용해 봅시다.
-- `print("Hello, Bioinformatics!")
+ `print("Hello, Bioinformatics!")
   
 ### 1.8.0.3 필요한 library를 설치하자!
 Google Colab은 많은 library들이 사전에 적용되어 있으나, 추가로 필요한 몇 가지의 library들을 
