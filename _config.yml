@@ -1,8 +1,11 @@
 # 예시 _config.yml
+theme: just-the-docs
+plugins:
+  - just-the-docs     # heading number·breadcrumbs 플러그인 활성
+
 title: "2025 HSHS basic of Bioinformation"
 description: "with Biopython"
 url: "https://suimaire.github.io"
-remote_theme: just-the-docs/just-the-docs@v0.10.1
 nav_order:
   - Home: index.md
   - Day 1
