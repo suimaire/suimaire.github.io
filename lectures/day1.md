@@ -112,7 +112,7 @@ nav_order: 2
 | <img src="/assets/img/amino/proline.png"          width="110"/> | Proline 프롤린       | Pro | **P** | CCU · CCC · CCA · CCG |
 | <img src="/assets/img/amino/serine.png"           width="110"/> | Serine 세린        | Ser | **S** | UCU · UCC · UCA · UCG · AGU · AGC |
 | <img src="/assets/img/amino/threonine.png"        width="110"/> | Threonine 트레오닌     | Thr | **T** | ACU · ACC · ACA · ACG |
-| <img src="/assets/img/amino/tryptophan.png"       width="110"/> | Tryptophan 트립토판    | Trp | **W** | UGG |
+| <img src="/assets/img/amino/tryptophane.png"       width="110"/> | Tryptophane 트립토판    | Trp | **W** | UGG |
 | <img src="/assets/img/amino/tyrosine.png"         width="110"/> | Tyrosine 타이로신(티로신)      | Tyr | **Y** | UAU · UAC |
 | <img src="/assets/img/amino/valine.png"           width="110"/> | Valine 발린        | Val | **V** | GUU · GUC · GUA · GUG |
 
