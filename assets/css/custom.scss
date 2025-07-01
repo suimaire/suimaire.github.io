@@ -11,3 +11,11 @@
 body {
   font-family: "Coming Soon", "NanumSquareNeo", sans-serif;
 }
+
+.heading-number {
+  display: inline-block;
+  width: 3em;        // 고정 폭으로 맞춰도 되고
+  text-align: right;
+  margin-right: 0.5em;
+  opacity: 0.6;
+}
