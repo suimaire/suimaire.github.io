@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "NanumSquareNeo";
+  src: url("/assets/fonts/NanumSquareNeoR.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+body {
+  font-family: "Coming Soon", "NanumSquareNeo", sans-serif;
+}
+
+/*# sourceMappingURL=custom.css.map */
