@@ -1,0 +1,22 @@
+/* 한·영 듀얼 폰트 지정 */
+@font-face {
+  font-family: "NanumSquareNeo";
+  src: url("/assets/fonts/NanumSquareNeoR.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "NanumSquareNeo";
+  src: url("/assets/fonts/NanumSquareNeoB.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+body,
+.site-nav,
+h1, h2, h3, h4, h5, h6 {
+  font-family:
+    "Coming Soon",       /* 영문 */
+    "NanumSquareNeo",    /* 한글 */
+    sans-serif;
+}
