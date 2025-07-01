@@ -2,15 +2,10 @@ title: "2025 HSHS basic of Bioinformation"
 description: "with Biopython"
 url: "https://suimaire.github.io"
 
-# ----------------
-# 👇 테마 로드 방식 변경
-theme: null
-
-plugins:
-  - just-the-docs
+remote_theme: pmarsceill/just-the-docs
 
 just_the_docs:
-  heading_numbers: true
+  heading_numbers: false
   heading_number_levels: 4
 
 # 기존 nav_order 등은 그대로 두시면 됩니다
