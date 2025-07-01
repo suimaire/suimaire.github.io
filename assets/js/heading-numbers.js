@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!container) return;
 
   const counters = [];  // 각 heading 레벨별 카운터
-  const headings = container.querySelectorAll('h2, h3, h4, h5');
+  const headings = container.querySelectorAll('h1, h2, h3, h4, h5');
 
   headings.forEach(h => {
     const lvl = parseInt(h.tagName.substr(1)) - 1;  // h2→1, h3→2...
