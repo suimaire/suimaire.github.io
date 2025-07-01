@@ -4,6 +4,7 @@ description: "with Biopython"
 url: "https://suimaire.github.io"
 
 theme: just-the-docs
+plugins: [just-the-docs] 
 
 
 nav_order:
@@ -16,6 +17,6 @@ nav_order:
   - Assignments: assignments.md
   - Syllabus: syllabus.md
 just_the_docs:
-  heading_number: true      # 모든 페이지 헤더에 자동 순번
+  heading_numbers: true      # 모든 페이지 헤더에 자동 순번
   heading_number_levels: 4
 
