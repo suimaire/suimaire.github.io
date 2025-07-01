@@ -2,7 +2,7 @@ name: Build & Deploy Jekyll
 
 on:
   push:
-    branches: [ main ]          # main 브랜치 푸시마다 실행
+    branches: [ main ]
 
 jobs:
   build:
@@ -10,12 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2
-          bundler-cache: true
+          ruby-version: '3.2'
+          bundler-cache: false        # 캐시 대신 우리가 직접 install
 
-      - run: bundle exec jekyll build -d _site
+      - run: bundle install --jobs 4 --retry 3   # ←★ Gem 설치 단계
+      - run: bundle exec jekyll build -d _site   # ←★ 이제 Jekyll 실행 가능
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
