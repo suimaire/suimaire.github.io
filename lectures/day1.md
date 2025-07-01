@@ -9,10 +9,9 @@ nav_order: 2
 
 ##  1부: 생물학 기본 개념과 Python 소개 (50분)
 
-###  (15분) 생물학 기본 용어와 개념 소개
   ---
 
-## 1. 분자생물학 & 중심원리
+## 1.1 분자생물학 & 중심원리
 
 | 용어 | 한국어 해석 | 설명 |
 |-----------|-------------|-----------|
@@ -36,7 +35,7 @@ nav_order: 2
 
   ---
 
-## 2. NCBI & 변이 데이터베이스 (Natural Center for Biotechnology Information)
+## 1.2 NCBI & 변이 데이터베이스 (Natural Center for Biotechnology Information)
 
 | 영어 용어 | 한국어 대응 | 핵심 의미 |
 |-----------|-------------|-----------|
@@ -54,7 +53,7 @@ nav_order: 2
 
   ---
 
-## 3. Google Colab & Python 셸
+## 1.3 Google Colab & Python 셸
 
 | 영어 용어 | 한국어 대응 | 용도 |
 |-----------|-------------|------|
@@ -73,7 +72,7 @@ nav_order: 2
 
 ---
 
-## 4. Biopython 핵심 객체 (2차시 예고)
+## 1.4 Biopython 핵심 객체 (2차시 예고)
 
 | 모듈·함수 | 한국어 대응 | 간단 설명 |
 |-----------|-------------|-----------|
@@ -86,53 +85,58 @@ nav_order: 2
 
   ---
 
-###  (10분) 영문 타자 연습과 영단어 소개
+## 1.5 (10분) 영문 타자 연습과 영단어 소개
 - https://tadaktadak.co.kr/taja/en_sentence.html (타닥타닥)
 - https://support.hancomtaja.com/2fa61bff-472b-4a91-bbe7-f60f1d3f78ab　(한컴 타자)
-  
-###  (15분) 단백질 기초 개념과 아미노산 약자 설명
-### 표준 20 아미노산 — 구조식 · 약어 · 코돈 (로컬 이미지 버전)
+
+ ---
+
+## 1.6 아미노산(Amino acids) 소개
+ 
+### 20 종류의 아미노산 : 구조식 · 약어 · 코돈
 
 | 구조식<sup>†</sup> | Amino acid | 3-letter | 1-letter | Codon(s) (RNA) |
 |:---:|:---|:---:|:---:|:---|
-| <img src="/assets/img/amino/alanine.png"          width="110"/> | Alanine 알라닌       | Ala | **A** | GCU · GCC · GCA · GCG |
-| <img src="/assets/img/amino/arginine.png"         width="110"/> | Arginine 아르지닌       | Arg | **R** | CGU · CGC · CGA · CGG · AGA · AGG |
-| <img src="/assets/img/amino/asparagine.png"       width="110"/> | Asparagine 아스파라진    | Asn | **N** | AAU · AAC |
-| <img src="/assets/img/amino/asparatate.png"    width="110"/> | Aspartic acid 아스파르트산 | Asp | **D** | GAU · GAC |
-| <img src="/assets/img/amino/cysteine.png"         width="110"/> | Cysteine 시스테인      | Cys | **C** | UGU · UGC |
-| <img src="/assets/img/amino/glutamate.png"    width="110"/> | Glutamic acid 글루탐산 | Glu | **E** | GAA · GAG |
-| <img src="/assets/img/amino/glutamine.png"        width="110"/> | Glutamine 글루타민      | Gln | **Q** | CAA · CAG |
-| <img src="/assets/img/amino/glycine.png"          width="110"/> | Glycine 글라이신(글리신)        | Gly | **G** | GGU · GGC · GGA · GGG |
-| <img src="/assets/img/amino/histidine.png"        width="110"/> | Histidine 히스티딘     | His | **H** | CAU · CAC |
-| <img src="/assets/img/amino/isoleucine.png"       width="110"/> | Isoleucine 아이소류신(이소류신)    | Ile | **I** | AUU · AUC · AUA |
-| <img src="/assets/img/amino/leucine.png"          width="110"/> | Leucine 류신       | Leu | **L** | UUA · UUG · CUU · CUC · CUA · CUG |
-| <img src="/assets/img/amino/lysine.png"           width="110"/> | Lysine 라이신        | Lys | **K** | AAA · AAG |
-| <img src="/assets/img/amino/methionine.png"       width="110"/> | Methionine 메싸이오닌(메티오닌)    | Met | **M** | AUG |
-| <img src="/assets/img/amino/phenylalanine.png"    width="110"/> | Phenylalanine 페닐알라닌 | Phe | **F** | UUU · UUC |
-| <img src="/assets/img/amino/proline.png"          width="110"/> | Proline 프롤린       | Pro | **P** | CCU · CCC · CCA · CCG |
-| <img src="/assets/img/amino/serine.png"           width="110"/> | Serine 세린        | Ser | **S** | UCU · UCC · UCA · UCG · AGU · AGC |
-| <img src="/assets/img/amino/threonine.png"        width="110"/> | Threonine 트레오닌     | Thr | **T** | ACU · ACC · ACA · ACG |
-| <img src="/assets/img/amino/tryptophane.png"       width="110"/> | Tryptophane 트립토판    | Trp | **W** | UGG |
-| <img src="/assets/img/amino/tyrosine.png"         width="110"/> | Tyrosine 타이로신(티로신)      | Tyr | **Y** | UAU · UAC |
-| <img src="/assets/img/amino/valine.png"           width="110"/> | Valine 발린        | Val | **V** | GUU · GUC · GUA · GUG |
+| <img src="/assets/img/amino/alanine.png"          width="110"/> | Alanine<br>알라닌       | Ala | **A** | GCU · GCC · GCA · GCG |
+| <img src="/assets/img/amino/arginine.png"         width="110"/> | Arginine<br>아르지닌       | Arg | **R** | CGU · CGC · CGA · CGG · AGA · AGG |
+| <img src="/assets/img/amino/asparagine.png"       width="110"/> | Asparagine<br>아스파라진    | Asn | **N** | AAU · AAC |
+| <img src="/assets/img/amino/asparatate.png"    width="110"/> | Aspartic acid<br>아스파르트산 | Asp | **D** | GAU · GAC |
+| <img src="/assets/img/amino/cysteine.png"         width="110"/> | Cysteine<br>시스테인      | Cys | **C** | UGU · UGC |
+| <img src="/assets/img/amino/glutamate.png"    width="110"/> | Glutamic acid<br>글루탐산 | Glu | **E** | GAA · GAG |
+| <img src="/assets/img/amino/glutamine.png"        width="110"/> | Glutamine<br>글루타민      | Gln | **Q** | CAA · CAG |
+| <img src="/assets/img/amino/glycine.png"          width="110"/> | Glycine<br>글라이신(글리신)        | Gly | **G** | GGU · GGC · GGA · GGG |
+| <img src="/assets/img/amino/histidine.png"        width="110"/> | Histidine<br>히스티딘     | His | **H** | CAU · CAC |
+| <img src="/assets/img/amino/isoleucine.png"       width="110"/> | Isoleucine<br>아이소류신(이소류신)    | Ile | **I** | AUU · AUC · AUA |
+| <img src="/assets/img/amino/leucine.png"          width="110"/> | Leucine<br>류신       | Leu | **L** | UUA · UUG · CUU · CUC · CUA · CUG |
+| <img src="/assets/img/amino/lysine.png"           width="110"/> | Lysine<br>라이신        | Lys | **K** | AAA · AAG |
+| <img src="/assets/img/amino/methionine.png"       width="110"/> | Methionine<br>메싸이오닌(메티오닌)    | Met | **M** | AUG |
+| <img src="/assets/img/amino/phenylalanine.png"    width="110"/> | Phenylalanine<br>페닐알라닌 | Phe | **F** | UUU · UUC |
+| <img src="/assets/img/amino/proline.png"          width="110"/> | Proline<br>프롤린       | Pro | **P** | CCU · CCC · CCA · CCG |
+| <img src="/assets/img/amino/serine.png"           width="110"/> | Serine<br>세린        | Ser | **S** | UCU · UCC · UCA · UCG · AGU · AGC |
+| <img src="/assets/img/amino/threonine.png"        width="110"/> | Threonine<br>트레오닌     | Thr | **T** | ACU · ACC · ACA · ACG |
+| <img src="/assets/img/amino/tryptophane.png"       width="110"/> | Tryptophane<br>트립토판    | Trp | **W** | UGG |
+| <img src="/assets/img/amino/tyrosine.png"         width="110"/> | Tyrosine<br>타이로신(티로신)      | Tyr | **Y** | UAU · UAC |
+| <img src="/assets/img/amino/valine.png"           width="110"/> | Valine<br>발린        | Val | **V** | GUU · GUC · GUA · GUG |
+
+---
+
+## 1.7 전사와 번역
 
 
-
-###  (10분) 전사(transcription), 번역(translation) 설명
 - 유튜브 영상 활용
 
 ---
 
 ##  2부: Python과 Google Colab 소개 (50분)
 
-###  (15분) Google Colab 환경 구축
+## 1.8 Google Colab 환경 구축
 - [colab.research.google.com](https://colab.research.google.com)
 - 간단한 코드 실행: `print("Hello, Bioinformatics!")`
 
-###  (15분) Python 기본 자료형 소개
+## 1.9 Python 기본 자료형 소개
 - 변수, 문자열, 숫자 자료형 및 연산 예시
 
-###  (15분) Python 코드 실습 (아미노산 출력 예시)
+### 1.9.0.1 Python 코드 실습 (아미노산 출력 예시)
 
 ```python
 amino_acids = ["Ala", "Gly", "Val", "Leu"]
