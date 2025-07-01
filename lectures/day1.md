@@ -7,11 +7,11 @@ nav_order: 2
 # Day 1: 기본 개념 소개 및 환경 구축
 
 
-##  1부: 생물학 기본 개념과 Python 소개 (50분)
+#  1부: 생물학 기본 개념과 Python 소개 (50분)
 
   ---
 
-## 1.1 분자생물학 & 중심원리
+## 분자생물학 & 중심원리
 
 | 용어 | 한국어 해석 | 설명 |
 |-----------|-------------|-----------|
@@ -35,7 +35,7 @@ nav_order: 2
 
   ---
 
-## 1.2 NCBI & 변이 데이터베이스 (Natural Center for Biotechnology Information)
+## NCBI & 변이 데이터베이스 (Natural Center for Biotechnology Information)
 
 | 영어 용어 | 한국어 대응 | 핵심 의미 |
 |-----------|-------------|-----------|
@@ -53,7 +53,7 @@ nav_order: 2
 
   ---
 
-## 1.3 Google Colab & Python 셸
+## Google Colab & Python 셸
 
 | 영어 용어 | 한국어 대응 | 용도 |
 |-----------|-------------|------|
@@ -72,7 +72,7 @@ nav_order: 2
 
 ---
 
-## 1.4 Biopython 핵심 객체 (2차시 예고)
+## Biopython 핵심 객체 (2차시 예고)
 
 | 모듈·함수 | 한국어 대응 | 간단 설명 |
 |-----------|-------------|-----------|
@@ -85,15 +85,15 @@ nav_order: 2
 
   ---
 
-## 1.5 영문 타자 연습과 영단어 소개
+## 영문 타자 연습과 영단어 소개
 - https://tadaktadak.co.kr/taja/en_sentence.html (타닥타닥)
 - https://support.hancomtaja.com/2fa61bff-472b-4a91-bbe7-f60f1d3f78ab　(한컴 타자)
 
  ---
 
-## 1.6 아미노산(Amino acids) 소개
+## 아미노산(Amino acids) 소개
  
-### 1.6.0.1 20 종류의 아미노산 : 구조식 · 약어 · 코돈
+### 20 종류의 아미노산 : 구조식 · 약어 · 코돈
 
 | 구조식<sup>†</sup> | Amino acid | 3-letter | 1-letter | Codon(s) (RNA) |
 |:---:|:---|:---:|:---:|:---|
@@ -120,7 +120,7 @@ nav_order: 2
 
 ---
 
-## 1.7 전사와 번역
+## 전사와 번역
 
 
 - [from DNA to protein - 3D](https://www.youtube.com/watch?v=gG7uCskUOrA)
@@ -129,18 +129,18 @@ nav_order: 2
 
 ##  2부: Python과 Google Colab 소개 (50분)
 
-## 1.8 Google Colab 환경 구축
+## Google Colab 환경 구축
 
-### 1.8.0.1 Access Google Colab
+### Access Google Colab
 - [colab.research.google.com](https://colab.research.google.com) 링크 접속
 - 학교 구글 계정 로그인
-### 1.8.0.2 Create a New Notebook
+### Create a New Notebook
 - `File` 클릭 → `New Notebook` 클릭해 새 노트북 생성
 - `+코드` 버튼을 누르면 코드를 입력할 수 있는 노트북이 나옵니다. (기본으로 1개의 코드 셀이 생성되어 있습니다.)
 - print 명령어를 사용해 봅시다.
  `print("Hello, Bioinformatics!")
   
-### 1.8.0.3 필요한 library를 설치하자!
+### 필요한 library를 설치하자!
 Google Colab은 많은 library들이 사전에 적용되어 있으나, 추가로 필요한 몇 가지의 library들을 
 설치할 필요가 있습니다. 예를 들어 `biopython`과 `scikit-bio`와 같은 library들이 있습니다.
 설치는 다음과 같은 명령어로 수행할 수 있습니다. `!pip install` 커맨드를 직접 셀에 입력하면 됩니다.
@@ -151,7 +151,7 @@ Google Colab은 많은 library들이 사전에 적용되어 있으나, 추가로
 !pip install scikit-bio
 ```
 
-### 1.8.0.4 library를 import하고 설치를 확인하자!
+### library를 import하고 설치를 확인하자!
 새로운 코드 셀에 방금 설치한 library를 import하여 정확히 설치가 완료됐는지 확인합시다.
 ```python
 # Importing necessary libraries
@@ -163,10 +163,10 @@ print("scikit-bio version:", skbio.__version__)
 ```
 1.84 / 0.6.2
 
-## 1.9 Python 기본 자료형 소개
+## Python 기본 자료형 소개
 - 변수, 문자열, 숫자 자료형 및 연산 예시
 
-### 1.9.0.1 Python 코드 실습 (아미노산 출력 예시)
+### Python 코드 실습 (아미노산 출력 예시)
 
 ```python
 amino_acids = ["Ala", "Gly", "Val", "Leu"]
