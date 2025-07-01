@@ -157,7 +157,7 @@ import skbio
 print("Biopython version:", Bio.__version__)
 print("scikit-bio version:", skbio.__version__)
 ```
-1.84 / 0.6.2
+1.84 / 0.6.2 
 
 ## Python 기본 자료형 소개
 - 변수, 문자열, 숫자 자료형 및 연산 예시
