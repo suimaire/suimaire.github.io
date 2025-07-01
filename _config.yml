@@ -1,11 +1,19 @@
-# 예시 _config.yml
 title: "2025 HSHS basic of Bioinformation"
 description: "with Biopython"
 url: "https://suimaire.github.io"
 
-theme: just-the-docs
+# ----------------
+# 👇 테마 로드 방식 변경
+theme: null
 
+plugins:
+  - just-the-docs
 
+just_the_docs:
+  heading_numbers: true
+  heading_number_levels: 4
+
+# 기존 nav_order 등은 그대로 두시면 됩니다
 nav_order:
   - Home: index.md
   - Day 1
@@ -15,7 +23,3 @@ nav_order:
   - Day 5
   - Assignments: assignments.md
   - Syllabus: syllabus.md
-just_the_docs:
-  heading_numbers: true      # 모든 페이지 헤더에 자동 순번
-  heading_number_levels: 4
-
