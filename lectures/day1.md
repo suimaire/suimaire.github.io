@@ -11,7 +11,7 @@ nav_order: 2
 ## 생물학 기본 용어 및 Bioinformatics Camp를 위한 용어 정리
 ### 분자생물학 & 중심원리
 
-| 용어 | 한국어 해석 | 설명 |
+| 용어 | 한국어 해석 | 설명 · 용도 |
 |-----------|-------------|-----------|
 | gene | 유전자 | **DNA 기능 단위** |
 | genome | 유전체 | 한 생물의 모든 유전정보 |
@@ -41,19 +41,19 @@ nav_order: 2
 | FASTA / GenBank / RefSeq | 포맷(형식) · DB 이름 | 서열 · 주석 저장 방식 |
 | locus | 로커스 | 유전자의 물리적 위치 |
 | annotation | 주석 | 기능 · 구조 정보 |
-| BLAST | 블라스트 | 서열 유사성 탐색 툴(구글 이미지 검색의 생물정보학 버전) |
+| BLAST | 블라스트 | 서열 유사성 탐색 툴<br>(구글 이미지 검색의 생물정보학 버전) |
 | variant / variation | 변이 | 표준서열 대비 차이 |
 | consequence (type) | 결과 유형 | 변이가 끼치는 분자적 영향 |
 | condition | 임상 조건 | 질환·표현형 명칭 |
 | classification | 분류 | Pathogenic / Benign 등 |
-| ClinVar / dbSNP | 클린바 / dbSNP | 임상(의학판 위키백과) / 단일염기 변이 DB(어디에서 A→G가 흔한가?) |
-| allele / genotype / phenotype | 대립유전자 / 유전자형 / 표현형 | 하디-바인베르크 연결 |
+| ClinVar / dbSNP | 클린바 / dbSNP | 임상(의학판 위키백과) /<br>단일염기 변이 DB(어디에서 A→G가 흔한가?) |
+| allele / genotype / phenotype | 대립유전자 / 유전자형 /<br>표현형 | 하디-바인베르크 연결 |
 
   ---
 
 ### Google Colab & Python 셸
 
-| 영어 용어 | 한국어 대응 | 용도 |
+| 용어 | 한국어 해석 | 설명 · 용도 |
 |-----------|-------------|------|
 | `!` (bang) | 셸 명령 접두사 | `!ls`, `!pip install` |
 | `pip` | 패키지 관리자 | 라이브러리 설치 |
@@ -70,9 +70,9 @@ nav_order: 2
 
 ---
 
-### Biopython 핵심 객체 (2차시 예고)
+### Biopython 핵심 용어(객체)
 
-| 모듈·함수 | 한국어 대응 | 간단 설명 |
+| 모듈·함수 | 한국어 해석 | 설명 · 용도 |
 |-----------|-------------|-----------|
 | `Bio` | 최상위 패키지 | 서브모듈 루트 |
 | `Seq`, `SeqRecord` | 서열 / 서열 기록 | 서열 + 메타데이터 저장 |
@@ -96,7 +96,7 @@ nav_order: 2
 | 구조식<sup>†</sup> | Amino acid | 3-letter | 1-letter | Codon(s) (RNA) |
 |:---:|:---|:---:|:---:|:---|
 | <img src="/assets/img/amino/alanine.png"          width="110"/> | Alanine<br>알라닌                        | Ala | **A** | GCU · GCC · GCA · GCG |
-| <img src="/assets/img/amino/arginine.png"         width="110"/> | Arginine<br>아르지닌                     | Arg | **R** | CGU · CGC · CGA · CGG · AGA · AGG |
+| <img src="/assets/img/amino/arginine.png"         width="110"/> | Arginine<br>아르지닌                     | Arg | **R** | CGU · CGC · CGA · CGG · <br>AGA · AGG |
 | <img src="/assets/img/amino/asparagine.png"       width="110"/> | Asparagine<br>아스파라진                 | Asn | **N** | AAU · AAC |
 | <img src="/assets/img/amino/asparatate.png"       width="110"/> | Aspartic acid<br>아스파르트산            | Asp | **D** | GAU · GAC |
 | <img src="/assets/img/amino/cysteine.png"         width="110"/> | Cysteine<br>시스테인                     | Cys | **C** | UGU · UGC |
@@ -105,12 +105,12 @@ nav_order: 2
 | <img src="/assets/img/amino/glycine.png"          width="110"/> | Glycine<br>글라이신<br>(글리신)           | Gly | **G** | GGU · GGC · GGA · GGG |
 | <img src="/assets/img/amino/histidine.png"        width="110"/> | Histidine<br>히스티딘                    | His | **H** | CAU · CAC |
 | <img src="/assets/img/amino/isoleucine.png"       width="110"/> | Isoleucine<br>아이소류신<br>(이소류신)    | Ile | **I** | AUU · AUC · AUA |
-| <img src="/assets/img/amino/leucine.png"          width="110"/> | Leucine<br>류신                          | Leu | **L** | UUA · UUG · CUU · CUC · CUA · CUG |
+| <img src="/assets/img/amino/leucine.png"          width="110"/> | Leucine<br>류신                          | Leu | **L** | UUA · UUG · <br>CUU · CUC · CUA · CUG |
 | <img src="/assets/img/amino/lysine.png"           width="110"/> | Lysine<br>라이신                         | Lys | **K** | AAA · AAG |
 | <img src="/assets/img/amino/methionine.png"       width="110"/> | Methionine<br>메싸이오닌<br>(메티오닌)    | Met | **M** | AUG |
 | <img src="/assets/img/amino/phenylalanine.png"    width="110"/> | Phenylalanine<br>페닐알라닌              | Phe | **F** | UUU · UUC |
 | <img src="/assets/img/amino/proline.png"          width="110"/> | Proline<br>프롤린                        | Pro | **P** | CCU · CCC · CCA · CCG |
-| <img src="/assets/img/amino/serine.png"           width="110"/> | Serine<br>세린                           | Ser | **S** | UCU · UCC · UCA · UCG · AGU · AGC |
+| <img src="/assets/img/amino/serine.png"           width="110"/> | Serine<br>세린                           | Ser | **S** | UCU · UCC · UCA · UCG · <br>AGU · AGC |
 | <img src="/assets/img/amino/threonine.png"        width="110"/> | Threonine<br>트레오닌                    | Thr | **T** | ACU · ACC · ACA · ACG |
 | <img src="/assets/img/amino/tryptophane.png"      width="110"/> | Tryptophane<br>트립토판                  | Trp | **W** | UGG |
 | <img src="/assets/img/amino/tyrosine.png"         width="110"/> | Tyrosine<br>타이로신<br>(티로신)          | Tyr | **Y** | UAU · UAC |
@@ -133,14 +133,14 @@ nav_order: 2
   
 ### Create a New Notebook
 - `File` 클릭 → `New Notebook` 클릭해 새 노트북 생성
-- `+코드` 버튼을 누르면 코드를 입력할 수 있는 노트북이 나옵니다. (기본으로 1개의 코드 셀이 생성되어 있습니다.)
+- `+코드` 버튼을 누르면 코드를 입력할 수 있는 노트북이 나옵니다. <br>(기본으로 1개의 코드 셀이 생성되어 있습니다.)
 - print 명령어를 사용해 봅시다.
  `print("Hello, Bioinformatics!")
   
 ### 필요한 library를 설치하자!
 Google Colab은 많은 library들이 사전에 적용되어 있으나, 추가로 필요한 몇 가지의 library들을 
-설치할 필요가 있습니다. 예를 들어 `biopython`과 `scikit-bio`와 같은 library들이 있습니다.
-설치는 다음과 같은 명령어로 수행할 수 있습니다. `!pip install` 커맨드를 직접 셀에 입력하면 됩니다.
+설치할 <br>필요가 있습니다. 예를 들어 `biopython`과 `scikit-bio`와 같은 library들이 있습니다.
+<br>설치는 다음과 같은 명령어로 수행할 수 있습니다. `!pip install` 커맨드를 직접 셀에 입력하면 됩니다.
 ```python
 !pip install biopython
 ```
