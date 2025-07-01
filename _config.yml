@@ -13,5 +13,4 @@ nav_order:
   - Assignments: assignments.md
   - Syllabus: syllabus.md
 just_the_docs:
-  stylesheets:
-    - assets/css/heading-number-light.css   
+
