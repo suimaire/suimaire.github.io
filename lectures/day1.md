@@ -12,14 +12,14 @@ nav_order: 2
 ###  (15분) 생물학 기본 용어와 개념 소개
   ---
 
-  ## 1. 분자생물학 & 중심원리
+## 1. 분자생물학 & 중심원리
 
-| 영어 용어 | 한국어 대응 | 한 줄 설명 |
+| 용어 | 한국어 해석 | 설명 |
 |-----------|-------------|-----------|
 | gene | 유전자 | **DNA 기능 단위** |
 | genome | 유전체 | 한 생물의 모든 유전정보 |
-| chromosome | 염색체 | DNA + 단백질 고차 구조 |
-| DNA / RNA | 디엔에이 / 알엔에이 | 두 핵산 종류 |
+| chromosome | 염색체 | DNA와 히스톤 단백질이 응축된 형태  |
+| DNA / RNA | 디엔에이 / 알엔에이 | 핵산의 두 종류 |
 | replication | 복제 | **DNA → DNA** |
 | transcription | 전사 | **DNA → mRNA** |
 | translation | 번역 | **mRNA → 단백질** |
@@ -30,26 +30,26 @@ nav_order: 2
 | ORF (open reading frame) | 개방된 리딩 프레임 | 시작 ∼ 종결코돈 사이 |
 | mutation | 돌연변이 | 염기서열 변화 |
 | point mutation | 점 돌연변이 | 염기 1개 변화 |
-| insertion / deletion | 삽입 / 결실 | 염기 추가·삭제 |
-| frameshift | 프레임 이동 | 3의 배수≠변화로 프레임 틀어짐 |
-| missense / nonsense / silent | 미스센스 / 넌센스 / 침묵 | 아미노산 변경·조기 종결·무변화 |
+| insertion / deletion | 삽입 / 결실 | 염기 추가 · 삭제 |
+| frameshift | 프레임 이동 | (변이 수≠3의 배수) 에 의한 프레임 틀어짐 |
+| missense / nonsense / silent | 미스센스 / 넌센스 / 침묵 | 아미노산 변경 · 조기 종결 · 무변화 |
 
   ---
 
-## 2. NCBI & 변이 데이터베이스
+## 2. NCBI & 변이 데이터베이스 (Natural Center for Biotechnology Information)
 
 | 영어 용어 | 한국어 대응 | 핵심 의미 |
 |-----------|-------------|-----------|
-| accession number | 등록번호 | 서열·논문 고유 ID |
-| FASTA / GenBank / RefSeq | 포맷·DB 이름 | 서열·주석 저장 방식 |
-| locus | 로커스 | 유전자 물리적 위치 |
-| annotation | 주석 | 기능·구조 정보 |
-| BLAST | 블라스트 | 서열 유사성 탐색 툴 |
+| accession number | 등록번호 | 서열 · 논문 고유 ID |
+| FASTA / GenBank / RefSeq | 포맷(형식) · DB 이름 | 서열 · 주석 저장 방식 |
+| locus | 로커스 | 유전자의 물리적 위치 |
+| annotation | 주석 | 기능 · 구조 정보 |
+| BLAST | 블라스트 | 서열 유사성 탐색 툴(구글 이미지 검색의 생물정보학 버전) |
 | variant / variation | 변이 | 표준서열 대비 차이 |
 | consequence (type) | 결과 유형 | 변이가 끼치는 분자적 영향 |
 | condition | 임상 조건 | 질환·표현형 명칭 |
 | classification | 분류 | Pathogenic / Benign 등 |
-| ClinVar / dbSNP | 클린바 / dbSNP | 임상 / 단일염기 변이 DB |
+| ClinVar / dbSNP | 클린바 / dbSNP | 임상(의학판 위키백과) / 단일염기 변이 DB(어디에서 A→G가 흔한가?) |
 | allele / genotype / phenotype | 대립유전자 / 유전자형 / 표현형 | 하디-바인베르크 연결 |
 
   ---
@@ -58,13 +58,13 @@ nav_order: 2
 
 | 영어 용어 | 한국어 대응 | 용도 |
 |-----------|-------------|------|
+| `!` (bang) | 셸 명령 접두사 | `!ls`, `!pip install` |
+| `pip` | 패키지 관리자 | 라이브러리 설치 |
+| `cd` / `ls` / `pwd` | 디렉터리 이동 · 목록 확인 · 경로 확인 |
+| install / import | 설치 / 가져오기 | 패키지 준비 → 사용 |
 | notebook / cell | 노트북 / 셀 | 코드·텍스트 실행 단위 |
 | interpreter | 인터프리터 | 코드 실행기 |
 | shell / terminal | 셸 / 터미널 | 명령줄 창 |
-| `!` (bang) | 셸 명령 접두사 | `!ls`, `!pip install` |
-| `pip` | 패키지 관리자 | 라이브러리 설치 |
-| `cd` / `ls` / `pwd` | 디렉터리 이동·목록·경로 확인 |
-| install / import | 설치 / 가져오기 | 패키지 준비 → 사용 |
 | variable / function / module | 변수 / 함수 / 모듈 | Python 기본 단위 |
 | list / dict | 리스트 / 딕셔너리 | 주요 자료형 |
 | `for` / `if` | 반복 / 조건 | 제어 구문 |
@@ -87,8 +87,9 @@ nav_order: 2
   ---
 
 ###  (10분) 영문 타자 연습과 영단어 소개
-- 타자 연습 사이트 안내
-
+- https://tadaktadak.co.kr/taja/en_sentence.html (타닥타닥)
+- https://support.hancomtaja.com/2fa61bff-472b-4a91-bbe7-f60f1d3f78ab　(한컴 타자)
+  
 ###  (15분) 단백질 기초 개념과 아미노산 약자 설명
 - 아미노산 구조 및 1글자 약자 설명
 - 단백질 구조 영상 자료 제공
