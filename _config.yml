@@ -2,7 +2,7 @@
 title: "2025 HSHS basic of Bioinformation"
 description: "with Biopython"
 url: "https://suimaire.github.io"
-remote_theme: pmarsceill/just-the-docs
+remote_theme: just-the-docs/just-the-docs@v0.10.1
 nav_order:
   - Home: index.md
   - Day 1
