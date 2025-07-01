@@ -8,8 +8,8 @@ nav_order: 2
 1부: 생물학 기본 개념과 Python 소개 (50분)
 
   ---
-
-## 분자생물학 & 중심원리
+## 생물학 기본 용어 및 Bioinformatics Camp를 위한 용어 정리
+### 분자생물학 & 중심원리
 
 | 용어 | 한국어 해석 | 설명 |
 |-----------|-------------|-----------|
@@ -33,7 +33,7 @@ nav_order: 2
 
   ---
 
-## NCBI & 변이 데이터베이스 (Natural Center for Biotechnology Information)
+### NCBI & 변이 데이터베이스 (Natural Center for Biotechnology Information)
 
 | 영어 용어 | 한국어 대응 | 핵심 의미 |
 |-----------|-------------|-----------|
@@ -51,7 +51,7 @@ nav_order: 2
 
   ---
 
-## Google Colab & Python 셸
+### Google Colab & Python 셸
 
 | 영어 용어 | 한국어 대응 | 용도 |
 |-----------|-------------|------|
@@ -70,7 +70,7 @@ nav_order: 2
 
 ---
 
-## Biopython 핵심 객체 (2차시 예고)
+### Biopython 핵심 객체 (2차시 예고)
 
 | 모듈·함수 | 한국어 대응 | 간단 설명 |
 |-----------|-------------|-----------|
@@ -84,8 +84,8 @@ nav_order: 2
   ---
 
 ## 영문 타자 연습과 영단어 소개
-- https://tadaktadak.co.kr/taja/en_sentence.html (타닥타닥)
-- https://support.hancomtaja.com/2fa61bff-472b-4a91-bbe7-f60f1d3f78ab　(한컴 타자)
+- https://tadaktadak.co.kr/taja/en_sentence.html   (타닥타닥)
+- https://support.hancomtaja.com/2fa61bff-472b-4a91-bbe7-f60f1d3f78ab　 (한컴 타자)
 
  ---
 
@@ -116,16 +116,14 @@ nav_order: 2
 | <img src="/assets/img/amino/tyrosine.png"         width="110"/> | Tyrosine<br>타이로신<br>(티로신)          | Tyr | **Y** | UAU · UAC |
 | <img src="/assets/img/amino/valine.png"           width="110"/> | Valine<br>발린                           | Val | **V** | GUU · GUC · GUA · GUG |
 
----
 
-## 전사와 번역
-
+### 전사와 번역
 
 - [from DNA to protein - 3D](https://www.youtube.com/watch?v=gG7uCskUOrA)
 
 ---
 
-##  2부: Python과 Google Colab 소개 (50분)
+2부: Python과 Google Colab 소개 (50분)
 
 ## Google Colab 환경 구축
 
@@ -173,5 +171,3 @@ for aa in amino_acids:
 ```
 
 
-**실습 자료**  
-- [Colab 노트북](lectures/day1_notebook.ipynb)  
