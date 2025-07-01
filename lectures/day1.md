@@ -130,6 +130,7 @@ nav_order: 2
 ### Access Google Colab
 - [colab.research.google.com](https://colab.research.google.com) 링크 접속
 - 학교 구글 계정 로그인
+  
 ### Create a New Notebook
 - `File` 클릭 → `New Notebook` 클릭해 새 노트북 생성
 - `+코드` 버튼을 누르면 코드를 입력할 수 있는 노트북이 나옵니다. (기본으로 1개의 코드 셀이 생성되어 있습니다.)
