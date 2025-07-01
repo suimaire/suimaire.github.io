@@ -91,6 +91,34 @@ nav_order: 2
 - https://support.hancomtaja.com/2fa61bff-472b-4a91-bbe7-f60f1d3f78ab　(한컴 타자)
   
 ###  (15분) 단백질 기초 개념과 아미노산 약자 설명
+### 표준 20 아미노산 - 구조식 · 약어 정리
+
+| 구조식<sup>†</sup> | Amino acid | 3-letter | 1-letter |
+|:---:|:---|:---:|:---:|
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alanine/png"  width="120"/> | Alanine | Ala | A |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/arginine/png" width="120"/> | Arginine | Arg | R |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/asparagine/png" width="120"/> | Asparagine | Asn | N |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aspartic%20acid/png" width="120"/> | Aspartic acid | Asp | D |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/cysteine/png" width="120"/> | Cysteine | Cys | C |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/glutamic%20acid/png" width="120"/> | Glutamic acid | Glu | E |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/glutamine/png" width="120"/> | Glutamine | Gln | Q |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/glycine/png" width="120"/> | Glycine | Gly | G |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/histidine/png" width="120"/> | Histidine | His | H |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/isoleucine/png" width="120"/> | Isoleucine | Ile | I |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/leucine/png" width="120"/> | Leucine | Leu | L |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/lysine/png" width="120"/> | Lysine | Lys | K |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/methionine/png" width="120"/> | Methionine | Met | M |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/phenylalanine/png" width="120"/> | Phenylalanine | Phe | F |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/proline/png" width="120"/> | Proline | Pro | P |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/serine/png" width="120"/> | Serine | Ser | S |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/threonine/png" width="120"/> | Threonine | Thr | T |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/tryptophan/png" width="120"/> | Tryptophan | Trp | W |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/tyrosine/png" width="120"/> | Tyrosine | Tyr | Y |
+| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/valine/png" width="120"/> | Valine | Val | V |
+
+<sup>†</sup>이미지는 PubChem REST API(예: `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alanine/png`)에서 호출되므로  
+GitHub Pages에 별도 리소스를 두지 않아도 자동으로 로드됩니다.
+
 - 아미노산 구조 및 1글자 약자 설명
 - 단백질 구조 영상 자료 제공
 
