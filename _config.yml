@@ -1,11 +1,11 @@
 # 예시 _config.yml
-theme: just-the-docs
-plugins:
-  - just-the-docs     # heading number·breadcrumbs 플러그인 활성
-
 title: "2025 HSHS basic of Bioinformation"
 description: "with Biopython"
 url: "https://suimaire.github.io"
+
+theme: just-the-docs
+
+
 nav_order:
   - Home: index.md
   - Day 1
@@ -17,4 +17,7 @@ nav_order:
   - Syllabus: syllabus.md
 just_the_docs:
   heading_numbers: true      # 모든 페이지 헤더에 자동 순번
+  heading_number_levels: 4
 
+plugins:
+  - just-the-docs     # heading number·breadcrumbs 플러그인 활성
