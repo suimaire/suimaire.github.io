@@ -19,5 +19,3 @@ just_the_docs:
   heading_numbers: true      # 모든 페이지 헤더에 자동 순번
   heading_number_levels: 4
 
-plugins:
-  - just-the-docs     # heading number·breadcrumbs 플러그인 활성
