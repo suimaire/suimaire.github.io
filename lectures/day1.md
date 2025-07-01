@@ -10,8 +10,81 @@ nav_order: 2
 ##  1부: 생물학 기본 개념과 Python 소개 (50분)
 
 ###  (15분) 생물학 기본 용어와 개념 소개
-- 설명 개념: Genome, Chromosome, DNA, Gene
-- 진행 방법: 그림과 비유로 개념 설명
+  ---
+
+  ## 1. 분자생물학 & 중심원리
+
+| 영어 용어 | 한국어 대응 | 한 줄 설명 |
+|-----------|-------------|-----------|
+| gene | 유전자 | **DNA 기능 단위** |
+| genome | 유전체 | 한 생물의 모든 유전정보 |
+| chromosome | 염색체 | DNA + 단백질 고차 구조 |
+| DNA / RNA | 디엔에이 / 알엔에이 | 두 핵산 종류 |
+| replication | 복제 | **DNA → DNA** |
+| transcription | 전사 | **DNA → mRNA** |
+| translation | 번역 | **mRNA → 단백질** |
+| codon | 코돈 | mRNA 3 염기 묶음 |
+| start codon | 개시코돈 | 보통 **AUG** |
+| stop codon | 종결코돈 | **UAA / UAG / UGA** |
+| reading frame | 리딩 프레임 | 3염기씩 자르는 기준 |
+| ORF (open reading frame) | 개방된 리딩 프레임 | 시작 ∼ 종결코돈 사이 |
+| mutation | 돌연변이 | 염기서열 변화 |
+| point mutation | 점 돌연변이 | 염기 1개 변화 |
+| insertion / deletion | 삽입 / 결실 | 염기 추가·삭제 |
+| frameshift | 프레임 이동 | 3의 배수≠변화로 프레임 틀어짐 |
+| missense / nonsense / silent | 미스센스 / 넌센스 / 침묵 | 아미노산 변경·조기 종결·무변화 |
+
+  ---
+
+## 2. NCBI & 변이 데이터베이스
+
+| 영어 용어 | 한국어 대응 | 핵심 의미 |
+|-----------|-------------|-----------|
+| accession number | 등록번호 | 서열·논문 고유 ID |
+| FASTA / GenBank / RefSeq | 포맷·DB 이름 | 서열·주석 저장 방식 |
+| locus | 로커스 | 유전자 물리적 위치 |
+| annotation | 주석 | 기능·구조 정보 |
+| BLAST | 블라스트 | 서열 유사성 탐색 툴 |
+| variant / variation | 변이 | 표준서열 대비 차이 |
+| consequence (type) | 결과 유형 | 변이가 끼치는 분자적 영향 |
+| condition | 임상 조건 | 질환·표현형 명칭 |
+| classification | 분류 | Pathogenic / Benign 등 |
+| ClinVar / dbSNP | 클린바 / dbSNP | 임상 / 단일염기 변이 DB |
+| allele / genotype / phenotype | 대립유전자 / 유전자형 / 표현형 | 하디-바인베르크 연결 |
+
+  ---
+
+## 3. Google Colab & Python 셸
+
+| 영어 용어 | 한국어 대응 | 용도 |
+|-----------|-------------|------|
+| notebook / cell | 노트북 / 셀 | 코드·텍스트 실행 단위 |
+| interpreter | 인터프리터 | 코드 실행기 |
+| shell / terminal | 셸 / 터미널 | 명령줄 창 |
+| `!` (bang) | 셸 명령 접두사 | `!ls`, `!pip install` |
+| `pip` | 패키지 관리자 | 라이브러리 설치 |
+| `cd` / `ls` / `pwd` | 디렉터리 이동·목록·경로 확인 |
+| install / import | 설치 / 가져오기 | 패키지 준비 → 사용 |
+| variable / function / module | 변수 / 함수 / 모듈 | Python 기본 단위 |
+| list / dict | 리스트 / 딕셔너리 | 주요 자료형 |
+| `for` / `if` | 반복 / 조건 | 제어 구문 |
+| indentation | 들여쓰기 | 블록 구분 규칙 |
+| stdout / stderr | 표준출력 / 표준오류 | 결과·오류 창구 |
+
+---
+
+## 4. Biopython 핵심 객체 (2차시 예고)
+
+| 모듈·함수 | 한국어 대응 | 간단 설명 |
+|-----------|-------------|-----------|
+| `Bio` | 최상위 패키지 | 서브모듈 루트 |
+| `Seq`, `SeqRecord` | 서열 / 서열 기록 | 서열 + 메타데이터 저장 |
+| `SeqIO` | 서열 입출력 | FASTA·GenBank 파싱 |
+| `translate()` | 번역 함수 | DNA/RNA → 단백질 |
+| `Entrez` | NCBI API | 원격 서열 다운로드 |
+| `AlignIO` | 정렬 입출력 | 서열 정렬 파일 파싱 |
+
+  ---
 
 ###  (10분) 영문 타자 연습과 영단어 소개
 - 타자 연습 사이트 안내
