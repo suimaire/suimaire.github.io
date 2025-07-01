@@ -98,7 +98,7 @@ nav_order: 2
 | <img src="/assets/img/amino/alanine.png"          width="110"/> | Alanine 알라닌       | Ala | **A** | GCU · GCC · GCA · GCG |
 | <img src="/assets/img/amino/arginine.png"         width="110"/> | Arginine 아르지닌       | Arg | **R** | CGU · CGC · CGA · CGG · AGA · AGG |
 | <img src="/assets/img/amino/asparagine.png"       width="110"/> | Asparagine 아스파라진    | Asn | **N** | AAU · AAC |
-| <img src="/assets/img/amino/aspartate.png"    width="110"/> | Aspartic acid 아스파르트산 | Asp | **D** | GAU · GAC |
+| <img src="/assets/img/amino/asparatate.png"    width="110"/> | Aspartic acid 아스파르트산 | Asp | **D** | GAU · GAC |
 | <img src="/assets/img/amino/cysteine.png"         width="110"/> | Cysteine 시스테인      | Cys | **C** | UGU · UGC |
 | <img src="/assets/img/amino/glutamate.png"    width="110"/> | Glutamic acid 글루탐산 | Glu | **E** | GAA · GAG |
 | <img src="/assets/img/amino/glutamine.png"        width="110"/> | Glutamine 글루타민      | Gln | **Q** | CAA · CAG |
