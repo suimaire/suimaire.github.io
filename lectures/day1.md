@@ -91,30 +91,30 @@ nav_order: 2
 - https://support.hancomtaja.com/2fa61bff-472b-4a91-bbe7-f60f1d3f78ab　(한컴 타자)
   
 ###  (15분) 단백질 기초 개념과 아미노산 약자 설명
-### 표준 20 아미노산 - 구조식 · 약어 · 코돈
+### 표준 20 아미노산 — 구조식 · 약어 · 코돈 (로컬 이미지 버전)
 
 | 구조식<sup>†</sup> | Amino acid | 3-letter | 1-letter | Codon(s) (RNA) |
 |:---:|:---|:---:|:---:|:---|
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alanine/png"  width="110"/> | Alanine | Ala | **A** | GCU, GCC, GCA, GCG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/arginine/png" width="110"/> | Arginine | Arg | **R** | CGU, CGC, CGA, CGG, AGA, AGG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/asparagine/png" width="110"/> | Asparagine | Asn | **N** | AAU, AAC |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aspartic%20acid/png" width="110"/> | Aspartic acid | Asp | **D** | GAU, GAC |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/cysteine/png" width="110"/> | Cysteine | Cys | **C** | UGU, UGC |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/glutamic%20acid/png" width="110"/> | Glutamic acid | Glu | **E** | GAA, GAG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/glutamine/png" width="110"/> | Glutamine | Gln | **Q** | CAA, CAG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/glycine/png" width="110"/> | Glycine | Gly | **G** | GGU, GGC, GGA, GGG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/histidine/png" width="110"/> | Histidine | His | **H** | CAU, CAC |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/isoleucine/png" width="110"/> | Isoleucine | Ile | **I** | AUU, AUC, AUA |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/leucine/png" width="110"/> | Leucine | Leu | **L** | UUA, UUG, CUU, CUC, CUA, CUG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/lysine/png" width="110"/> | Lysine | Lys | **K** | AAA, AAG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/methionine/png" width="110"/> | Methionine | Met | **M** | AUG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/phenylalanine/png" width="110"/> | Phenylalanine | Phe | **F** | UUU, UUC |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/proline/png" width="110"/> | Proline | Pro | **P** | CCU, CCC, CCA, CCG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/serine/png" width="110"/> | Serine | Ser | **S** | UCU, UCC, UCA, UCG, AGU, AGC |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/threonine/png" width="110"/> | Threonine | Thr | **T** | ACU, ACC, ACA, ACG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/tryptophan/png" width="110"/> | Tryptophan | Trp | **W** | UGG |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/tyrosine/png" width="110"/> | Tyrosine | Tyr | **Y** | UAU, UAC |
-| <img src="https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/valine/png" width="110"/> | Valine | Val | **V** | GUU, GUC, GUA, GUG |
+| <img src="/assets/img/amino/alanine.png"          width="110"/> | Alanine 알라닌       | Ala | **A** | GCU · GCC · GCA · GCG |
+| <img src="/assets/img/amino/arginine.png"         width="110"/> | Arginine 아르지닌       | Arg | **R** | CGU · CGC · CGA · CGG · AGA · AGG |
+| <img src="/assets/img/amino/asparagine.png"       width="110"/> | Asparagine 아스파라진    | Asn | **N** | AAU · AAC |
+| <img src="/assets/img/amino/aspartate.png"    width="110"/> | Aspartic acid 아스파르트산 | Asp | **D** | GAU · GAC |
+| <img src="/assets/img/amino/cysteine.png"         width="110"/> | Cysteine 시스테인      | Cys | **C** | UGU · UGC |
+| <img src="/assets/img/amino/glutamate.png"    width="110"/> | Glutamic acid 글루탐산 | Glu | **E** | GAA · GAG |
+| <img src="/assets/img/amino/glutamine.png"        width="110"/> | Glutamine 글루타민      | Gln | **Q** | CAA · CAG |
+| <img src="/assets/img/amino/glycine.png"          width="110"/> | Glycine 글라이신(글리신)        | Gly | **G** | GGU · GGC · GGA · GGG |
+| <img src="/assets/img/amino/histidine.png"        width="110"/> | Histidine 히스티딘     | His | **H** | CAU · CAC |
+| <img src="/assets/img/amino/isoleucine.png"       width="110"/> | Isoleucine 아이소류신(이소류신)    | Ile | **I** | AUU · AUC · AUA |
+| <img src="/assets/img/amino/leucine.png"          width="110"/> | Leucine 류신       | Leu | **L** | UUA · UUG · CUU · CUC · CUA · CUG |
+| <img src="/assets/img/amino/lysine.png"           width="110"/> | Lysine 라이신        | Lys | **K** | AAA · AAG |
+| <img src="/assets/img/amino/methionine.png"       width="110"/> | Methionine 메싸이오닌(메티오닌)    | Met | **M** | AUG |
+| <img src="/assets/img/amino/phenylalanine.png"    width="110"/> | Phenylalanine 페닐알라닌 | Phe | **F** | UUU · UUC |
+| <img src="/assets/img/amino/proline.png"          width="110"/> | Proline 프롤린       | Pro | **P** | CCU · CCC · CCA · CCG |
+| <img src="/assets/img/amino/serine.png"           width="110"/> | Serine 세린        | Ser | **S** | UCU · UCC · UCA · UCG · AGU · AGC |
+| <img src="/assets/img/amino/threonine.png"        width="110"/> | Threonine 트레오닌     | Thr | **T** | ACU · ACC · ACA · ACG |
+| <img src="/assets/img/amino/tryptophan.png"       width="110"/> | Tryptophan 트립토판    | Trp | **W** | UGG |
+| <img src="/assets/img/amino/tyrosine.png"         width="110"/> | Tyrosine 타이로신(티로신)      | Tyr | **Y** | UAU · UAC |
+| <img src="/assets/img/amino/valine.png"           width="110"/> | Valine 발린        | Val | **V** | GUU · GUC · GUA · GUG |
 
 
 
