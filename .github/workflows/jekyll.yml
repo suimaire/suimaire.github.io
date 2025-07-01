@@ -16,9 +16,9 @@ jobs:
         with:
           ruby-version: 3.2
 
-      - name: Install dependencies
-        # ↓ 이 스텝이 없으면 just-the-docs가 설치되지 않음
+      - name: Install dependencies      # ← 이 스텝을 추가합니다
         run: |
+          gem install bundler           # Bundler 최신화
           bundle config set path vendor/bundle
           bundle install --jobs 4 --retry 3
 
