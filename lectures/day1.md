@@ -9,11 +9,18 @@ nav_order: 2
 
   ---
 ## 영문 타자 연습과 영단어 소개
-- https://tadaktadak.co.kr/taja/en_sentence.html   (타닥타닥)
-- https://support.hancomtaja.com/2fa61bff-472b-4a91-bbe7-f60f1d3f78ab　 (한컴 타자)
+
+-   https://support.hancomtaja.com/2fa61bff-472b-4a91-bbe7-f60f1d3f78ab   (한컴 타자)
+-   https://tadaktadak.co.kr/taja/en_sentence.html   (타닥타닥)
+　 
   ---
-## 아미노산(Amino acids) 소개
- 
+
+## 중심 원리 및 아미노산(Amino acids) 소개
+
+### 전사와 번역
+
+- [from DNA to protein - 3D](https://www.youtube.com/watch?v=gG7uCskUOrA)
+
 ### 20 종류의 아미노산 : 구조식 · 약어 · 코돈
 
 | 구조식<sup>†</sup> | Amino acid | 3-letter | 1-letter | Codon(s) (RNA) |
@@ -40,9 +47,7 @@ nav_order: 2
 | <img src="/assets/img/amino/valine.png"           width="110"/> | Valine<br>발린                           | Val | **V** | GUU · GUC · GUA · GUG |
 
 
-### 전사와 번역
 
-- [from DNA to protein - 3D](https://www.youtube.com/watch?v=gG7uCskUOrA)
  ---
 
 ## 생물학 기본 용어 및 Bioinformatics Camp를 위한 용어 정리
