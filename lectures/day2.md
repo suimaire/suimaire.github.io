@@ -8,13 +8,16 @@ nav_order: 3
 
 ## Google Colab 접속 및 환경 세팅
 - 진행 순서
-  1. https://colab.research.google.com 접속
-  2. 새 노트북 만들기
-  3. 첫 번째 코드 셀에 아래 명령어 입력 및 실행:
+  a. https://colab.research.google.com 접속<br>
+  b. 새 노트북 만들기<br>
+  c. 첫 번째 코드 셀에 아래 명령어 입력 및 실행:
+  
      ```python
      !pip install biopython
      ```
-  4. 설치 완료 후 아래 코드 실행하여 정상 설치 여부 확인:
+     
+  d. 설치 완료 후 아래 코드 실행하여 정상 설치 여부 확인:
+  
      ```python
      from Bio.Seq import Seq
      print("Biopython 설치 성공!")
@@ -97,5 +100,3 @@ nav_order: 3
 
 
 
-**실습 자료**  
-- [Colab 노트북](lectures/day1_notebook.ipynb)  
