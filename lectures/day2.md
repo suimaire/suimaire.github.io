@@ -68,7 +68,8 @@ nav_order: 3
     b. 결과를 기록하여 학생 수 분포 확인
 
   - NCBI에서 미맹 관련 유전자 서열 불러오기
-  - (PTC taste receptor gene, TAS2R38) 
+  - (PTC taste receptor gene, TAS2R38)
+    
   ```python
   from bio import Entrez, SeqIO
   Entrez.email = "your.email@example.com
