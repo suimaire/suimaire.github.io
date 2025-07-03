@@ -49,7 +49,16 @@ nav_order: 3
     # 2부터 시작
     print("Frame +2:", dna_seq[2:].translate())
     ```
-  - 왜 정확한 frame이 중요한지 이유를 생각해 봅시다.
+  - 세 종류의 Frame 결과를 비교하고, 왜 정확한 Frame이 중요한지 이유를 생각하고 발표해 봅시다.
+
+## 4. DNA 서열 변형 및 상보적 서열 확인
+  - 목표: complement() 함수를 통해 DNA 서열의 구조 이해
+  ```python
+  # DNA 상보적 서열 염기
+  complement_seq = data_seq.complement()
+  print("원본 DNA 서열:", dna_seq)
+  print("상보적 DNA 서열:", complemetn_seq)
+  ```
 
 **실습 자료**  
 - [Colab 노트북](lectures/day1_notebook.ipynb)  
