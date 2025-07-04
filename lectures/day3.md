@@ -55,19 +55,30 @@ nav_order: 4
   - 여러 서열들이 나오므로, 그 중 하나를 선택하기 <br>(정상 서열 추천 ID: NM_000518.5)
   - 서열 ID를 클릭하여 상세 정보 페이지로 이동 # NM_으로 시작하는 ID는 공식적인 표준 유전자 서열을 의미
 
+  - 새 NCBI 창을 열어 검색창에 변이 서열(낫 모양 적혈구 빈혈증 환자) 유전자 검색
+    - 다음과 같은 검색어 입력
+
+    ```css
+    sickle cell anemia hemoglobin beta Homo sapiens
+    ```
+
+  - 마찬가지로 [nucleotide]를 선택하여 DNA 서열을 찾기
+  - 여러 서열들 중 하나를 선택<br>(변이 서열 추천 ID: AY356351.1)
+  
 ### FASTA 형식으로 서열 보기
   - 화면 상단 메뉴에서 "FASTA" 클릭
   - 아래와 같은 형식의 서열이 나오면 해당 페이지를 유지한 채 <br>다시 Google Colab Notebook으로 이동
 
   - 두 번째 코드 셀에 아래 표를 참고하여 다음과 같이 입력
-  - | 용어 | 한국어 해석 |
-  - | PairwiseAligner | 두 서열을 비교하는 도구 |
-  - | match | 서열이 같은 글자일 때 점수 부여 |
-  - | mismatch | 서열이 다른 글자일 때 벌점 혹은 0점 부여 |
-  - | gap | 빈칸, 서열을 맞추기 위한 공백<br>gap이 많으면 서열이 많이 다르다는 의미 |
-  - | gap penalty | 서열을 맞추기 위해 gap을 넣을 때마다 주는 벌점 |
-  - | ㅣ(세로선) | 두 서열에서 같은 글자가 위치할 때 표시 |
-  - | sorted() | 여러 결과를 정리해 특정 기준에 따라 정렬 |
+| 용어 | 한국어 해석 |
+| Align | Biopython에서 제공하는 기능<br>두 개의 서열을 서로 맞추고 비교할 때 사용하는 도구 |
+| PairwiseAligner | 두 서열을 비교하는 도구 |
+| match | 서열이 같은 글자일 때 점수 부여 |
+| mismatch | 서열이 다른 글자일 때 벌점 혹은 0점 부여 |
+| gap | 빈칸, 서열을 맞추기 위한 공백<br>gap이 많으면 서열이 많이 다르다는 의미 |
+| gap penalty | 서열을 맞추기 위해 gap을 넣을 때마다 주는 벌점 |
+| ㅣ(세로선) | 두 서열에서 같은 글자가 위치할 때 표시 |
+| sorted() | 여러 결과를 정리해 특정 기준에 따라 정렬 |
 
     ```python
     # 필요한 모듈 임포트
@@ -75,7 +86,7 @@ nav_order: 4
     from Bio import Align 
 
     # DNA 서열 정의 
-    normal_dna = Seq(" ")       # 큰 따옴표를 반드시 입력하고, 따옴표 사이에 NCBI에서 찾은 서열을 입력
+    normal_dna = Seq(" ")       # 큰 따옴표를 반드시 입력하고, 따옴표 사이에 아까 NCBI에서 찾은 서열을 입력
     mutated_dna = Seq(" ")       # 돌연변이가 일어난 낫 모양 적혈구 빈혈증 환자의 서열을 찾아서 입력
 
     # 단백질 서열로 변환 (기존 코드와 동일)
@@ -84,7 +95,22 @@ nav_order: 4
 
     print("\n--- 단백질 서열 정렬 결과 ---")
 
-    aligner = Align.PairwiseAligner
+    aligner = Align.PairwiseAligner # A = B 꼴로 긴 문자열 명령어를 짧은 명령어로 '재정의'했다는 의미
+                                    # PairwiseAligner: 두 서열을 서로 잘 맞추어 비교해주는 기능
+    
+    alignments = aligner.align(str(normal_prot), str(mutated_prot))
+    # 정상 단백질과 변이 단백질을 aligner로 비교한 다음, 모든 결과를 alignments로 '재정의'했다는 의미
+
+    for alignment in sorted(alignments, key=lambda x: x.score, reverse=True):
+        print(alignment)
+    # 정렬 결과 중 가장 잘 맞는(점수가 높은) 순서로 하나씩 꺼내어 화면에 출력하라는 의미
+    ```
+
+  - 
+
+    ---
+
+###
     
     
 ---
