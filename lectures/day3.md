@@ -119,11 +119,40 @@ nav_order: 4
 
 ### [Q1] 정상/변이 단백질 정렬 결과에서 점선(ㅣ)이 사라지는 이유는 무엇일까요?
     
-    ---
+---
 
-## 말라리아 치명률에 따른 유전자 빈도의 전달 정도 시뮬레이션
+## 말라리아와 빈혈의 치명률 변화가 후대로의 형질 전달에 영향을 미친다?
 
-### 말라리아가 
-    
+### 만일, 낫 모양 적혈구 빈혈에 걸린 사람이 100% 확률로 결혼 전에 죽는다면?
+  - 예상되는 해당 염기 서열이 자손에게 전달 될 확률은?
+
+### 만일, 낫 모양 적혈구 빈혈에 걸린 사람이 50% 확률로 10살, 50% 확률로 40살에 죽는다면?
+  - 예상되는 해당 염기 서열이 자손에게 전달 될 확률은?
+
+### 1.2.2의 상황에서, 해당 지역에 말라리아 병원체를 가지는 모기가 900만마리가 들어왔다!
+  - 말라리아에 걸렸을 때 100% 확률로 3일 뒤에 죽는다면, 예상되는 빈혈 환자의 염기 서열이 후손에게 전달 될 확률은?
+
+### 눈으로 확인해보자!
+  - 새 코드 셀을 만들고, 아래 코드를 입력하자.
+    ```python
+    def simulate(selection_sickle=0.9, malaria_mortality=0.2, generations=30, initial_S_allele=0.1):
+    p = 1 - initial_S_allele; q = initial_S_allele
+    AA=AS=SS=None
+    AA_lst, AS_lst, SS_lst = [], [], []
+    for _ in range(generations):
+        f_AA, f_AS, f_SS = p*p, 2*p*q, q*q
+        w_AA, w_AS, w_SS = 1-malaria_mortality, 1, 1-selection_sickle
+        mean_w = f_AA*w_AA + f_AS*w_AS + f_SS*w_SS
+        f_AA, f_AS, f_SS = f_AA*w_AA/mean_w, f_AS*w_AS/mean_w, f_SS*w_SS/mean_w
+        AA_lst.append(f_AA); AS_lst.append(f_AS); SS_lst.append(f_SS)
+        p = f_AA + 0.5*f_AS; q = 1 - p
+    plt.figure(figsize=(5,3))
+    plt.plot(AA_lst,label="AA"); plt.plot(AS_lst,label="AS"); plt.plot(SS_lst,label="SS")
+    plt.xlabel("generation"); plt.ylabel("frequency"); plt.legend(); plt.title("malaria selection pressure")
+    plt.show()
+interact(simulate, selection_sickle=(0.5,1.0,0.05), malaria_mortality=(0,0.5,0.05),
+        generations=(10,100,10), initial_S_allele=(0.01,0.3,0.01));
+
+    ```
     
 ---
