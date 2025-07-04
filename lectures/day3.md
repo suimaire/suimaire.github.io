@@ -41,7 +41,7 @@ nav_order: 4
   - 추가로 생성할 코드 셀의 제목 입력 (예시: 정상 서열 vs 변이 서열)
   - 새롭게 섹션을 만들고 제목을 입력했다면, 그 부근에 마우스를 올려 [+코드] 클릭
 
-### 정상 서열과 낫 모양 적혈구 빈혈증 환자 서열 비교하기
+### NCBI에서 정상 서열과 낫 모양 적혈구 빈혈증 환자 서열 찾기
   - NCBI에서 정상인과 환자의 염기 서열을 찾아보자!
   - [NCBI](https://www.ncbi.nlm.nih.gov) 클릭하여 염기서열 데이터베이스 접속
   - NCBI 메인 페이지 상단 검색창에 정상-베타-글로빈 유전자 검색
@@ -51,7 +51,14 @@ nav_order: 4
     hemoglobin beta Homo sapiens normal
     ```
 
-  - 
+  - 여러 결과들 중 [nucleotide]를 선택하여 DNA 서열만 표시되도록 설정
+  - 여러 서열들이 나오므로, 그 중 하나를 선택하기 <br>(정상 서열 추천 ID: NM_000518.5)
+  - 서열 ID를 클릭하여 상세 정보 페이지로 이동 # NM_으로 시작하는 ID는 공식적인 표준 유전자 서열을 의미
+
+### FASTA 형식으로 서열 보기
+  - 화면 상단 메뉴에서 "FASTA" 클릭
+  - 아래와 같은 형식의 서열이 나오면 해당 페이지를 유지한 채 <br>다시 Google Colab Notebook으로 이동
+
   - 두 번째 코드 셀에 다음과 같이 입력
 
     ```python
@@ -62,5 +69,12 @@ nav_order: 4
     # DNA 서열 정의 
     normal_dna = Seq(" ")       # 큰 따옴표를 반드시 입력하고, 따옴표 사이에 NCBI에서 찾은 서열을 입력
     mutated_dna = Seq(" ")       # 돌연변이가 일어난 낫 모양 적혈구 빈혈증 환자의 서열을 찾아서 입력
+
+    # 단백질 서열로 변환 (기존 코드와 동일)
+    normal_prot = normal_dna.transcribe().translate()
+    mutated_prot = mutated_dna.transcribe().translate()
+
+    print("\n--- 단백질 서열 정렬 결과 ---")
+    
     
 ---
