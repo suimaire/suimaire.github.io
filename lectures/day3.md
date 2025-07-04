@@ -59,7 +59,15 @@ nav_order: 4
   - 화면 상단 메뉴에서 "FASTA" 클릭
   - 아래와 같은 형식의 서열이 나오면 해당 페이지를 유지한 채 <br>다시 Google Colab Notebook으로 이동
 
-  - 두 번째 코드 셀에 다음과 같이 입력
+  - 두 번째 코드 셀에 아래 표를 참고하여 다음과 같이 입력
+  - | 용어 | 한국어 해석 |
+  - | PairwiseAligner | 두 서열을 비교하는 도구 |
+  - | match | 서열이 같은 글자일 때 점수 부여 |
+  - | mismatch | 서열이 다른 글자일 때 벌점 혹은 0점 부여 |
+  - | gap | 빈칸, 서열을 맞추기 위한 공백<br>gap이 많으면 서열이 많이 다르다는 의미 |
+  - | gap penalty | 서열을 맞추기 위해 gap을 넣을 때마다 주는 벌점 |
+  - | ㅣ(세로선) | 두 서열에서 같은 글자가 위치할 때 표시 |
+  - | sorted() | 여러 결과를 정리해 특정 기준에 따라 정렬 |
 
     ```python
     # 필요한 모듈 임포트
@@ -75,6 +83,8 @@ nav_order: 4
     mutated_prot = mutated_dna.transcribe().translate()
 
     print("\n--- 단백질 서열 정렬 결과 ---")
+
+    aligner = Align.PairwiseAligner
     
     
 ---
