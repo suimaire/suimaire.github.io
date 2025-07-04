@@ -150,7 +150,7 @@ nav_order: 4
     plt.plot(AA_lst,label="AA"); plt.plot(AS_lst,label="AS"); plt.plot(SS_lst,label="SS")
     plt.xlabel("generation"); plt.ylabel("frequency"); plt.legend(); plt.title("malaria selection pressure")
     plt.show()
-interact(simulate, selection_sickle=(0.5,1.0,0.05), malaria_mortality=(0,0.5,0.05),
+    interact(simulate, selection_sickle=(0.5,1.0,0.05), malaria_mortality=(0,0.5,0.05),
         generations=(10,100,10), initial_S_allele=(0.01,0.3,0.01));
 
     ```
