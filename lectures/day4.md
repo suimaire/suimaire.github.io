@@ -81,4 +81,41 @@ nav_order: 5
 
 ### 관찰할 시뮬레이션의 조건을 입력
 
-  - 코드 셀에 다음과 
+  - 코드 셀에 다음과 같이 입력
+
+    ```python
+    def hwe_expected(p: float): # def는 함수를 정의하라는 명령, hwe_expected는 "Hardy-Weinberg expected"의 약자
+                                # (p: float) : p라는 값을 넣을 건데, float는 "소수점 숫자"라는 의미 (ex: p=0.6같은 값을 넣을거야)
+        q = 1 - p               # p + q = 1 이 되어야 한다!
+        return p*p, 2*p*q, q*q  # 해당 함수가 세 가지 값을 한꺼번에 돌려준다는 의미 (p², 2pq, q²)
+    print("예시 p=0.6 :", hwe_expected(0.6)) # print는 화면에 내용을 보여주라는 명령, "예시 p=0.6:" 라는 글자 뒤에 결과를 출력
+    ```
+
+### 세대별 변화 관찰 시뮬레이션
+
+  - 왼쪽 메뉴의 [목차] → [+섹션] 클릭
+  - 추가로 생성할 코드 셀의 제목 입력 (예시: 시뮬레이션: 세대별 변화 관찰)
+  - 새롭게 섹션을 만들고 제목을 입력했다면, 그 부근에 마우스를 올려 [+코드] 클릭
+
+  - 코드 셀에 다음과 같이 입력
+
+    ```python
+    def simulate_hwe(p_init=0.7, pop_size=1000, generations=5000):  # simulate_hwe라는 이름의 함수 생성
+                                                                    # p_init: 첫 세대의 A 대립유전자 빈도(0.7 = 70%)
+    p = p_init                                                      # pop_size: 각 세대의 개체 수 / generations: 반복할 세대 수
+    AA= []; Aa=[]; aa=[]
+    for _ in range(generations):           # _ 는 "반복 횟수 자체는 중요하지 않을 때" 사용 , range(generations)만큼 세대별 분석
+        AA_exp, Aa_exp, aa_exp = hwe_expected(p)  # p값을 설정함에 따라 그에 맞는 값을 반환하라는 명령
+        AA.append(AA_exp); Aa.append(Aa_exp); aa.append(aa_exp)
+        # 무작위 짝짓기 개체 생성
+        import random                             # python 내장 모듈 random을 사용하라는 명령
+                                                  # 이론적 비율에 따라 실제로 pop_size명의 유전형을 뽑는 효과 발생
+        pop = random.choices(['AA','Aa','aa'], weights=[AA_exp, Aa_exp, aa_exp], k=pop_size)
+        allele_A = pop.count('AA')*2 + pop.count('Aa')
+        p = allele_A/(2*pop_size)
+    plt.figure()
+    plt.plot(AA, label='AA'); plt.plot(Aa, label='Aa'); plt.plot(aa, label='aa')
+    plt.xlabel('Generation'); plt.ylabel('Frequency'); plt.title('Hardy–Weinberg simulation')
+    plt.legend(); plt.show()
+
+interact(simulate_hwe, p_init=(0.1,0.9,0.05), pop_size=(50,1000,50), generations=(5,5000,5));
