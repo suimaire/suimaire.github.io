@@ -4,7 +4,7 @@ title: "Day 4"
 nav_order: 5
 ---
 
-# Day 4 하디-바인베르크 평형(Hardy-Weinberg Equilibrium) 실습
+# Day 4 하디-바인베르크 평형<br>(Hardy-Weinberg Equilibrium) 실습
 
 ---
 ## 하디-바인베르크 유전 평형
@@ -40,9 +40,9 @@ nav_order: 5
 | a | Aa | aa |
 
   - 이제 멘델 집단 내부에서 A 유전자의 빈도가 p, a 유전자의 빈도가 q라고 하자.<br>형질의 종류가 2가지이므로 유전자 빈도의 총합은 p+q=1이다.
-  - 예를 들어 p=0.6, q=0.4 일 때 집단 내부에 개체가 100마리 존재한다면, 개체들은 각각 2개의 유전자를 가지므로 <br>총 200개의 A 또는 a가 집단 내부에 존재한다는 의미이다. <br>이 때 p가 0.6이므로, 200개중 120개의 유전자는 A이며 q가 0.4이므로 80개의 유전자는 a이다.
-  - 이 유전자의 빈도가 멘델 집단 내에서는 세대를 거듭하여도 유지된다는 것이 하디-바인베르크 법칙이다.<br>증명은 해당 아카데미와 관련이 없으므로 생략한다.
-  - 위 표를 멘델 집단에서 부모가 자손에게 특정 유전자를 전달할 확률이라고 생각할 수 있다.<br>p=0.6, q=0.4일때 확률은 다음과 같다.
+  - 예를 들어 p=0.6, q=0.4 일 때 집단 내부에 개체가 100마리 존재한다면, 개체들은 각각 2개의 <br>유전자를 가지므로 총 200개의 A 또는 a가 집단 내부에 존재한다는 의미이다. <br>이 때 p가 0.6이므로, 200개중 120개의 유전자는 A이며 q가 0.4이므로 80개의 유전자는 a이다.
+  - 해당 빈도가 멘델 집단 내에서는 세대를 거듭하여도 유지된다는 것이 하디-바인베르크 법칙이다.<br>증명은 해당 아카데미와 관련이 없으므로 생략한다.
+  - 위 표를 멘델 집단에서 부모가 자손에게 특정 유전자를 전달할 확률이라고 생각할 수 있다.<br>**p=0.6, q=0.4 일때 확률은 다음과 같다.**
 
 |   | p    | q    |
 | p | 0.36 | 0.24 |
@@ -67,7 +67,6 @@ nav_order: 5
     !pip install biopython ipywidgets
     import random, matplotlib.pyplot as plt
     from ipywidgets import interact
-    
     ```
 
   - 코드 셀 왼쪽의 [셀 실행] (ctrl + enter) 클릭 후 대기
@@ -139,10 +138,21 @@ nav_order: 5
 
 ---
 
-## 빈혈과 말라리아의 상관 관계 - 선택 압력 시뮬레이션
+## 빈혈과 말라리아의 상관 관계 - 선택 압력 시뮬레이션<br>말라리아와 빈혈의 치명률 변화가 후대로의 형질 전달에 영향을 미친다?
 
   - 지난 시간에 학습한 낫 모양 적혈구 빈혈증과 말라리아의 관계(영향력)에 따라 낫 모양 적혈구 빈혈증 유전자가<br>자손에게 전달되는 경향성을 알아보자.
   - 빈혈에 걸린 사람이 생존 확률, 말라리아에 걸린 사람의 사망 확률을 직접 설정해보며 변화를 관찰해보자.
+
+### 다음 상황에 대해 생각해보자!
+   
+#### 만일, 낫 모양 적혈구 빈혈에 걸린 사람이 100% 확률로 결혼 전에 죽는다면?
+  - 예상되는 해당 염기 서열이 자손에게 전달 될 확률은?
+
+#### 만일, 낫 모양 적혈구 빈혈에 걸린 사람이 50% 확률로 10살, 50% 확률로 40살에 죽는다면?
+  - 예상되는 해당 염기 서열이 자손에게 전달 될 확률은?
+
+#### 위의 상황에서, 해당 지역에 말라리아 병원체를 가지는 모기가 900만마리가 들어왔다!
+  - 말라리아에 걸렸을 때 100% 확률로 3일 뒤에 죽는다면, 예상되는 빈혈 환자의 염기 서열이 후손에게 전달 될 확률은?
 
 ### Biopython을 이용한 Malaria & Sickle cell Selection Pressure 실습
 
@@ -165,19 +175,30 @@ nav_order: 5
     # generations: 시뮬레이션을 진행 할 세대 수
     # initial_S_allele: 최초 S 대립유전자의 빈도(ex:0.1 → 10%)
     
-    def simulate(selection_sickle=0.9, malaria_mortality=0.2, generations=30, initial_S_allele=0.1):
+    def simulate(selection_sickle=생존율, malaria_mortality=사망률, generations=세대, initial_S_allele=최초값):
     p = 1 - initial_S_allele; q = initial_S_allele    # def를 이용해 simulate라는 이름의 함수를 생성, 4가지 입력값을 받는다고 설정
     AA=AS=SS=None
     AA_lst, AS_lst, SS_lst = [], [], []               # AA, AS, SS는 비율(숫자 값)이 들어올 '자리'이며, 이를 설정
     for _ in range(generations):                      # 위와 마찬가지로 세대 수만큼 반복, '_'는 반복 횟수 자체가 필요 없을 때 사용
         f_AA, f_AS, f_SS = p*p, 2*p*q, q*q            # p*p는 AA 개체의 빈도, 2*p*q는 AS 개체 빈도, q*q는 SS 개체 빈도
-        w_AA, w_AS, w_SS = 1-malaria_mortality, 1, 1-selection_sickle  
-        # AA는 말라리아에 취약 (정상 적혈구를 가진 사람) # 
+        w_AA, w_AS, w_SS = 1-malaria_mortality, 1, 1-selection_sickle  # 각 유전형의 생존율 지정
+        # AA는 말라리아에 취약 (정상 적혈구를 가진 사람)
+        # AS는 정상과 변이 유전자가 섞인 사람이지만, 말라리아 저항성을 얻음과 동시에 빈혈 증상은 거의 없다고 가정
+        # SS는 낫 모양 적혈구 빈혈증 환자로, 심한 빈혈과 조직 손상 발생 및 말라리아 면역
     
-        mean_w = f_AA*w_AA + f_AS*w_AS + f_SS*w_SS
+        mean_w = f_AA*w_AA + f_AS*w_AS + f_SS*w_SS  # 평균(mean) 생존율 계산
+                                                    # 한 세대 전체에서 "살아남을 확률의 합"을 이용
+    
         f_AA, f_AS, f_SS = f_AA*w_AA/mean_w, f_AS*w_AS/mean_w, f_SS*w_SS/mean_w
-        AA_lst.append(f_AA); AS_lst.append(f_AS); SS_lst.append(f_SS)
+        # f_(유전자형)을 각각의 유전형 빈도 × 그 유전형의 생존율 ÷ 전체 평균 생존율로 정의
+        # 다음 세대의 유전형 빈도 합을 1로 맞추기 위한 작업  
+    
+        AA_lst.append(f_AA); AS_lst.append(f_AS); SS_lst.append(f_SS) 
+        # 계산하여 정의한 다음 세대의 유전형 빈도를 리스트에 순서대로 담는 명령어
+    
         p = f_AA + 0.5*f_AS; q = 1 - p
+        # 다음 세대의 대립유전자 빈도 결정
+    
     plt.figure(figsize=(5,3))
     plt.plot(AA_lst,label="AA"); plt.plot(AS_lst,label="AS"); plt.plot(SS_lst,label="SS")
     plt.xlabel("generation"); plt.ylabel("frequency"); plt.legend(); plt.title("malaria selection pressure")
@@ -185,5 +206,16 @@ nav_order: 5
     interact(simulate, selection_sickle=(0.5,1.0,0.05), malaria_mortality=(0,0.5,0.05),
         generations=(10,100,10), initial_S_allele=(0.01,0.3,0.01));
 
+    # 그래프 그리기: plt.figure(figsize=(5,3)) → 그림의 크기 지정
+    # plt.plot(AA_lst,...): AA 빈도, AS 빈도, SS 빈도를 세대별로 연결
+    # plt.xlabel, plt.ylabel, plt.title : 축 이름과 제목 설정
+    # plt.legend(): 그래프 안에 'AA', 'AS', 'SS' 라벨 표시
+    # plt.show(): 그래프를 화면에 출력하라는 명령
+    # interact(...): Google Colab에서 사용할 수 있는 기능으로, 슬라이더를 움직여 parameter를 변경할 수 있게 하는 도구
+    # (0.5,1.0,0.05) 등은 슬라이더의 최솟값, 최댓값, 단계를 의미
+
     ```
- 
+
+ ### 마무리
+
+  - 1. 시뮬레이션 그래프에서 AS 곡선이 안정적으로 유지되는 생물학적 의미를 해석하고, 친구들과 이야기 해봅시다.
