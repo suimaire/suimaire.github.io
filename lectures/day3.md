@@ -121,71 +121,95 @@ nav_order: 4
     
 ---
 
-## 말라리아와 빈혈의 치명률 변화가 후대로의 형질 전달에 영향을 미친다?
+## 염기 하나의 변화가 단백질의 3차원 구조 형성에 영향을 미친다?
 
-### 만일, 낫 모양 적혈구 빈혈에 걸린 사람이 100% 확률로 결혼 전에 죽는다면?
-  - 예상되는 해당 염기 서열이 자손에게 전달 될 확률은?
+### 생각해보자!
+  
+  #### 하나의 염기 서열 변화가 가져올 수 있는 모든 변화의 경우에 대해 말해보자
+      
+      - 가장 위험한 하나의 염기 서열 변화는 무엇일까?
+  
+  #### 아미노산이 모여서 만들어지는 거대한 분자가 단백질이니까...
 
-### 만일, 낫 모양 적혈구 빈혈에 걸린 사람이 50% 확률로 10살, 50% 확률로 40살에 죽는다면?
-  - 예상되는 해당 염기 서열이 자손에게 전달 될 확률은?
+      - 아미노산이 바뀌면 단백질의 거대한 형태가 어떻게 바뀔까?
 
-### 1.2.2의 상황에서, 해당 지역에 말라리아 병원체를 가지는 모기가 900만마리가 들어왔다!
-  - 말라리아에 걸렸을 때 100% 확률로 3일 뒤에 죽는다면, 예상되는 빈혈 환자의 염기 서열이 후손에게 전달 될 확률은?
+### 직접 단백질의 3차원 구조를 눈으로 확인해보자!
+  
+  - 왼쪽 메뉴의 [목차] → [+섹션] 클릭
+  - 추가로 생성할 코드 셀의 제목 입력 (예시: 시뮬레이션: 세대별 변화 관찰)
+  - 새롭게 섹션을 만들고 제목을 입력했다면, 그 부근에 마우스를 올려 [+코드] 클릭
 
-### 눈으로 확인해보자!
-  - 새 코드 셀을 만들고, 아래 코드를 입력하자.
-    ```python
-    # simulate라는 함수를 정의하자! [def] 이후, 괄호 안에 4가지 파라미터를 넣는다. 
-    # selection_sickle: SS(낫모양 동형접합)의 생존율 (ex:0.9 → 정상보다 10% 덜 산다.)
-    # malaria_mortality: AA(정상 동형접합)의 사망률 (ex:0.2 → 말라리아에 걸린 환자 중 20%가 죽는다.)
-    # generations: 시뮬레이션을 진행 할 세대 수
-    # initial_S_allele: 최초 S 대립유전자의 빈도(ex:0.1 → 10%)
+  - 코드 셀에 다음과 같이 입력 
+
+```python
+import py3Dmol # 단백질의 3D 구조를 노트북 안에 표시해 주는 도구(py3Dmol)을 불러오라는 명령
+
+def view_polymerization_with_labels():     # view_polymerization_with_labels(): 라는 이름의 함수(프로그램 묶음)을
+    """                                    # 만드는 문장으로, 한 번 정의해 두면 나중에 저 이름만 쳐도 밑의 코드를 한 번에 불러올 수 있다.
+    위쪽: 정상 헤모글로빈 단량체 (PDB:1A3N)
+    아래쪽: 낫형 헤모글로빈 섬유    (PDB:2HBS)             # """...""" 는 Docstring이라고도 말하며,
+    β사슬 6번 위치에 Glu6 / Val6 레이블을 확실히 표시       # 함수가 어떤 일을 하는 지 적어 놓은 '설명문'이다.
+    """
+    examples = [
+        ('1A3N', False, 'Glu6', 'red', 'white'),      # examples라는 리스트를 만들어 여러가지 특징을 설정한다.
+        ('2HBS', True,  'Val6', 'yellow', 'black'),   # 각각 (PDB 코드, 기능 사용 여부, 레이블(메모), 스틱 색, 글자 색)을 의미한다.
+    ]
     
-    def simulate(selection_sickle=0.9, malaria_mortality=0.2, generations=30, initial_S_allele=0.1):
-    p = 1 - initial_S_allele; q = initial_S_allele
-    AA=AS=SS=None
-    AA_lst, AS_lst, SS_lst = [], [], []
-    for _ in range(generations):
-        f_AA, f_AS, f_SS = p*p, 2*p*q, q*q
-        w_AA, w_AS, w_SS = 1-malaria_mortality, 1, 1-selection_sickle
-        mean_w = f_AA*w_AA + f_AS*w_AS + f_SS*w_SS
-        f_AA, f_AS, f_SS = f_AA*w_AA/mean_w, f_AS*w_AS/mean_w, f_SS*w_SS/mean_w
-        AA_lst.append(f_AA); AS_lst.append(f_AS); SS_lst.append(f_SS)
-        p = f_AA + 0.5*f_AS; q = 1 - p
-    plt.figure(figsize=(5,3))
-    plt.plot(AA_lst,label="AA"); plt.plot(AS_lst,label="AS"); plt.plot(SS_lst,label="SS")
-    plt.xlabel("generation"); plt.ylabel("frequency"); plt.legend(); plt.title("malaria selection pressure")
-    plt.show()
-    interact(simulate, selection_sickle=(0.5,1.0,0.05), malaria_mortality=(0,0.5,0.05),
-        generations=(10,100,10), initial_S_allele=(0.01,0.3,0.01));
+    for pdb, is_fiber, label_text, stick_color, font_color in examples:
+    # examples 안에 두 개씩 들어있는 정보를 꺼내 pdb, is_fiber, label_text, stick_color, font_color 라는
+    # 변수에 각각 대입해서 사용한다는 명령이다.
 
-    ```
-    
----
-### 다시
-  ```python
-  import py3Dmol
+        # 1) 뷰어 만들기
+        view = py3Dmol.view(query=f'pdb:{pdb}', width=350, height=350)
+        view.setBackgroundColor('white')
+        # PDB 데이터베이스에서 해당 pdb 코드(ex: 1A3N or 2HBS)의 3D 구조를 불러와 캔버스를 만든다.
+        # width/height: 보이는 크기를 350x350 픽셀로 지정한다.
+        # 뷰어의 배경색을 white로 설정하여 단백질을 잘 보이게 한다.
 
-  def view_polymerization():
-    # --- 1) 정상 단량체 (PDB:1A3N) ---
-    v1 = py3Dmol.view(width=400, height=400, query='pdb:1A3N')
-    # 리본(cartoon) 스타일로 전체 구조
-    v1.setStyle({'cartoon': {}})
-    # β체인 B의 6번 잔기(=Glu6)를 빨간 스틱으로 강조
-    v1.addStyle({'chain':'B','resi':6}, {'stick':{'color':'red','radius':0.4}})
-    v1.setBackgroundColor('white')
-    
-    # --- 2) 낫형 헤모글로빈이 만든 섬유 (PDB:2HBS) ---
-    v2 = py3Dmol.view(width=400, height=400, query='pdb:2HBS')
-    # 리본 스타일
-    v2.setStyle({'cartoon': {}})
-    # β체인 B의 6번 잔기(=Val6)를 노란 스틱으로 강조
-    v2.addStyle({'chain':'B','resi':6}, {'stick':{'color':'yellow','radius':0.4}})
-    # 전체 섬유 모양이 드러나도록 살짝 투명한 스틱으로 주변 결합부도 표시
-    v2.addStyle({'cartoon':{ }}, {'cartoon':{'opacity':0.3}})
-    v2.setBackgroundColor('white')
-    
-    # 두 뷰어를 나란히 출력
-    v1.show()
-    v2.show()
-  ```
+        # 2) 리본 스타일
+        if is_fiber:
+            # 섬유: 연한 회색, 반투명
+            view.setStyle({'cartoon': {}}, {'cartoon': {'color':'lightgrey','opacity':0.4}})
+            # 섬유 표면
+            view.addSurface({'opacity':0.3,'color':'lightgreen'})
+        else:
+            # 단량체: 스펙트럼 컬러, 불투명
+            view.setStyle({'cartoon': {}}, {'cartoon': {'color':'spectrum','opacity':1.0}})
+        # is_fiber에 True, False가 대입될 때 어떠한 형태로 그릴지 정의한다.
+        # True일 때: 연한 회색, 반투명(opacity=0.4)로 그리라는 의미
+        # False일 때: 무지개 색(spectrum), 불투명(opacity=1.0)으로 그리라는 의미
+
+
+        # 3) 6번 잔기 stick 강조
+        view.addStyle(
+            {'chain':'B','resi':6},                          # addStyle(A, B): A부분을 B모양으로 표현하라는 함수
+            {'stick':{'color': stick_color, 'radius':0.2}}   # 여기서는 B chain의 6번 자리를 stick 모양으로 강조하라는 의미
+        )
+        
+        # 4) 레이블 추가 — 세 개의 인자를 정확히 분리
+        view.addLabel(
+            label_text,                                       # addLabel(A, B, C):
+            {                                                 # A: 그림 안에 표시할 실제 메모(Label) 내용
+                'fontColor': font_color,                      # B: 글자 색(fontColor), 배경 색, 글자 크기
+                'backgroundColor': stick_color,               
+                'fontSize': 12
+            },
+            {'chain':'B','resi':6,'atom':'CA'}                # C: 메모(Label)을 붙일 위치 
+        )                                                     # 여기서는 B chain의 6번 자리의 CA 원자(알파 탄소)
+        
+        # 5) 6번 잔기로 줌
+        view.zoomTo({'chain':'B','resi':6})                   # 선택된 부위(6번 자리) 중심으로 확대해서 보여주라는 의미
+        
+        # 6) 제목 출력 후 렌더링                               
+        title = '정상 단량체 (PDB:1A3N)' if not is_fiber else '낫형 섬유 (PDB:2HBS)'
+        print(title)                                          # is_fiber 여부에 따라 화면 위에 title을 다르게 표시하라는 명령
+        view.show()
+
+# 함수 호출
+view_polymerization_with_labels()                             # 마지막으로 함수 이름 뒤에 ()를 붙여서 지금까지 정의한 모든 과정을 한꺼번에 실행한다.
+```
+
+### 마무리
+  - 1. 정상/변이 단백질 정렬 결과에서 점선(ㅣ)이 사라지는 이유는 무엇일까요?
+    2. 20종류의 아미노산은 각각 친수성, 소수성, 산성, 염기성과 같은 성격이 모두 다릅니다. 이것은 단백질의 구조에 어떤 영향을 미칠 수 있을까요?
+    3. 3D 모델을 관찰한 결과 염기 하나의 변화로 해당 아미노산은 단백질의 3차원 구조 중 어디서 어디로 이동하였나요? 그리고, 그 이유는 무엇일까요?
