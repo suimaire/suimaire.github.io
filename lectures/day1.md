@@ -93,7 +93,7 @@ nav_order: 2
 
   ---
 
-### Google Colab & Python 셸
+### Google Colab & Python 셸 (참고용)
 
 | 용어 | 한국어 해석 | 설명 · 용도 |
 |-----------|-------------|------|
@@ -112,26 +112,13 @@ nav_order: 2
 
 ---
 
-### Biopython 핵심 용어(객체)
 
-| 모듈·함수 | 한국어 해석 | 설명 · 용도 |
-|-----------|-------------|-----------|
-| `Bio` | 최상위 패키지 | 서브모듈 루트 |
-| `Seq`, `SeqRecord` | 서열 / 서열 기록 | 서열 + 메타데이터 저장 |
-| `SeqIO` | 서열 입출력 | FASTA·GenBank 파싱 |
-| `translate()` | 번역 함수 | DNA/RNA → 단백질 |
-| `Entrez` | NCBI API | 원격 서열 다운로드 |
-| `AlignIO` | 정렬 입출력 | 서열 정렬 파일 파싱 |
-
-  ---
 
 
 
  
 
 ---
-
-2부: Python과 Google Colab 소개 
 
 ## Google Colab 환경 구축
 
@@ -179,4 +166,4 @@ for aa in amino_acids:
     print(aa)
 ```
 
-
+---
