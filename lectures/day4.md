@@ -111,11 +111,79 @@ nav_order: 5
         import random                             # python 내장 모듈 random을 사용하라는 명령
                                                   # 이론적 비율에 따라 실제로 pop_size명의 유전형을 뽑는 효과 발생
         pop = random.choices(['AA','Aa','aa'], weights=[AA_exp, Aa_exp, aa_exp], k=pop_size)
-        allele_A = pop.count('AA')*2 + pop.count('Aa')
-        p = allele_A/(2*pop_size)
+        allele_A = pop.count('AA')*2 + pop.count('Aa')  # allele = 대립유전자
+                                                        # 'AA' 개체는 A를 2개, 'Aa' 개체는 A를 1개를 가지므로 이렇게 계산하라는 명령
+        p = allele_A/(2*pop_size)                       # p를 구할 때, A 대립유전자 수를 전체 인구수*2로 나눈 값으로 구하라는 명령
     plt.figure()
     plt.plot(AA, label='AA'); plt.plot(Aa, label='Aa'); plt.plot(aa, label='aa')
     plt.xlabel('Generation'); plt.ylabel('Frequency'); plt.title('Hardy–Weinberg simulation')
-    plt.legend(); plt.show()
+    plt.legend(); plt.show()                            # AA, Aa, aa 리스트에 담긴 세대별 비율은 선 그래프로 그리라는 명령
+                                                        # x축 = 세대 번호, y축 = 유전형 빈도
+                                                        # legend = 범례, title = 제목 (마음대로 바꿔도 됩니다)
 
-interact(simulate_hwe, p_init=(0.1,0.9,0.05), pop_size=(50,1000,50), generations=(5,5000,5));
+    interact(simulate_hwe, p_init=(0.1,0.9,0.05), pop_size=(50,1000,50), generations=(5,5000,5));
+                                                        # Colab 환경에서 사용되는 interact 명령
+                                                        # p_init, pop_size, generations 값을 슬라이더로 바꿔가며 시뮬레이션 갱신
+    ```
+
+  - 이론적 예상치를 구한 뒤, 그 예상대로 유한한 개체수에서 실제 뽑기
+  - 그 결과로 얻은 실제 빈도로 p값(A 대립유전자 빈도) 계산
+
+---
+
+### 생각해보자
+
+  - 직접 값을 변경해 보며 하디-바인베르크 유전 평형을 직접 체험해 봅시다.
+  - 집단 크기가 감소하면 유전자 빈도의 변동성은 어떻게 변화하나요?
+  - 이론과 실제 시뮬레이션 수치가 맞지 않다면, 그 이유는 무엇일까요?
+
+---
+
+## 빈혈과 말라리아의 상관 관계 - 선택 압력 시뮬레이션
+
+  - 지난 시간에 학습한 낫 모양 적혈구 빈혈증과 말라리아의 관계(영향력)에 따라 낫 모양 적혈구 빈혈증 유전자가<br>자손에게 전달되는 경향성을 알아보자.
+  - 빈혈에 걸린 사람이 생존 확률, 말라리아에 걸린 사람의 사망 확률을 직접 설정해보며 변화를 관찰해보자.
+
+### Biopython을 이용한 Malaria & Sickle cell Selection Pressure 실습
+
+  - 학습 목표
+    - 대립유전자 빈도 p, q의 이해
+    - 세대 반복 시 유전자형의 빈도가 p² : 2pq : q² 로 수렴함을 확인
+    - FASTA/VCF 등 실측 서열에서 대립유전자 빈도를 계산해 가설 검정
+   
+  - 왼쪽 메뉴의 [목차] → [+섹션] 클릭
+  - 추가로 생성할 코드 셀의 제목 입력 (예시: 시뮬레이션: 세대별 변화 관찰)
+  - 새롭게 섹션을 만들고 제목을 입력했다면, 그 부근에 마우스를 올려 [+코드] 클릭
+
+  - 코드 셀에 다음과 같이 입력
+
+    ```python
+
+    # simulate라는 함수를 정의하자! [def] 이후, 괄호 안에 4가지 파라미터를 넣는다. 
+    # selection_sickle: SS(낫모양 동형접합)의 생존율 (ex:0.9 → 정상보다 10% 덜 산다.)
+    # malaria_mortality: AA(정상 동형접합)의 사망률 (ex:0.2 → 말라리아에 걸린 환자 중 20%가 죽는다.)
+    # generations: 시뮬레이션을 진행 할 세대 수
+    # initial_S_allele: 최초 S 대립유전자의 빈도(ex:0.1 → 10%)
+    
+    def simulate(selection_sickle=0.9, malaria_mortality=0.2, generations=30, initial_S_allele=0.1):
+    p = 1 - initial_S_allele; q = initial_S_allele    # def를 이용해 simulate라는 이름의 함수를 생성, 4가지 입력값을 받는다고 설정
+    AA=AS=SS=None
+    AA_lst, AS_lst, SS_lst = [], [], []               # AA, AS, SS는 비율(숫자 값)이 들어올 '자리'이며, 이를 설정
+    for _ in range(generations):                      # 위와 마찬가지로 세대 수만큼 반복, '_'는 반복 횟수 자체가 필요 없을 때 사용
+        f_AA, f_AS, f_SS = p*p, 2*p*q, q*q            # p*p는 AA 개체의 빈도, 2*p*q는 AS 개체 빈도, q*q는 SS 개체 빈도
+        w_AA, w_AS, w_SS = 1-malaria_mortality, 1, 1-selection_sickle  
+        # AA는 말라리아에 취약 (정상 적혈구를 가진 사람) # 
+    
+        mean_w = f_AA*w_AA + f_AS*w_AS + f_SS*w_SS
+        f_AA, f_AS, f_SS = f_AA*w_AA/mean_w, f_AS*w_AS/mean_w, f_SS*w_SS/mean_w
+        AA_lst.append(f_AA); AS_lst.append(f_AS); SS_lst.append(f_SS)
+        p = f_AA + 0.5*f_AS; q = 1 - p
+    plt.figure(figsize=(5,3))
+    plt.plot(AA_lst,label="AA"); plt.plot(AS_lst,label="AS"); plt.plot(SS_lst,label="SS")
+    plt.xlabel("generation"); plt.ylabel("frequency"); plt.legend(); plt.title("malaria selection pressure")
+    plt.show()
+    interact(simulate, selection_sickle=(0.5,1.0,0.05), malaria_mortality=(0,0.5,0.05),
+        generations=(10,100,10), initial_S_allele=(0.01,0.3,0.01));
+
+    ```
+ 
