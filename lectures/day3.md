@@ -135,6 +135,12 @@ nav_order: 4
 ### 눈으로 확인해보자!
   - 새 코드 셀을 만들고, 아래 코드를 입력하자.
     ```python
+    # simulate라는 함수를 정의하자! [def] 이후, 괄호 안에 4가지 파라미터를 넣는다. 
+    # selection_sickle: SS(낫모양 동형접합)의 생존율 (ex:0.9 → 정상보다 10% 덜 산다.)
+    # malaria_mortality: AA(정상 동형접합)의 사망률 (ex:0.2 → 말라리아에 걸린 환자 중 20%가 죽는다.)
+    # generations: 시뮬레이션을 진행 할 세대 수
+    # initial_S_allele: 최초 S 대립유전자의 빈도(ex:0.1 → 10%)
+    
     def simulate(selection_sickle=0.9, malaria_mortality=0.2, generations=30, initial_S_allele=0.1):
     p = 1 - initial_S_allele; q = initial_S_allele
     AA=AS=SS=None
@@ -156,3 +162,30 @@ nav_order: 4
     ```
     
 ---
+### 다시
+  ```python
+  import py3Dmol
+
+  def view_polymerization():
+    # --- 1) 정상 단량체 (PDB:1A3N) ---
+    v1 = py3Dmol.view(width=400, height=400, query='pdb:1A3N')
+    # 리본(cartoon) 스타일로 전체 구조
+    v1.setStyle({'cartoon': {}})
+    # β체인 B의 6번 잔기(=Glu6)를 빨간 스틱으로 강조
+    v1.addStyle({'chain':'B','resi':6}, {'stick':{'color':'red','radius':0.4}})
+    v1.setBackgroundColor('white')
+    
+    # --- 2) 낫형 헤모글로빈이 만든 섬유 (PDB:2HBS) ---
+    v2 = py3Dmol.view(width=400, height=400, query='pdb:2HBS')
+    # 리본 스타일
+    v2.setStyle({'cartoon': {}})
+    # β체인 B의 6번 잔기(=Val6)를 노란 스틱으로 강조
+    v2.addStyle({'chain':'B','resi':6}, {'stick':{'color':'yellow','radius':0.4}})
+    # 전체 섬유 모양이 드러나도록 살짝 투명한 스틱으로 주변 결합부도 표시
+    v2.addStyle({'cartoon':{ }}, {'cartoon':{'opacity':0.3}})
+    v2.setBackgroundColor('white')
+    
+    # 두 뷰어를 나란히 출력
+    v1.show()
+    v2.show()
+  ```
