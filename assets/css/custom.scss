@@ -19,3 +19,8 @@ body {
   margin-right: 0.5em;
   opacity: 0.6;
 }
+
+/* 사이드바 내 li 요소 중 첫 번째를 제외한 나머지는 모두 숨기기 */
+.nav_order li:nth-child(n+3) {
+  display: none;
+}
