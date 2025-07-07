@@ -75,8 +75,8 @@ nav_order: 3
     
   ```python
   from bio import Entrez, SeqIO
-  Entrez.email = "your.email@example.com
-  handle = Entrez.efetch(db="nucleotide", id="AY258597", rettype="fasta", retmode="text"
+  Entrez.email = "your.email@example.com"
+  handle = Entrez.efetch(db="nucleotide", id="AY258597", rettype="fasta", retmode="text")
   tas2r38_seq = SeqIO.read(handle, "fasta")
   handle.close()
 
