@@ -7,7 +7,7 @@ nav_order: 3
 # Day 2: Biopython 환경 준비 및 기본 실습
 
 ## Google Colab 접속 및 환경 세팅
-- 진행 순서
+- 진행 순서<br>
   a. https://colab.research.google.com 접속<br>
   b. 새 노트북 만들기<br>
   c. 첫 번째 코드 셀에 아래 명령어 입력 및 실행:
