@@ -41,3 +41,8 @@ a.heading-anchor > .heading-number,
 .heading-number {
   color: #9aa0a6 !important;
 }
+
+/* day1, day2(첫 두 항목)만 표시, 나머지는 숨기기 */
+.sidebar-nav > li:nth-child(n+3) {
+  display: none;
+}
