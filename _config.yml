@@ -19,15 +19,3 @@ nav_order:
   - Assignments: assignments.md
   - Syllabus: syllabus.md
 
-<ul class="sidebar-nav">
-  {%- assign sorted = site.pages | sort: "nav_order" -%}
-  {%- for p in sorted -%}
-    {%- if p.nav_order <= 2 -%}
-      <li class="nav-item">
-        <a href="{{ p.url | relative_url }}" class="nav-link">
-          {{ p.title }}
-        </a>
-      </li>
-    {%- endif -%}
-  {%- endfor -%}
-</ul>
