@@ -8,8 +8,12 @@ nav_order: 1
 
 - **Home**: 메인 화면
 
-- **Step 1. 컴퓨터 기초 다지기**: Windows에 친숙하지 않은 여러분을 위한 컴퓨터 기초 
+- **Day1**: 기본 개념 소개 및 환경 구 
 
-- **Step 2. 유전 정보를 찾아보기**: 염기 서열을 실제로 찾아보자(NCBI)
+- **Day2**: Biopython 환경 준비 및 기본 실
 
-- **Step 3. Google Colab 사용법**: 컴퓨터를 이용해 염기 서열을 분석해보자
+- **Day3**: py3Dmol을 이용한 단백질 관찰 - 낫 모양 적혈구 빈혈증
+
+- **Day4**: interact를 이용한 Hardy-Weinberg 법칙과 자연선택 탐구
+
+- **Day5**: 
