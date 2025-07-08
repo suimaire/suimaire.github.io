@@ -159,22 +159,22 @@ def find_differences(rec1, rec2):
     # 두 서열 길이가 같다고 가정한다. 서열 길이가 다르면 짧은 쪽까지 비교한다.
     for i, (nt1, nt2) in enumerate(zip(seq1, seq2), start=1):    # enumerate(..., start=1) : 1부터 시작하는 위치 번호를 매긴다.
                                                                  # zip(seq1, seq2)로 두 서열을 같은 길이만큼 한 글자씩 묶어서 처리하게 만든다.
-        if nt1 != nt2:
+        if nt1 != nt2:                                           # 두 서열의 같은 위치 염기가 다르면, diffs 리스트에 (위치, rec_염기, rec_염기)를 추가한다는 의미
             diffs.append((i, nt1, nt2))
-    return diffs
+    return diffs                                                 # 염기가 달랐던 위치와 각 서열의 염기를 담은 리스트를 반환한다는 의미
 
-# ─── 사용 예시 ───────────────────────────────────────────
+# ───────────────────── 사용 예시 ────────────────────────────
 # 1) 두 accession 불러오기
 rec_avi = fetch_sequence("AY258597")   # nontaster (AVI)
 rec_pav = fetch_sequence("AY258598")   # taster    (PAV)
 
-# 2) 차이나는 위치 찾기
+# 2) 차이나는 위치 찾기 : 위에서 정의한 find_differences를 호출하여 염기가 다른 모든 위치를 diff_positions에 저장한다.
 diff_positions = find_differences(rec_avi, rec_pav)
 
 # 3) 결과 출력
 print("서열 비교 결과 (위치: AVI → PAV):")
-for pos, nt_avi, nt_pav in diff_positions:
-    print(f"  {pos}번째: {nt_avi} → {nt_pav}")
+for pos, nt_avi, nt_pav in diff_positions:   # for : 아래 들여쓰기한 부분을 반복해서 실행하라는 명령
+    print(f"  {pos}번째: {nt_avi} → {nt_pav}")    # for 변수 in (반복 가능한 개체) 의 형태로 사용한다.
 
 ```
 
