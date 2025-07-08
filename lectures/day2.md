@@ -22,6 +22,8 @@ nav_order: 3
   
 ### Create a New Notebook
 - `File` 클릭 → `New Notebook` 클릭해 새 노트북 생성
+- 기본 코드 셀에 !pip install biopython을 작성하여 biopython을 설치한 뒤 새로운 코드 셀을 생성
+- 아래와 같이 작성
   
   ```python
   from Bio import Entrez, SeqIO
@@ -93,7 +95,7 @@ from Bio import Entrez, SeqIO
 
 def fetch_sequence(accession, email="your.email@example.com"):
 
-    """주어진 accession의 FASTA를 NCBI에서 가져와 SeqRecord로 반환하라는 명령이다"""<br>
+    """주어진 accession의 FASTA를 NCBI에서 가져와 SeqRecord로 반환하라는 명령이다"""
     # 큰따옴표 3개를 양옆에 붙여 주석을 작성하기도 한다.
 
     Entrez.email = email
@@ -103,9 +105,13 @@ def fetch_sequence(accession, email="your.email@example.com"):
         rettype="fasta",
         retmode="text"
     )
-    record = SeqIO.read(handle, "fasta")   # SeqIO.read()는 handle에서 한 개의 FASTA 레코드를 읽어서 python의 객체(미지수)로 설정(정의)한다는 의미
+    record = SeqIO.read(handle, "fasta")   
     handle.close()
-    return record                          # 호출한 쪽으로 SeqRecord 객체를 돌려준다는 의미이며, SeqRecord 객체는 .seq 형식으로 염기 서열 정보가 들어있다.
+    return record                          
+    """
+    SeqIO.read()는 handle에서 한 개의 FASTA 레코드를 읽어서 python의 객체(미지수)로 설정(정의)한다는 의미
+    호출한 쪽으로 SeqRecord 객체를 돌려준다는 의미이며, SeqRecord 객체는 .seq 형식으로 염기 서열 정보가 들어있다.
+    """
 
 def find_differences(rec1, rec2):
     """
@@ -122,7 +128,7 @@ def find_differences(rec1, rec2):
             diffs.append((i, nt1, nt2))
     return diffs                                                 # 염기가 달랐던 위치와 각 서열의 염기를 담은 리스트를 반환한다는 의미
 
-# ───────────────────── 이 아래부터는 사용 예시 ────────────────────────────
+""" ───────────────────── 이 아래부터는 사용 예시 ──────────────────────────── """
 # 1) 두 accession 불러오기
 rec_avi = fetch_sequence("AY258597")   # nontaster (AVI)
 rec_pav = fetch_sequence("AY258598")   # taster    (PAV)
