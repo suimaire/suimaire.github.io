@@ -8,9 +8,9 @@ nav_order: 1
 
 - **Home**: 메인 화면
 
-- **Day1**: 기본 개념 소개 및 환경 구 
+- **Day1**: 기본 개념 소개 및 Biopython 환경 준비 및 기본 실습
 
-- **Day2**: Biopython 환경 준비 및 기본 실
+- **Day2**: PTC 용액과 Entrez를 이용한 염기 서열 분석
 
 - **Day3**: py3Dmol을 이용한 단백질 관찰 - 낫 모양 적혈구 빈혈증
 
