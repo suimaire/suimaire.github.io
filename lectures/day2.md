@@ -144,7 +144,7 @@ for pos, nt_avi, nt_pav in diff_positions:   # for : 아래 들여쓰기한 부�
 ---
 
 ## 마무리(심화)
-  - 락타아제 지속성(Lactase persistence)과 음주 후 피부가 붉어지는 것(Alcohol flushing)<br>에 대해서도 위의 활동을 참고하여 조사해 봅시다.
+  - 락타아제 지속성(Lactase persistence)과 음주 후 피부가 붉어지는 것(Alcohol flushing)에 대해서도 위의 활동을 참고하여 조사해 봅시다.
   - db를 "snp"로 변경하고, id의 변수 값을 하나로 고정한 뒤, rettype을 "flt"로 변경해주면 SNP 주변의 염기서열을 두 개의 FASTA 파일로 돌려줍니다.
   - 이후 SeqIO.read 대신 SeqIO.parse를 사용하면 반환된 텍스트에서 FASTA 형식을 여러 개 읽어 옵니다.
   - 추가로 기존의 record에 대해 정의한 코드를 records = list(SeqIO.parse(handle, "fasta")) 과 같이 변경하고 records를 return한다.
