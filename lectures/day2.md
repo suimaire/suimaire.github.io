@@ -109,8 +109,10 @@ nav_order: 3
   ```
 
 ## TAS2R38 서열 분석 및 SNP 위치 확인
-  - 목표: 미각 유전자에서 실제로 발견되는 SNP를 확인 # SNP : **S**ingle **N**ucleotide **p**olymorphism의 약자로, 유전 정보에서 한 자리 염기만 다른 유전 형질
-                                                  # 마치 백과사전에서 하나의 오타가 난 것과 같은 아주 작은 차이
+  - 목표: 미각 유전자에서 실제로 발견되는 SNP를 확인
+  - SNP : **S**ingle **N**ucleotide **p**olymorphism의 약자로, 유전 정보에서 한 자리 염기만 다른 유전 형질
+  - 마치 백과사전에서 하나의 오타가 난 것과 같은 아주 작은 차이
+    <br>
   - 진행 순서<br>
     a. TAS2R38의 알려진 SNP 위치(예: 145번째 뉴클레오타이드) 확인
     ```python
@@ -163,7 +165,7 @@ def find_differences(rec1, rec2):
             diffs.append((i, nt1, nt2))
     return diffs                                                 # 염기가 달랐던 위치와 각 서열의 염기를 담은 리스트를 반환한다는 의미
 
-# ───────────────────── 사용 예시 ────────────────────────────
+# ───────────────────── 이 아래부터는 사용 예시 ────────────────────────────
 # 1) 두 accession 불러오기
 rec_avi = fetch_sequence("AY258597")   # nontaster (AVI)
 rec_pav = fetch_sequence("AY258598")   # taster    (PAV)
@@ -180,6 +182,7 @@ for pos, nt_avi, nt_pav in diff_positions:   # for : 아래 들여쓰기한 부�
 
   - 다른 친구들에 비해 나는 PTC 용액에 얼마나 민감하였나요?
   - 오늘 수행한 활동 결과 그 차이는 어디에서 기인한 것으로 생각되나요?
+  - 어느 SNP에서 차이가 발생하나요?
 
 
 
