@@ -138,7 +138,8 @@ nav_order: 3
 from Bio import Entrez, SeqIO
 
 def fetch_sequence(accession, email="your.email@example.com"):
-    """주어진 accession의 FASTA를 NCBI에서 가져와 SeqRecord로 반환하라는 명령이다""" # 큰따옴표 3개를 양옆에 붙여 주석을 작성하기도 한다.
+    """주어진 accession의 FASTA를 NCBI에서 가져와 SeqRecord로 반환하라는 명령이다"""<br>
+    # 큰따옴표 3개를 양옆에 붙여 주석을 작성하기도 한다.
     Entrez.email = email
     handle = Entrez.efetch(
         db="nucleotide",
@@ -184,5 +185,10 @@ for pos, nt_avi, nt_pav in diff_positions:   # for : 아래 들여쓰기한 부�
   - 오늘 수행한 활동 결과 그 차이는 어디에서 기인한 것으로 생각되나요?
   - 어느 SNP에서 차이가 발생하나요?
 
+---
 
+## 마무리
+  - 락타아제 지속성(Lactase persistence)과 음주 후 피부가 붉어지는 것(Alcohol flushing)<br>에 대해서도 위의 활동을 참고하여 조사해 봅시다.
+  - db를 "snp"로 변경하고, id의 변수 값을 하나로 고정한 뒤, rettype을 "flt"로 변경해주면 SNP 주변의 염기서열을 두 개의 FASTA 파일로 돌려줍니다.
+  - 추가로 기존의 record 정의를 records = list(SeqIO.parse(handle, "fasta")) 과 같이 변경하고 records를 return하면 주변
 
