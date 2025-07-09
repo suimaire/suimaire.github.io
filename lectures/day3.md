@@ -90,15 +90,16 @@ nav_order: 4
     # DNA 서열 정의 
     normal_dna = Seq(" ")       # 큰 따옴표를 반드시 입력하고, 따옴표 사이에 아까 NCBI에서 찾은 서열을 입력
     mutated_dna = Seq(" ")       # 돌연변이가 일어난 낫 모양 적혈구 빈혈증 환자의 서열을 찾아서 입력
-
+                                 # 어떻게 하면 필요한 서열만을 사용할 수 있을까? [__:__]을 사용해보자. 
+      
     # 단백질 서열로 변환 (기존 코드와 동일)
     normal_prot = normal_dna.transcribe().translate()
     mutated_prot = mutated_dna.transcribe().translate()
-
+    
     print("\n--- 단백질 서열 정렬 결과 ---")
 
-    aligner = Align.PairwiseAligner # A = B 꼴로 긴 문자열 명령어를 짧은 명령어로 '재정의'했다는 의미
-                                    # PairwiseAligner: 두 서열을 서로 잘 맞추어 비교해주는 기능
+    aligner = Align.PairwiseAligner() # A = B 꼴로 긴 문자열 명령어를 짧은 명령어로 '재정의'했다는 의미
+                                      # PairwiseAligner: 두 서열을 서로 잘 맞추어 비교해주는 기능
     
     alignments = aligner.align(str(normal_prot), str(mutated_prot))
     # 정상 단백질과 변이 단백질을 aligner로 비교한 다음, 모든 결과를 alignments로 '재정의'했다는 의미
