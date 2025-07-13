@@ -30,6 +30,10 @@ nav_order: 6
   - [오미크론 재감염 위험, 델타보다 2.4배 높아](https://www.youtube.com/watch?v=yXr7o2RjNb8)
   - [오미크론, 델타보다 감염력 월등... 3차 접종 필요](https://www.youtube.com/watch?v=_jHxR5PkGH0)
 
+### Google Colab Notebook 열기
+  - [GOOGLE COLAB](https://colab.research.google.com)
+  - 왼쪽 위 [파일] → Drive의 새 노트북
+
 ### 스파이크 단백질의 실제 서열 변이를 Biopython으로 확인해 보자.
   - 코드 셀에 다음과 같이 입력
 
@@ -40,9 +44,10 @@ from Bio import Entrez, SeqIO
 Entrez.email = "your.email@example.com"
 
 def fetch_spike(acc):
-handle = Entrez.efetch(db="nucleotide", id=acc,
-rettype="fasta", retmode="text")
-return SeqIO.read(handle, "fasta").seq
+    handle = Entrez.efetch(db="nucleotide", id=acc,
+    rettype="fasta", retmode="text")
+    return SeqIO.read(handle, "fasta").seq
+
 
 wuhan = fetch_spike("NC_045512.2") # Wuhan 전체 게놈에서 S 유전자 서열만 추출
 delta = fetch_spike("OL955326.1") # 델타 변이 스파이크
