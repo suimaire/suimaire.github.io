@@ -177,33 +177,35 @@ nav_order: 5
     # initial_S_allele: 최초 S 대립유전자의 빈도(ex:0.1 → 10%)
     
     def simulate(selection_sickle=생존율, malaria_mortality=사망률, generations=세대, initial_S_allele=최초값):
-    p = 1 - initial_S_allele; q = initial_S_allele    # def를 이용해 simulate라는 이름의 함수를 생성, 4가지 입력값을 받는다고 설정
-    AA=AS=SS=None
-    AA_lst, AS_lst, SS_lst = [], [], []               # AA, AS, SS는 비율(숫자 값)이 들어올 '자리'이며, 이를 설정
-    for _ in range(generations):                      # 위와 마찬가지로 세대 수만큼 반복, '_'는 반복 횟수 자체가 필요 없을 때 사용
-        f_AA, f_AS, f_SS = p*p, 2*p*q, q*q            # p*p는 AA 개체의 빈도, 2*p*q는 AS 개체 빈도, q*q는 SS 개체 빈도
-        w_AA, w_AS, w_SS = 1-malaria_mortality, 1, 1-selection_sickle  # 각 유전형의 생존율 지정
-        # AA는 말라리아에 취약 (정상 적혈구를 가진 사람)
-        # AS는 정상과 변이 유전자가 섞인 사람이지만, 말라리아 저항성을 얻음과 동시에 빈혈 증상은 거의 없다고 가정
-        # SS는 낫 모양 적혈구 빈혈증 환자로, 심한 빈혈과 조직 손상 발생 및 말라리아 면역
+        p = 1 - initial_S_allele; q = initial_S_allele    # def를 이용해 simulate라는 이름의 함수를 생성, 4가지 입력값을 받는다고 설정
+        AA=AS=SS=None
+        AA_lst, AS_lst, SS_lst = [], [], []               # AA, AS, SS는 비율(숫자 값)이 들어올 '자리'이며, 이를 설정
+        for _ in range(generations):                      # 위와 마찬가지로 세대 수만큼 반복, '_'는 반복 횟수 자체가 필요 없을 때 사용
+            f_AA, f_AS, f_SS = p*p, 2*p*q, q*q            # p*p는 AA 개체의 빈도, 2*p*q는 AS 개체 빈도, q*q는 SS 개체 빈도
+            w_AA, w_AS, w_SS = 1-malaria_mortality, 1, 1-selection_sickle  # 각 유전형의 생존율 지정
+
+            # AA는 말라리아에 취약 (정상 적혈구를 가진 사람)
+            # AS는 정상과 변이 유전자가 섞인 사람이지만, 말라리아 저항성을 얻음과 동시에 빈혈 증상은 거의 없다고 가정
+            # SS는 낫 모양 적혈구 빈혈증 환자로, 심한 빈혈과 조직 손상 발생 및 말라리아 면역
     
-        mean_w = f_AA*w_AA + f_AS*w_AS + f_SS*w_SS  # 평균(mean) 생존율 계산
+            mean_w = f_AA*w_AA + f_AS*w_AS + f_SS*w_SS  # 평균(mean) 생존율 계산
                                                     # 한 세대 전체에서 "살아남을 확률의 합"을 이용
     
-        f_AA, f_AS, f_SS = f_AA*w_AA/mean_w, f_AS*w_AS/mean_w, f_SS*w_SS/mean_w
+            f_AA, f_AS, f_SS = f_AA*w_AA/mean_w, f_AS*w_AS/mean_w, f_SS*w_SS/mean_w
         # f_(유전자형)을 각각의 유전형 빈도 × 그 유전형의 생존율 ÷ 전체 평균 생존율로 정의
         # 다음 세대의 유전형 빈도 합을 1로 맞추기 위한 작업  
     
-        AA_lst.append(f_AA); AS_lst.append(f_AS); SS_lst.append(f_SS) 
+            AA_lst.append(f_AA); AS_lst.append(f_AS); SS_lst.append(f_SS) 
         # 계산하여 정의한 다음 세대의 유전형 빈도를 리스트에 순서대로 담는 명령어
     
-        p = f_AA + 0.5*f_AS; q = 1 - p
+            p = f_AA + 0.5*f_AS; q = 1 - p
         # 다음 세대의 대립유전자 빈도 결정
     
-    plt.figure(figsize=(5,3))
-    plt.plot(AA_lst,label="AA"); plt.plot(AS_lst,label="AS"); plt.plot(SS_lst,label="SS")
-    plt.xlabel("generation"); plt.ylabel("frequency"); plt.legend(); plt.title("malaria selection pressure")
-    plt.show()
+        plt.figure(figsize=(5,3))
+        plt.plot(AA_lst,label="AA"); plt.plot(AS_lst,label="AS"); plt.plot(SS_lst,label="SS")
+        plt.xlabel("generation"); plt.ylabel("frequency"); plt.legend(); plt.title("malaria selection pressure")
+        plt.show()
+ 
     interact(simulate, selection_sickle=(0.5,1.0,0.05), malaria_mortality=(0,0.5,0.05),
         generations=(10,100,10), initial_S_allele=(0.01,0.3,0.01));
 
