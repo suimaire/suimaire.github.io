@@ -207,7 +207,7 @@ nav_order: 5
         plt.show()
  
     interact(simulate, selection_sickle=(0.5,1.0,0.05), malaria_mortality=(0,0.5,0.05),
-        generations=(10,100,10), initial_S_allele=(0.01,0.3,0.01));
+        generations=(10,10000,10), initial_S_allele=(0.01,0.3,0.01));
 
     # 그래프 그리기: plt.figure(figsize=(5,3)) → 그림의 크기 지정
     # plt.plot(AA_lst,...): AA 빈도, AS 빈도, SS 빈도를 세대별로 연결
