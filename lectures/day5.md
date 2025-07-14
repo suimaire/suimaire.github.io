@@ -40,7 +40,9 @@ nav_order: 6
 ```python
 !pip install biopython		
 from Bio import Entrez, SeqIO		
+```
 
+```python
 Entrez.email = "your.email@example.com"
 
 def fetch_spike(acc):
@@ -51,7 +53,7 @@ def fetch_spike(acc):
 
 wuhan = fetch_spike("NC_045512.2") # Wuhan 전체 게놈에서 S 유전자 서열만 추출
 delta = fetch_spike("OL955326.1") # 델타 변이 스파이크
-omicron= fetch_spike("OM283822.1") # 오미크론 변이 스파이크
+omicron = fetch_spike("OM283822.1") # 오미크론 변이 스파이크
 ```
 
 ```python
@@ -60,19 +62,28 @@ omicron= fetch_spike("OM283822.1") # 오미크론 변이 스파이크
 from Bio import pairwise2
 from Bio.pairwise2 import format_alignment
 
+start_nt, end_nt = 21563-1, 25384
+wuhan_spike = wuhan [start_nt:end_nt]
+delta_spike = delta [start_nt:end_nt]
+omicron_spike = omicron[start_nt:end_nt]
+
 # Wuhan vs Delta
 aln1 = pairwise2.align.globalms(
-    wuhan, delta, 2, -1, -0.5, -0.1)[0]
+    wuhan_spike, delta_spike, 2, -1, -0.5, -0.1)[0]
 print(format_alignment(*aln1))
 
-# Wuhan vs Omicron 실습
-# 학생들이 ACC 넣어봤다가 출력해 보기
 ```
+#### 생각해보기
+- 추가로 변수명을 바꾸어 Wuhan vs Omicron 을 비교해 봅시다.
+- 어떤 변이가 가장 치명적인 변이였나요? 무엇을 통해 알 수 있었나요?
+
 
 ### RBD(319-541aa) 영역에서 변이 확인
 
 ```python
 import matplotlib.pyplot as plt
+
+ # bar chart 만들어 보기
 
 variants = ["Wuhan","Delta","Omicron"]
 folds    = [1.0, 3.3, 20.0]  # 예시: 중화능 저하 배수
@@ -83,6 +94,6 @@ plt.ylabel("Neutralization titer fold reduction")
 plt.title("Variant vs Neutralization Drop")
 plt.show()
 ```
-
-  - bar chart로 얼마나 중화능이 떨어졌는지 비교
-  - RBD 변이가 많을수록 백신 효능이 저하되는 이유에 대해서 생각해봅시다.
+####
+- bar chart로 얼마나 중화능이 떨어졌는지 비교해 봅시다.
+- RBD 변이가 많을수록 백신 효능이 저하되는 이유에 대해서 생각해봅시다.
