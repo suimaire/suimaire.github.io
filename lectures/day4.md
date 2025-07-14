@@ -101,22 +101,23 @@ nav_order: 5
     ```python
     def simulate_hwe(p_init=0.7, pop_size=1000, generations=5000):  # simulate_hwe라는 이름의 함수 생성
                                                                     # p_init: 첫 세대의 A 대립유전자 빈도(0.7 = 70%)
-    p = p_init                                                      # pop_size: 각 세대의 개체 수 / generations: 반복할 세대 수
-    AA= []; Aa=[]; aa=[]
-    for _ in range(generations):           # _ 는 "반복 횟수 자체는 중요하지 않을 때" 사용 , range(generations)만큼 세대별 분석
-        AA_exp, Aa_exp, aa_exp = hwe_expected(p)  # p값을 설정함에 따라 그에 맞는 값을 반환하라는 명령
-        AA.append(AA_exp); Aa.append(Aa_exp); aa.append(aa_exp)
-        # 무작위 짝짓기 개체 생성
-        import random                             # python 내장 모듈 random을 사용하라는 명령
-                                                  # 이론적 비율에 따라 실제로 pop_size명의 유전형을 뽑는 효과 발생
-        pop = random.choices(['AA','Aa','aa'], weights=[AA_exp, Aa_exp, aa_exp], k=pop_size)
-        allele_A = pop.count('AA')*2 + pop.count('Aa')  # allele = 대립유전자
-                                                        # 'AA' 개체는 A를 2개, 'Aa' 개체는 A를 1개를 가지므로 이렇게 계산하라는 명령
-        p = allele_A/(2*pop_size)                       # p를 구할 때, A 대립유전자 수를 전체 인구수*2로 나눈 값으로 구하라는 명령
-    plt.figure()
-    plt.plot(AA, label='AA'); plt.plot(Aa, label='Aa'); plt.plot(aa, label='aa')
-    plt.xlabel('Generation'); plt.ylabel('Frequency'); plt.title('Hardy–Weinberg simulation')
-    plt.legend(); plt.show()                            # AA, Aa, aa 리스트에 담긴 세대별 비율은 선 그래프로 그리라는 명령
+        p = p_init                                                      # pop_size: 각 세대의 개체 수 / generations: 반복할 세대 수
+        AA= []; Aa=[]; aa=[]
+        for _ in range(generations):           # _ 는 "반복 횟수 자체는 중요하지 않을 때" 사용 , range(generations)만큼 세대별 분석
+            AA_exp, Aa_exp, aa_exp = hwe_expected(p)  # p값을 설정함에 따라 그에 맞는 값을 반환하라는 명령
+            AA.append(AA_exp); Aa.append(Aa_exp); aa.append(aa_exp)
+
+            # 무작위 짝짓기 개체 생성
+            import random                             # python 내장 모듈 random을 사용하라는 명령
+                                                      # 이론적 비율에 따라 실제로 pop_size명의 유전형을 뽑는 효과 발생
+            pop = random.choices(['AA','Aa','aa'], weights=[AA_exp, Aa_exp, aa_exp], k=pop_size)
+            allele_A = pop.count('AA')*2 + pop.count('Aa')  # allele = 대립유전자
+                                                            # 'AA' 개체는 A를 2개, 'Aa' 개체는 A를 1개를 가지므로 이렇게 계산하라는 명령
+            p = allele_A/(2*pop_size)                       # p를 구할 때, A 대립유전자 수를 전체 인구수*2로 나눈 값으로 구하라는 명령
+        plt.figure()
+        plt.plot(AA, label='AA'); plt.plot(Aa, label='Aa'); plt.plot(aa, label='aa')
+        plt.xlabel('Generation'); plt.ylabel('Frequency'); plt.title('Hardy–Weinberg simulation')
+        plt.legend(); plt.show()                        # AA, Aa, aa 리스트에 담긴 세대별 비율은 선 그래프로 그리라는 명령
                                                         # x축 = 세대 번호, y축 = 유전형 빈도
                                                         # legend = 범례, title = 제목 (마음대로 바꿔도 됩니다)
 
