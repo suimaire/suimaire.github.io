@@ -34,7 +34,7 @@ nav_order: 6
   - [GOOGLE COLAB](https://colab.research.google.com)
   - 왼쪽 위 [파일] → Drive의 새 노트북
 
-### 스파이크 단백질의 실제 서열 변이를 Biopython으로 확인해 보자.
+## 스파이크 단백질의 실제 서열 변이를 Biopython으로 확인해 보자.
   - 코드 셀에 다음과 같이 입력
 
 ```python
@@ -73,7 +73,7 @@ aln1 = pairwise2.align.globalms(
 print(format_alignment(*aln1))
 
 ```
-#### 생각해보기
+### 생각해보기
 - 추가로 변수명을 바꾸어 Wuhan vs Omicron 을 비교해 봅시다.
 - 어떤 변이가 가장 치명적인 변이였나요? 무엇을 통해 알 수 있었나요?
 
@@ -97,3 +97,92 @@ plt.show()
 ####
 - bar chart로 얼마나 중화능이 떨어졌는지 비교해 봅시다.
 - RBD 변이가 많을수록 백신 효능이 저하되는 이유에 대해서 생각해봅시다.
+
+---
+
+## 바이러스 표면 Spike py3Dmol 시각화
+
+```python
+import py3Dmol
+
+# Omicron RBD 변이(예시)
+omicron_resi = [339,371,373,375,417,440,446,484,493,498,501,505]
+
+# RBD·항체 체인 매핑 (PDB ID ➜ 체인명)
+info = {
+    "6W41": {  # Wuhan RBD–CR3022
+        "rbd":  "A",
+        "ab":   ["H","L"]
+    },
+    "7T9L": {  # Omicron RBD–CR3022
+        "rbd":  "A",
+        "ab":   ["H","L"]
+    }
+}
+
+def draw_complex(pdb_id, title, highlight=False):
+    """pdb_id (str) : 6W41 or 7T9L
+       highlight=True : Omicron 변이 구 표시"""
+    
+    # 1) 뷰어 만들기
+    view = py3Dmol.view(query=f"pdb:{pdb_id}", width=520, height=420)
+    view.setBackgroundColor("white")
+
+    # 2) 모든 단백질 cartoon 기본 (연회색)
+    view.setStyle({"protein":"true"}, {"cartoon":{"color":"gainsboro","opacity":1.0}})
+
+    # 3) RBD 체인만 파란색으로 재도색 (굵기 ↑)
+    rbd_chain = info[pdb_id]["rbd"]
+    view.addStyle(
+        {"chain": rbd_chain},
+        {"cartoon":{"color":"deepskyblue","thickness":1.0,"opacity":1.0}}
+    )
+
+    # 4) 항체 체인은 주황색으로 재도색
+    for ch in info[pdb_id]["ab"]:
+        view.addStyle(
+            {"chain": ch},
+            {"cartoon":{"color":"sandybrown","opacity":1.0}}
+        )
+
+    # 5) Omicron 변이 구 강조
+    if highlight:
+        for res in omicron_resi:
+            view.addStyle(
+                {"chain": rbd_chain, "resi": res},
+                {"sphere":{"color":"red","radius":0.5}}
+            )
+
+    # 6) 구조 전체가 들어오도록 줌
+    view.zoomTo()
+
+    # 7) 제목 레이블(좌상단)
+    view.addLabel(
+        title,
+        {
+          "fontColor":"white",
+          "backgroundColor":"black",
+          "fontSize":14,
+          "inFront":True
+        },
+        {"screenOffset":{"x":10,"y":10}}
+    )
+
+    # 8) 렌더
+    view.show()
+
+
+# ▶ 실제로 그리기
+draw_complex("6W41", "Wuhan RBD–CR3022")          # 우한주
+draw_complex("7T9L", "Omicron RBD–CR3022", True)  # 오미크론(변이 구 표시)
+```
+
+### Spike의 모양이 변하는 것은 면역 반응에 어떤 영향을 미칠까요?
+
+## Biopython으로 COVID-19 변이 계통수(tree) 제작
+
+- 목표: 실제 Wuhan → Alpha → Delta → Omicron 유전자를 불러와 계통수를 통해 비교
+- 탐구 과정
+  1) 변이별 Genbank acc.ID를 확인 후, NCBI에서 이를 불러옵시다.
+  2) 
+- 
