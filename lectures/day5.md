@@ -126,6 +126,9 @@ import py3Dmol
 omicron_resi = [339,371,373,375,417,440,446,484,493,498,501,505]
 
 # RBD·항체 체인 매핑 (PDB ID ➜ 체인명)
+# 오미크론 변이가 생긴 RBD 부분의 잔기 번호(residue, 아미노산 위치)를 리스트에 담아 둡니다.
+# 이 위치들에 빨간 구(sphere)를 그려 강조할 거예요.
+
 info = {
     "6W41": {  # Wuhan RBD–CR3022
         "rbd":  "A",
@@ -137,18 +140,38 @@ info = {
     }
 }
 
+    # PDB ID(단백질 데이터베이스 식별자)별로
+    # RBD가 속한 체인 이름(chain ID)과
+    # 항체의 Heavy/light 체인 정보를 저장해 둡니다.
+
 def draw_complex(pdb_id, title, highlight=False):
     """pdb_id (str) : 6W41 or 7T9L
        highlight=True : Omicron 변이 구 표시"""
-    
+    """
+    [draw_complex]라는 이름의 함수를 정의합니다.
+
+    호출할 때 pdb_id로 어떤 구조를 불러올지 지정하고,
+
+    title으로 표시할 글자를 주고,
+
+    highlight=True로 설정하면(오미크론일 때) 변이 부위를 강조합니다.
+    """
+
     # 1) 뷰어 만들기
     view = py3Dmol.view(query=f"pdb:{pdb_id}", width=520, height=420)
     view.setBackgroundColor("white")
+    """
+    py3Dmol.view로 3D 시각화 창을 만들고,
+
+    query="pdb:6W41"처럼 PDB 서버에서 구조 파일을 가져옵니다.
+
+    창 크기(width×height)와 배경색을 설정합니다.
+    """
 
     # 2) 모든 단백질 cartoon 기본 (연회색)
     view.setStyle({"protein":"true"}, {"cartoon":{"color":"gainsboro","opacity":1.0}})
 
-    # 3) RBD 체인만 파란색으로 재도색 (굵기 ↑)
+    # 3) RBD 체인만 파란색으로 재도색 (굵기 증가)
     rbd_chain = info[pdb_id]["rbd"]
     view.addStyle(
         {"chain": rbd_chain},
@@ -185,13 +208,13 @@ def draw_complex(pdb_id, title, highlight=False):
         {"screenOffset":{"x":10,"y":10}}
     )
 
-    # 8) 렌더
+    # 8) 결과값 그림 표출
     view.show()
 
 
-# ▶ 실제로 그리기
-draw_complex("6W41", "Wuhan RBD–CR3022")          # 우한주
-draw_complex("7T9L", "Omicron RBD–CR3022", True)  # 오미크론(변이 구 표시)
+# 실제로 그리라는 명령
+draw_complex("6W41", "Wuhan RBD–CR3022")          # Wuhan
+draw_complex("7T9L", "Omicron RBD–CR3022", True)  # Omicron (변이 구 표시)
 ```
 
 ### Spike의 모양이 변하는 것은 면역 반응에 어떤 영향을 미칠까요?
