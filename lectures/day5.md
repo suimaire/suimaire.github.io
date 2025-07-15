@@ -184,5 +184,50 @@ draw_complex("7T9L", "Omicron RBD–CR3022", True)  # 오미크론(변이 구 �
 - 목표: 실제 Wuhan → Alpha → Delta → Omicron 유전자를 불러와 계통수를 통해 비교
 - 탐구 과정
   1) 변이별 Genbank acc.ID를 확인 후, NCBI에서 이를 불러옵시다.
-  2) 
-- 
+  2) NCBI Nucleotide 검색 - 각 변이의 GenBank ID 복사
+- 코드 셀 추가, 다음과 같은 코드 작성
+
+```python
+# 1) 필수 모듈
+from Bio import Entrez, SeqIO, AlignIO, Phylo
+import subprocess, textwrap, os
+
+# 2) 변이별 GenBank ID — 직접 NCBI에서 찾아 입력
+seq_ids = {
+    "Wuhan" : "NC_045512.2",
+    "Alpha" : "OK091006",
+    "Delta" : "OM061695",
+    "Omicron": "OL672836"
+}
+
+# 3) FASTA 다운
+Entrez.email = "내_메일@example.com"      # ← 자신의 이메일 반드시 기입
+records = []
+for name, acc in seq_ids.items():
+    handle = Entrez.efetch(db="nucleotide", id=acc,
+                           rettype="fasta", retmode="text")
+    rec = SeqIO.read(handle, "fasta")
+    rec.id = name                        # ID를 변이명으로 바꿔 트리에 깔끔하게 표시
+    rec.description = ""
+    records.append(rec)
+SeqIO.write(records, "all_variants.fasta", "fasta")
+
+# 4) Clustal Omega 원격 실행 (EBI 서버 사용)
+#    --guidetree-out : 계통수(dnd) 파일 저장
+cmd = textwrap.dedent("""
+    clustalo -i all_variants.fasta -o aligned.fasta --auto
+             --guidetree-out tree.dnd --force
+""").strip().split()
+subprocess.run(cmd, check=True)
+
+# 5) 트리 시각화
+tree = Phylo.read("tree.dnd", "newick")
+color_map = {"Wuhan":"black", "Alpha":"blue",
+             "Delta":"orange", "Omicron":"red"}
+Phylo.draw(tree, label_colors=color_map)
+```
+
+### 생각해보기
+- 방금 작성한 코드 셀을 이용하여, BA.5 / XBB.1.5 FASTA를 추가한 뒤 다시 셀을 실행해봅시다.
+- 트리를 캡쳐한 뒤 최종 활동지에 업로드 합시다.
+- 5번의 수업으로 느낀 점을 활동지에 작성합시다.
