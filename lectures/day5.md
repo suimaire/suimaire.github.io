@@ -130,8 +130,8 @@ omicron_resi = [339,371,373,375,417,440,446,484,493,498,501,505]
 # 이 위치들에 빨간 구(sphere)를 그려 강조할 거예요.
 
 info = {
-    "6W41": {"rbd":"A", "ab":["H","L"]},
-    "7T9L": {"rbd":"A", "ab":["H","L"]}
+    "6W41": {"rbd":"C", "ab":["A","B"]},
+    "7T9L": {"rbd":"C", "ab":["A","B"]}
 }
     # PDB ID(단백질 데이터베이스 식별자)별로
     # RBD가 속한 체인 이름(chain ID)과
@@ -167,10 +167,11 @@ def draw_complex(pdb_id, title, highlight=False):
     # 3) RBD 체인만 파란색으로 재도색 (굵기 증가)
     rbd_chain = info[pdb_id]["rbd"]
     view.addStyle(
-        {"chain": rbd_chain},
+        {"chain": "C"},
         {"cartoon": {"color":"deepskyblue", "thickness":1.0, "opacity":1.0}}
     )
-
+    view.addStyle({"chain": "A"}, {"cartoon": {"color":"sandybrown"}})   # Ab heavy
+    view.addStyle({"chain": "B"}, {"cartoon": {"color":"sandybrown"}})   # Ab light
     # 4) 항체 체인은 주황색으로 재도색, 변이 구 강조
     if highlight:
         for res in omicron_resi:
@@ -221,7 +222,7 @@ draw_complex("7T9L", "Omicron RBD–CR3022", True)  # Omicron (변이 구 표시
 - 코드 셀 추가, 다음과 같은 코드 작성
 
 ```python
-# 1) Clustal Omega 실행 ★최소 안정 옵션만 남김
+# 1) Clustal Omega 실행
 cmd = """
 clustalo -i spike.fasta -o aligned.fasta
          --seqtype=DNA
@@ -232,7 +233,7 @@ import subprocess, textwrap, shlex
 subprocess.run(cmd, check=True)
 
 
-# 2) 변이 GenBank ID
+# 2) 변이 GenBank ID 입력
 seq_ids = {
     "Wuhan"  : "NC_045512.2",
     "Alpha"  : "OK091006",
@@ -240,7 +241,7 @@ seq_ids = {
     "Omicron": "OL672836"
 }
 
-# 3) Spike 유전자 좌표 (nt 21563~25384)만 다운
+# 3) Spike 유전자 좌표 (nt 21563~25384)만 다운로드하자
 Entrez.email = "너네_이메일"
 records = []
 for name, acc in seq_ids.items():
@@ -252,7 +253,7 @@ for name, acc in seq_ids.items():
     records.append(rec)
 SeqIO.write(records, "spike.fasta", "fasta")
 
-# 4) Clustal Omega 실행 (threads & DNA 모드 지정)
+#4) Clustal Omega를 실행
 cmd = [
     "clustalo",
     "-i", "spike.fasta",
@@ -263,7 +264,7 @@ cmd = [
 ]
 subprocess.run(cmd, check=True)
 
-# 5) 트리 시각화
+#5) 계통수를 시각화하자
 tree = Phylo.read("tree.dnd", "newick")
 Phylo.draw(tree, label_colors={
     "Wuhan":"black", "Alpha":"blue",
