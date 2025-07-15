@@ -192,6 +192,13 @@ def draw_complex(pdb_id, title, highlight=False):
                 {"chain": rbd_chain, "resi": res},
                 {"sphere":{"color":"red","radius":0.5}}
             )
+    """
+    highlight가 True이면(오미크론 그릴 때)
+
+    RBD 체인의 지정된 잔기(resi) 위치마다
+
+    **빨간 구(sphere)**를 반지름 0.5 크기로 그려 변이 부위를 표시합니다.  
+    """
 
     # 6) 구조 전체가 들어오도록 줌
     view.zoomTo()
@@ -215,6 +222,13 @@ def draw_complex(pdb_id, title, highlight=False):
 # 실제로 그리라는 명령
 draw_complex("6W41", "Wuhan RBD–CR3022")          # Wuhan
 draw_complex("7T9L", "Omicron RBD–CR3022", True)  # Omicron (변이 구 표시)
+"""
+이렇게 draw_complex를 두 번 부르면
+
+첫 번째는 우한 구조만 기본 색으로,
+
+두 번째는 오미크론 변이 부위를 빨간 구로 강조해 그려 줍니다.
+"""
 ```
 
 ### Spike의 모양이 변하는 것은 면역 반응에 어떤 영향을 미칠까요?
