@@ -38,7 +38,7 @@ nav_order: 6
   - 코드 셀에 다음과 같이 입력
 
 ```python
-!pip install biopython		
+!pip install biopython py3Dmol		
 from Bio import Entrez, SeqIO		
 ```
 
