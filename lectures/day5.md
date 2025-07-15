@@ -39,11 +39,13 @@ nav_order: 6
 
 ```python
 !pip install biopython py3Dmol		
-from Bio import Entrez, SeqIO		
+from Bio import Entrez, SeqIO
+
+!apt-get -y -qq install clustalo
 ```
 
 ```python
-Entrez.email = "your.email@example.com"
+Entrez.email = "너네_이메일"
 
 def fetch_spike(acc):
     handle = Entrez.efetch(db="nucleotide", id=acc,
@@ -84,19 +86,34 @@ print(format_alignment(*aln1))
 import matplotlib.pyplot as plt
 
  # bar chart 만들어 보기
+ # RBD : Spike 단백질에서 세포 수용체(ACE2)에 결합하는 부위로, 바이러스가 우리 세포에 침투할 때 중요한 부위
+ # 따라서 백신 및 항체는 주로 RBD 부위를 겨냥하여 우리 몸을 보호한다.
 
-variants = ["Wuhan","Delta","Omicron"]
-folds    = [1.0, 3.3, 20.0]  # 예시: 중화능 저하 배수
-
+variants = ["Wuhan","_____","_____"] # 원하는 변이가 있다면 추가로 입력해도 됩니다.
+folds    = [1.0, ___ , ___ ]         # variants의 예시 - Delta , Omicron 등
+"""
+# 예시: 중화능 저하 배수
+# ___에 원하는 변이 명 및 중화능 저하 배수를 스스로 찾아서 넣어봅시다.
+# 포털 사이트에 'Pubmed' 검색 후 접속
+# (비교하고 싶은 변이명) neutralization titer fold reduction 검색
+# 논문을 읽으며 중화능 차이를 찾고 코드 내부에 입력
+# 참고: 논문 본문 및 도표의 WA-1(또는 Wuhan) 대비 omicron의 배수 값을 읽어내면 됩니다.
+"""
 plt.figure()
 plt.bar(variants, folds)
 plt.ylabel("Neutralization titer fold reduction")
 plt.title("Variant vs Neutralization Drop")
 plt.show()
+"""
+중화능 1 : 같은 항원에 대한 면역반응을 일으키기 위해 같은 농의 항체가 필요하다
+중화능 20 : 같은 항원에 대한 면역반응을 일으키기 위해 20배 농도의 항체가 필요하다
+
+"""
 ```
 ####
 - bar chart로 얼마나 중화능이 떨어졌는지 비교해 봅시다.
 - RBD 변이가 많을수록 백신 효능이 저하되는 이유에 대해서 생각해봅시다.
+- 실제 논문 및 보고서 등에서 다른 변이(BQ.1.1 등)의 fold 값을 찾아 리스트에 추가하고 그래프를 업데이트 해봅시다.
 
 ---
 
@@ -188,43 +205,54 @@ draw_complex("7T9L", "Omicron RBD–CR3022", True)  # 오미크론(변이 구 �
 - 코드 셀 추가, 다음과 같은 코드 작성
 
 ```python
-# 1) 필수 모듈
-from Bio import Entrez, SeqIO, AlignIO, Phylo
-import subprocess, textwrap, os
+# 1) Clustal Omega 실행 ★최소 안정 옵션만 남김
+cmd = """
+clustalo -i spike.fasta -o aligned.fasta
+         --seqtype=DNA
+         --guidetree-out tree.dnd
+         --force
+""".split()
+import subprocess, textwrap, shlex
+subprocess.run(cmd, check=True)
 
-# 2) 변이별 GenBank ID — 직접 NCBI에서 찾아 입력
+
+# 2) 변이 GenBank ID
 seq_ids = {
-    "Wuhan" : "NC_045512.2",
-    "Alpha" : "OK091006",
-    "Delta" : "OM061695",
+    "Wuhan"  : "NC_045512.2",
+    "Alpha"  : "OK091006",
+    "Delta"  : "OM061695",
     "Omicron": "OL672836"
 }
 
-# 3) FASTA 다운
-Entrez.email = "내_메일@example.com"      # ← 자신의 이메일 반드시 기입
+# 3) Spike 유전자 좌표 (nt 21563~25384)만 다운
+Entrez.email = "너네_이메일"
 records = []
 for name, acc in seq_ids.items():
     handle = Entrez.efetch(db="nucleotide", id=acc,
-                           rettype="fasta", retmode="text")
+                           rettype="fasta", retmode="text",
+                           seq_start=21563, seq_stop=25384)   # ← Spike
     rec = SeqIO.read(handle, "fasta")
-    rec.id = name                        # ID를 변이명으로 바꿔 트리에 깔끔하게 표시
-    rec.description = ""
+    rec.id = name; rec.description = ""
     records.append(rec)
-SeqIO.write(records, "all_variants.fasta", "fasta")
+SeqIO.write(records, "spike.fasta", "fasta")
 
-# 4) Clustal Omega 원격 실행 (EBI 서버 사용)
-#    --guidetree-out : 계통수(dnd) 파일 저장
-cmd = textwrap.dedent("""
-    clustalo -i all_variants.fasta -o aligned.fasta --auto
-             --guidetree-out tree.dnd --force
-""").strip().split()
+# 4) Clustal Omega 실행 (threads & DNA 모드 지정)
+cmd = [
+    "clustalo",
+    "-i", "spike.fasta",
+    "-o", "aligned.fasta",
+    "--seqtype=DNA",          # DNA 모드
+    "--guidetree-out", "tree.dnd",
+    "--force"                 # 기존 파일 덮어쓰기
+]
 subprocess.run(cmd, check=True)
 
 # 5) 트리 시각화
 tree = Phylo.read("tree.dnd", "newick")
-color_map = {"Wuhan":"black", "Alpha":"blue",
-             "Delta":"orange", "Omicron":"red"}
-Phylo.draw(tree, label_colors=color_map)
+Phylo.draw(tree, label_colors={
+    "Wuhan":"black", "Alpha":"blue",
+    "Delta":"orange", "Omicron":"red"
+})
 ```
 
 ### 생각해보기
