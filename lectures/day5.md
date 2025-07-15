@@ -38,10 +38,12 @@ nav_order: 6
   - 코드 셀에 다음과 같이 입력
 
 ```python
-!pip install biopython py3Dmol		
-from Bio import Entrez, SeqIO
+!pip install biopython	py3Dmol	
+from Bio import Entrez, SeqIO		
 
-!apt-get -y -qq install clustalo
+!apt-get update -qq
+!apt-get install -y clustalo     
+
 ```
 
 ```python
@@ -176,7 +178,7 @@ def draw_complex(pdb_id, title, highlight=False):
     if highlight:
         for res in omicron_resi:
             view.addStyle(
-                {"chain": rbd_chain, "resi": res},
+                #필요시 추가{"chain": rbd_chain, "resi": res},
                 {"sphere": {"color":"red", "radius":0.5}}
             )
 
@@ -196,19 +198,20 @@ def draw_complex(pdb_id, title, highlight=False):
 
     **빨간 구(sphere)**를 반지름 0.5 크기로 그려 변이 부위를 표시합니다.  
     """
-  
 
+    """
+    이렇게 draw_complex를 두 번 부르면
+
+    첫 번째는 우한 구조만 기본 색으로,
+
+    두 번째는 오미크론 변이 부위를 빨간 구로 강조해 그려 줍니다.
+    """
 
 # 실제로 그리라는 명령
 draw_complex("6W41", "Wuhan RBD–CR3022")          # Wuhan
 draw_complex("7T9L", "Omicron RBD–CR3022", True)  # Omicron (변이 구 표시)
-"""
-이렇게 draw_complex를 두 번 부르면
 
-첫 번째는 우한 구조만 기본 색으로,
 
-두 번째는 오미크론 변이 부위를 빨간 구로 강조해 그려 줍니다.
-"""
 ```
 
 ### Spike의 모양이 변하는 것은 면역 반응에 어떤 영향을 미칠까요?
@@ -222,18 +225,7 @@ draw_complex("7T9L", "Omicron RBD–CR3022", True)  # Omicron (변이 구 표시
 - 코드 셀 추가, 다음과 같은 코드 작성
 
 ```python
-# 1) Clustal Omega 실행
-cmd = """
-clustalo -i spike.fasta -o aligned.fasta
-         --seqtype=DNA
-         --guidetree-out tree.dnd
-         --force
-""".split()
-import subprocess, textwrap, shlex
-subprocess.run(cmd, check=True)
-
-
-# 2) 변이 GenBank ID 입력
+# 변이 GenBank ID
 seq_ids = {
     "Wuhan"  : "NC_045512.2",
     "Alpha"  : "OK091006",
@@ -241,7 +233,7 @@ seq_ids = {
     "Omicron": "OL672836"
 }
 
-# 3) Spike 유전자 좌표 (nt 21563~25384)만 다운로드하자
+# Spike 유전자 좌표 (nt 21563~25384)만 다운
 Entrez.email = "너네_이메일"
 records = []
 for name, acc in seq_ids.items():
@@ -253,7 +245,7 @@ for name, acc in seq_ids.items():
     records.append(rec)
 SeqIO.write(records, "spike.fasta", "fasta")
 
-#4) Clustal Omega를 실행
+# Clustal Omega를 실행히지
 cmd = [
     "clustalo",
     "-i", "spike.fasta",
@@ -262,9 +254,11 @@ cmd = [
     "--guidetree-out", "tree.dnd",
     "--force"                 # 기존 파일 덮어쓰기
 ]
+import subprocess, textwrap, shlex
 subprocess.run(cmd, check=True)
 
-#5) 계통수를 시각화하자
+# 계통수를 시각화하자
+from Bio import Phylo
 tree = Phylo.read("tree.dnd", "newick")
 Phylo.draw(tree, label_colors={
     "Wuhan":"black", "Alpha":"blue",
