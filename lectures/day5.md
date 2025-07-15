@@ -130,16 +130,9 @@ omicron_resi = [339,371,373,375,417,440,446,484,493,498,501,505]
 # 이 위치들에 빨간 구(sphere)를 그려 강조할 거예요.
 
 info = {
-    "6W41": {  # Wuhan RBD–CR3022
-        "rbd":  "A",
-        "ab":   ["H","L"]
-    },
-    "7T9L": {  # Omicron RBD–CR3022
-        "rbd":  "A",
-        "ab":   ["H","L"]
-    }
+    "6W41": {"rbd":"A", "ab":["H","L"]},
+    "7T9L": {"rbd":"A", "ab":["H","L"]}
 }
-
     # PDB ID(단백질 데이터베이스 식별자)별로
     # RBD가 속한 체인 이름(chain ID)과
     # 항체의 Heavy/light 체인 정보를 저장해 둡니다.
@@ -169,29 +162,32 @@ def draw_complex(pdb_id, title, highlight=False):
     """
 
     # 2) 모든 단백질 cartoon 기본 (연회색)
-    view.setStyle({"protein":"true"}, {"cartoon":{"color":"gainsboro","opacity":1.0}})
+    view.setStyle({}, {"cartoon": {"color":"gainsboro", "opacity":1.0}})
 
     # 3) RBD 체인만 파란색으로 재도색 (굵기 증가)
     rbd_chain = info[pdb_id]["rbd"]
     view.addStyle(
         {"chain": rbd_chain},
-        {"cartoon":{"color":"deepskyblue","thickness":1.0,"opacity":1.0}}
+        {"cartoon": {"color":"deepskyblue", "thickness":1.0, "opacity":1.0}}
     )
 
-    # 4) 항체 체인은 주황색으로 재도색
-    for ch in info[pdb_id]["ab"]:
-        view.addStyle(
-            {"chain": ch},
-            {"cartoon":{"color":"sandybrown","opacity":1.0}}
-        )
-
-    # 5) Omicron 변이 구 강조
+    # 4) 항체 체인은 주황색으로 재도색, 변이 구 강조
     if highlight:
         for res in omicron_resi:
             view.addStyle(
                 {"chain": rbd_chain, "resi": res},
-                {"sphere":{"color":"red","radius":0.5}}
+                {"sphere": {"color":"red", "radius":0.5}}
             )
+
+    view.zoomTo()
+    view.addLabel(
+        title,
+        {"fontColor":"white","backgroundColor":"black","fontSize":14,"inFront":True},
+        {"screenOffset":{"x":10,"y":10}}
+    )
+    view.show()
+
+   
     """
     highlight가 True이면(오미크론 그릴 때)
 
@@ -199,24 +195,7 @@ def draw_complex(pdb_id, title, highlight=False):
 
     **빨간 구(sphere)**를 반지름 0.5 크기로 그려 변이 부위를 표시합니다.  
     """
-
-    # 6) 구조 전체가 들어오도록 줌
-    view.zoomTo()
-
-    # 7) 제목 레이블(좌상단)
-    view.addLabel(
-        title,
-        {
-          "fontColor":"white",
-          "backgroundColor":"black",
-          "fontSize":14,
-          "inFront":True
-        },
-        {"screenOffset":{"x":10,"y":10}}
-    )
-
-    # 8) 결과값 그림 표출
-    view.show()
+  
 
 
 # 실제로 그리라는 명령
