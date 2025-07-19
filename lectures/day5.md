@@ -83,6 +83,7 @@ print(format_alignment(*aln1))
 
 
 ### RBD(319-541aa) 영역에서 변이 확인
+- 실제 중화능 수치를 관련 논문에서 찾아 입력해 봅시다.
 
 ```python
 import matplotlib.pyplot as plt
