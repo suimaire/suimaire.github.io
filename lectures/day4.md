@@ -172,7 +172,7 @@ nav_order: 5
     ```python
 
     # simulate라는 함수를 정의하자! [def] 이후, 괄호 안에 4가지 파라미터를 넣는다. 
-    # selection_sickle: SS(낫모양 동형접합)의 생존율 (ex:0.9 → 정상보다 10% 덜 산다.)
+    # selection_sickle: SS(낫모양 동형접합)의 사망률 (ex:0.1 → 정상보다 10% 덜 산다.)
     # malaria_mortality: AA(정상 동형접합)의 사망률 (ex:0.2 → 말라리아에 걸린 환자 중 20%가 죽는다.)
     # generations: 시뮬레이션을 진행 할 세대 수
     # initial_S_allele: 최초 S 대립유전자의 빈도(ex:0.1 → 10%)
@@ -207,7 +207,7 @@ nav_order: 5
         plt.xlabel("generation"); plt.ylabel("frequency"); plt.legend(); plt.title("malaria selection pressure")
         plt.show()
  
-    interact(simulate, selection_sickle=(0.5,1.0,0.05), malaria_mortality=(0,0.5,0.05),
+    interact(simulate, selection_sickle=(0,1.0,0.01), malaria_mortality=(0,1.0,0.01),
         generations=(10,10000,10), initial_S_allele=(0.01,0.3,0.01));
 
     # 그래프 그리기: plt.figure(figsize=(5,3)) → 그림의 크기 지정
