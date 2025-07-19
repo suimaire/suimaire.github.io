@@ -162,22 +162,21 @@ nav_order: 5
     - 세대 반복 시 유전자형의 빈도가 p² : 2pq : q² 로 수렴함을 확인
     - FASTA/VCF 등 실측 서열에서 대립유전자 빈도를 계산해 가설 검정
     - 빈혈 및 말라리아의 치명률을 조절함에 따라 달라지는 유전자 빈도 확인 및 고찰
-   
-  - 왼쪽 메뉴의 [목차] → [+섹션] 클릭
-  - 추가로 생성할 코드 셀의 제목 입력 (예시: 시뮬레이션: 세대별 변화 관찰)
-  - 새롭게 섹션을 만들고 제목을 입력했다면, 그 부근에 마우스를 올려 [+코드] 클릭
 
-  - 코드 셀에 다음과 같이 입력
+  - 실습 준비
+    - 왼쪽 메뉴의 [목차] → [+섹션] 클릭
+    - 추가로 생성할 코드 셀의 제목 입력 (예시: 시뮬레이션: 세대별 변화 관찰)
+    - 코드 셀 추가, 다음과 같이 입력
 
     ```python
 
     # simulate라는 함수를 정의하자! [def] 이후, 괄호 안에 4가지 파라미터를 넣는다. 
-    # selection_sickle: SS(낫모양 동형접합)의 사망률 (ex:0.1 → 정상보다 10% 덜 산다.)
-    # malaria_mortality: AA(정상 동형접합)의 사망률 (ex:0.2 → 말라리아에 걸린 환자 중 20%가 죽는다.)
+    # selection_sickle: SS(낫모양 동형접합)의 치명률 (ex:0.1 → 정상보다 10% 덜 산다.)
+    # malaria_mortality: AA(정상 동형접합)의 말라리아 치명률 (ex:0.2 → 말라리아에 걸린 환자 중 20%가 죽는다.)
     # generations: 시뮬레이션을 진행 할 세대 수
     # initial_S_allele: 최초 S 대립유전자의 빈도(ex:0.1 → 10%)
     
-    def simulate(selection_sickle=생존율, malaria_mortality=사망률, generations=세대, initial_S_allele=최초값):
+    def simulate(selection_sickle=치명률1, malaria_mortality=치명률2, generations=세대, initial_S_allele=최초값):
         p = 1 - initial_S_allele; q = initial_S_allele    # def를 이용해 simulate라는 이름의 함수를 생성, 4가지 입력값을 받는다고 설정
         AA=AS=SS=None
         AA_lst, AS_lst, SS_lst = [], [], []               # AA, AS, SS는 비율(숫자 값)이 들어올 '자리'이며, 이를 설정
