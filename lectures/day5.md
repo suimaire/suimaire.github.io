@@ -11,7 +11,7 @@ nav_order: 6
   - 렉틴(lectin): 탄수화물과 강한 친화력과 높은 특이성을 가지고 결합할 수 있는 단백질들의 총칭, 모든 생물체에 존재
   - 렉틴은 세포가 주변 세포들을 인식할 수 있도록 하는 기능 및 신호 전달과 같은 기능을 수행한다.
 
-### 바이러스의 감염에 관여하는 헤마글루티닌(hemagglutinin)
+### 바이러스의 감염에 관여하는 스파이크 단백질
   - 독감 바이러스(influenza virus)를 포함하는 여러 가지 동물 바이러스들은 숙주세포의 세포막에 존재하는 탄수화물과 상호작용하여 숙주세포에 부착된다.
   - 해당 탄수화물의 끝 부분(말단)에는 **시알산(cialic acid)** 라고 불리는 물질이 존재한다.
   - 시알산을 특이적으로 분해하는 효소의 이름은 **뉴라미니데이스(neuraminidase)** 이다.
@@ -108,7 +108,7 @@ plt.ylabel("Neutralization titer fold reduction")
 plt.title("Variant vs Neutralization Drop")
 plt.show()
 """
-중화능 1 : 같은 항원에 대한 면역반응을 일으키기 위해 같은 농의 항체가 필요하다
+중화능 1 : 같은 항원에 대한 면역반응을 일으키기 위해 같은 농도의 항체가 필요하다
 중화능 20 : 같은 항원에 대한 면역반응을 일으키기 위해 20배 농도의 항체가 필요하다
 
 """
@@ -116,7 +116,7 @@ plt.show()
 ####
 - bar chart로 얼마나 중화능이 떨어졌는지 비교해 봅시다.
 - RBD 변이가 많을수록 백신 효능이 저하되는 이유에 대해서 생각해봅시다.
-- 실제 논문 및 보고서 등에서 다른 변이(BQ.1.1 등)의 fold 값을 찾아 리스트에 추가하고 그래프를 업데이트 해봅시다.
+- 실제 논문 및 보고서 등에서 다른 변이(BQ.1.1 등)의 fold 값을 찾아 리스트에 추가하고 그래프를 <br>업데이트 해봅시다.
 
 ---
 
@@ -153,7 +153,7 @@ def draw_complex(pdb_id, title, highlight=False):
     highlight=True로 설정하면(오미크론일 때) 변이 부위를 강조합니다.
     """
 
-    # 1) 뷰어 만들기
+    #1) 뷰어 만들기
     view = py3Dmol.view(query=f"pdb:{pdb_id}", width=520, height=420)
     view.setBackgroundColor("white")
     """
@@ -164,10 +164,10 @@ def draw_complex(pdb_id, title, highlight=False):
     창 크기(width×height)와 배경색을 설정합니다.
     """
 
-    # 2) 모든 단백질 cartoon 기본 (연회색)
+    #2) 모든 단백질 cartoon 기본 (연회색)
     view.setStyle({}, {"cartoon": {"color":"gainsboro", "opacity":1.0}})
 
-    # 3) RBD 체인만 파란색으로 재도색 (굵기 증가)
+    #3) RBD 체인만 파란색으로 재도색 (굵기 증가)
     rbd_chain = info[pdb_id]["rbd"]
     view.addStyle(
         {"chain": "C"},
@@ -175,7 +175,7 @@ def draw_complex(pdb_id, title, highlight=False):
     )
     view.addStyle({"chain": "A"}, {"cartoon": {"color":"sandybrown"}})   # Ab heavy
     view.addStyle({"chain": "B"}, {"cartoon": {"color":"sandybrown"}})   # Ab light
-    # 4) 항체 체인은 주황색으로 재도색, 변이 구 강조
+    #4) 항체 체인은 주황색으로 재도색, 변이 구 강조
     if highlight:
         for res in omicron_resi:
             view.addStyle(
@@ -269,8 +269,8 @@ Phylo.draw(tree, label_colors={
 
 ### 생각해보기
 - 방금 작성한 코드 셀을 이용하여, BA.5 / XBB.1.5 FASTA를 추가한 뒤 다시 셀을 실행해봅시다.
-- 트리를 캡쳐한 뒤 최종 활동지에 업로드 합시다. (구글 클래스룸)
-- 5번의 수업으로 느낀 점을 활동지에 작성합시다. (구글 클래스룸)
+- 트리를 캡쳐한 뒤 최종 활동지에 업로드 합시다. [구글 클래스룸](https://classroom.google.com/c/NzgyNjQ3NDk1OTk1?cjc=e2ijgvhz)
+- 5번의 수업으로 느낀 점을 활동지에 작성합시다. [구글 클래스룸](https://classroom.google.com/c/NzgyNjQ3NDk1OTk1?cjc=e2ijgvhz)
 
 ```python
 """
