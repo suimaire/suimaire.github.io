@@ -220,7 +220,7 @@ for aa in amino_acids:
   - 목표: complement() 함수를 통해 DNA 서열의 구조 이해
   ```python
   # DNA 상보적 서열 염기
-  complement_seq = data_seq.complement()
+  complement_seq = ???.complement()
   print("원본 DNA 서열:", dna_seq)
   print("상보적 DNA 서열:", complement_seq)
   ```
