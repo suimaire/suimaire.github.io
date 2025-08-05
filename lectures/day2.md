@@ -95,8 +95,9 @@ from Bio import Entrez, SeqIO
 
 def fetch_sequence(accession, email="your.email@example.com"):
 
+    # 다음 줄과 같이 큰따옴표 3개를 양옆에 붙여 주석을 작성하기도 한다.
     """주어진 accession의 FASTA를 NCBI에서 가져와 SeqRecord로 반환하라는 명령이다"""
-    # 큰따옴표 3개를 양옆에 붙여 주석을 작성하기도 한다.
+    
 
     Entrez.email = email
     handle = Entrez.efetch(
@@ -128,7 +129,8 @@ def find_differences(rec1, rec2):
             diffs.append((i, nt1, nt2))
     return diffs                                                 # 염기가 달랐던 위치와 각 서열의 염기를 담은 리스트를 반환한다는 의미
 
-""" ───────────────────── 이 아래부터는 사용 예시 ──────────────────────────── """
+# 다음과 같은 코드를 작성하여 비교 출력
+""" ───────────────────── 비교 출력 ──────────────────────────── """
 # 1) 두 accession 불러오기
 rec_avi = fetch_sequence("AY258597")   # nontaster (AVI)
 rec_pav = fetch_sequence("AY258598")   # taster    (PAV)
@@ -157,7 +159,7 @@ for pos, nt_avi, nt_pav in diff_positions:   # for : 아래 들여쓰기한 부�
   - 락타아제 지속성(Lactase persistence)과 음주 후 피부가 붉어지는 것(Alcohol flushing)에 대해서도 위의 활동을 참고하여 조사해 봅시다.
   - db를 "snp"로 변경하고, id의 변수 값을 하나로 고정한 뒤, rettype을 "flt"로 변경해주면 SNP 주변의 염기서열을 두 개의 FASTA 파일로 돌려줍니다.
   - 이후 SeqIO.read 대신 SeqIO.parse를 사용하면 반환된 텍스트에서 FASTA 형식을 여러 개 읽어 옵니다.
-  - 추가로 기존의 record에 대해 정의한 코드를 records = list(SeqIO.parse(handle, "fasta")) 과 같이 변경하고 records를 return한다.
-  - 이후 사용 예시의 함수를 참고하여 작성하면 락타아제 지속성 및 Alcohol flushing의 염기서열을 직접 비교할 수 있다.
+  - 추가로 기존의 record에 대해 정의한 코드를 records = list(SeqIO.parse(handle, "fasta")) 과 같이 변경하고 records를 return 합니다.
+  - 이후 사용 예시의 함수를 참고하여 작성하면 락타아제 지속성 및 Alcohol flushing의 염기서열을 직접 비교할 수 있습니다.
   - 이 설명을 읽고 직접 코드를 작성해 보세요!
 
