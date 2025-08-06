@@ -148,8 +148,8 @@ import py3Dmol # 단백질의 3D 구조를 노트북 안에 표시해 주는 도
 def view_polymerization_with_labels():     # view_polymerization_with_labels(): 라는 이름의 함수(프로그램 묶음)을
     """                                    # 만드는 문장으로, 한 번 정의해 두면 나중에 저 이름만 쳐도 밑의 코드를 한 번에 불러올 수 있다.
     위쪽: 정상 헤모글로빈 단량체 (PDB:1A3N)
-    아래쪽: 낫형 헤모글로빈 섬유    (PDB:2HBS)             # """...""" 는 Docstring이라고도 말하며,
-    β사슬 6번 위치에 Glu6 / Val6 레이블을 확실히 표시       # 함수가 어떤 일을 하는 지 적어 놓은 '설명문'이다.
+    아래쪽: 낫형 헤모글로빈 섬유    (PDB:2HBS)             
+    β사슬 6번 위치에 Glu6 / Val6 레이블을 확실히 표시       
     """
     examples = [
         ('1A3N', False, 'Glu6', 'red', 'white'),      # examples라는 리스트를 만들어 여러가지 특징을 설정한다.
@@ -176,6 +176,7 @@ def view_polymerization_with_labels():     # view_polymerization_with_labels(): 
         else:
             # 단량체: 스펙트럼 컬러, 불투명
             view.setStyle({'cartoon': {}}, {'cartoon': {'color':'spectrum','opacity':1.0}})
+
         # is_fiber에 True, False가 대입될 때 어떠한 형태로 그릴지 정의한다.
         # True일 때: 연한 회색, 반투명(opacity=0.4)로 그리라는 의미
         # False일 때: 무지개 색(spectrum), 불투명(opacity=1.0)으로 그리라는 의미
