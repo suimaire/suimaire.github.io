@@ -16,4 +16,4 @@ nav_order: 1
 
 - **Day4**: interact를 이용한 Hardy-Weinberg 법칙과 자연선택 탐구
 
-- **Day5**: Biopython과 NCBI를 이용한 COVID-19 spike protein 변이 실습
+- **Day5**: Biopython과 NCBI를 이용한 COVID-19 spike protein 변이 탐구
