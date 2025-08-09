@@ -7,10 +7,6 @@ remote_theme: pmarsceill/just-the-docs
 just_the_docs:
   heading_numbers: false
   heading_number_levels: 6
-
-# _config.yml
-theme: just-the-docs
-just_the_docs:
   custom_css:
     - custom.scss
 
