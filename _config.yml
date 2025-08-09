@@ -8,7 +8,7 @@ just_the_docs:
   heading_numbers: false
   heading_number_levels: 6
   custom_css:
-    - custom.scss
+    - assets/css/override.css
 
 # 기존 nav_order 등은 그대로 두시면 됩니다
 nav_order:
