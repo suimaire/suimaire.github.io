@@ -1,6 +1,6 @@
 /* 본문 폭 넓히기 */
 .main-content { max-width: 2000px; }  /* 필요하면 1100~1400px로 조절 */
-@media (min-width: 75rem) { .main-content { max-width: 1200px; } }
+@media (min-width: 75rem) { .main-content { max-width: 2000px; } }
 
 /* 코드 블록이 잘리지 않도록 가로 스크롤 허용 */
 pre, .highlight pre { overflow-x: auto; }
