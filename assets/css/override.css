@@ -9,13 +9,15 @@
     width: auto !important;
   }
 
-  /* 2) 실제 표시 폭을 '화면 - 사이드바'로 강제
-     사이드바(좌측 네비) 폭이 대략 260~280px + 여백을 감안해 320px 뺍니다. */
-  .main-content,
-  #main-content {
-    width: calc(100vw - 320px) !important;
+/* 화면이 커져도 본문은 최대 1200px까지만 */
+@media (min-width: 50rem) {
+  .main-content, #main-content {
+    /* 800px 이상으로는 커지되, 1200px을 넘지 않음 */
+    width: clamp(800px, calc(100vw - 320px), 1200px) !important;
+    max-width: 1200px !important;
   }
 }
+
 
 /* 코드블록 잘림 방지(가로 스크롤 허용) */
 pre, .highlight pre { overflow-x: auto; }
