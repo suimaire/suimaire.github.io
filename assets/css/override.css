@@ -10,20 +10,25 @@
   }
 
 
-/* ===== 레이아웃: 왼쪽 여백 없애기 ===== */
 @media (min-width: 50rem) {
-  /* 0) 사이드바(폭 고정 + 화면 왼쪽에 붙이기) */
-  .side-bar {
-    position: fixed;          /* 구버전 JTD 기본값과 동일, 혹시 몰라 명시 */
-    left: 0 !important;
-    width: 260px !important;  /* 실제 사이드바 폭에 맞게 260~280px로 조절 */
-  }
-  /* 1) 본문 래퍼를 사이드바 폭만큼 오른쪽으로 밀기 */
-  .main, .main-content-wrap {
-    margin-left: 260px !important;  /* 위 width와 동일한 값으로 */
-    padding-left: 1rem;             /* 본문 안쪽 여백(원하면 줄이거나 빼도 됨) */
-  }
+  /* 사이드바 고정 + 폭 지정 */
+  .side-bar { left: 0 !important; width: 260px !important; position: fixed; }
 
+  /* 본문 래퍼를 사이드바만큼만 밀고, 내부 여백은 0 */
+  .main,
+  .main-content-wrap { margin-left: 260px !important; padding-left: 0 !important; }
+
+  /* 실제 본문 컨테이너 여백 제거 + 폭 상한 */
+  #main-content,
+  .main-content,
+  .page-content,
+  .main-header {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    width: clamp(800px, calc(100vw - 260px), 1000px) !important; /* 필요시 1100/1000으로 */
+    max-width: 1000px !important;
+  }
+}
 
 /* 화면이 커져도 본문은 최대 1200px까지만 */
 @media (min-width: 50rem) {
