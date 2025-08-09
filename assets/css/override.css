@@ -27,8 +27,8 @@
   /* 2) 본문 실제 폭: 좌측에 딱 붙이되, 너무 넓어지지 않도록 상한선 */
   .main-content,
   #main-content {
-    width: clamp(820px, calc(100vw - 260px), 1100px) !important;  /* 1100px이 넓으면 1000/1200으로 조절 */
-    max-width: 1100px !important;
+    width: clamp(820px, calc(100vw - 260px), 1000px) !important;  /* 1100px이 넓으면 1000/1200으로 조절 */
+    max-width: 1000px !important;
   }
 }
 
