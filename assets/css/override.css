@@ -18,7 +18,11 @@
     left: 0 !important;
     width: 260px !important;  /* 실제 사이드바 폭에 맞게 260~280px로 조절 */
   }
-
+  /* 1) 본문 래퍼를 사이드바 폭만큼 오른쪽으로 밀기 */
+  .main, .main-content-wrap {
+    margin-left: 260px !important;  /* 위 width와 동일한 값으로 */
+    padding-left: 1rem;             /* 본문 안쪽 여백(원하면 줄이거나 빼도 됨) */
+  }
 
 
 /* 화면이 커져도 본문은 최대 1200px까지만 */
