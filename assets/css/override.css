@@ -18,6 +18,8 @@
   .main,
   .main-content-wrap { margin-left: 260px !important; padding-left: 0 !important; }
 
+  .page { padding-left: 0 !important; }
+
   /* 실제 본문 컨테이너 여백 제거 + 폭 상한 */
   #main-content,
   .main-content,
