@@ -1,6 +1,5 @@
-/* 본문 폭 넓히기 */
-.main-content { max-width: 2000px; }  /* 필요하면 1100~1400px로 조절 */
-@media (min-width: 75rem) { .main-content { max-width: 2000px; } }
+/* 본문 중앙 트랙 폭: 기본 80rem → 1200px 등으로 확장 */
+:root { --content-width: 100%; }         /* 원하는 값으로 조절 */
 
-/* 코드 블록이 잘리지 않도록 가로 스크롤 허용 */
+/* 코드 블록 잘림 방지(가로 스크롤 허용) */
 pre, .highlight pre { overflow-x: auto; }
