@@ -1,18 +1,11 @@
-/* 1) 가운데 컨텐츠 폭을 1200px로: 그리드 정의를 직접 덮어쓰기 */
+/* assets/css/override.css */
+
+/* 본문 폭 확대 — 구버전 JTD용 ‘직접’ 오버라이드 */
 @media (min-width: 50rem) {
-  .page {
-    /* 좌/우 여백(1fr) + 가운데 열 폭을 직접 지정 */
-    grid-template-columns: 1fr minmax(0, 1800px) 1fr !important;
-  }
+  .main-content       { max-width: 1800px !important; width: auto !important; }
+  .main-content-wrap  { max-width: none !important;  width: auto !important; }
+  .page-content       { max-width: none !important;  width: auto !important; }
 }
 
-/* 2) 혹시 .main-content에 max-width가 걸려 있으면 같이 풀어주기 */
-@media (min-width: 50rem) {
-  .main-content {
-    max-width: 1800px !important;  /* 테마별 잔여 제한 제거용 */
-    width: auto !important;
-  }
-}
-
-/* 3) 코드 블록 잘림 방지 */
+/* 코드블록 잘림 방지(가로 스크롤 허용) */
 pre, .highlight pre { overflow-x: auto; }
