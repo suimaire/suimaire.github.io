@@ -53,7 +53,7 @@ nav_order: 3
                         
                         
                         
-  tas2r38_seq = SeqIO.read(handle, "fasta")  # SeqIO.read()는 handle에서 한 개의 FASTA 레코드를 읽어서 python의 객체(미지수)로 설정(정의)한다는 의미
+  tas2r38_seq = SeqIO.read(handle, "fasta") # SeqIO.read()는 handle에서 한 개의 FASTA 레코드를 읽어서 python의 객체(미지수)로 설정(정의)한다는 의미
   handle.close()        # 서버와 통신하던 통로(handle)을 닫아서, 컴퓨터의 소모 자원을 절약
 
   print(f"TAS2R38 유전자 서열 ({ptc_group}): {tas2r38_seq.seq[:200]} …")  
