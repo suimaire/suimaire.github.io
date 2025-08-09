@@ -8,6 +8,12 @@ just_the_docs:
   heading_numbers: false
   heading_number_levels: 6
 
+# _config.yml
+theme: just-the-docs
+just_the_docs:
+  custom_css:
+    - custom.scss
+
 # 기존 nav_order 등은 그대로 두시면 됩니다
 nav_order:
   - Home: index.md
