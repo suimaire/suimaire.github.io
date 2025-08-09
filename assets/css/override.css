@@ -18,10 +18,10 @@
   .page-content,
   .main-content,
   #main-content {
-    padding-left: 50px !important;
+    padding-left: 25px !important;
     padding-right: 0 !important;
-    margin-left: 50px !important;
-    border-left: 50px !important;
+    margin-left: 25px !important;
+    border-left: 25px !important;
   }
 
   /* 2) 본문 실제 폭: 좌측에 딱 붙이되, 너무 넓어지지 않도록 상한선 */
