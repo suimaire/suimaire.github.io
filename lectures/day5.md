@@ -273,7 +273,7 @@ Phylo.draw(tree, label_colors={
 - 5번의 수업으로 느낀 점을 활동지에 작성합시다. [구글 클래스룸](https://classroom.google.com/c/NzgyNjQ3NDk1OTk1?cjc=e2ijgvhz)
 
 ```python
-<br>
-** 고생 많았습니다!! **
-<br>
+
+** 고생 많았습니다! **
+
 ```
