@@ -56,12 +56,13 @@ nav_order: 3
   tas2r38_seq = SeqIO.read(handle, "fasta")  # SeqIO.read()는 handle에서 한 개의 FASTA 레코드를 읽어서 python의 객체(미지수)로 설정(정의)한다는 의미
   handle.close()        # 서버와 통신하던 통로(handle)을 닫아서, 컴퓨터의 소모 자원을 절약
 
-  print(f"TAS2R38 유전자 서열 ({ptc_group}): {tas2r38_seq.seq[:200]} …")  # tas2r38_seq.seq는 전체 염기서열(ATGC...)이다.
-                                                                         # [:200] 은 처음 200개만 잘라서 print하라는 의미이다.
-                                                                  # 문자열 앞에 f를 붙이면 f-string이라고 부른다.
-                                                                  # f-string을 사용해야 {} 내부의 변수, 연산 등을 실제 값으로 평가해서 문자열에 삽입해준다.
-                                                                  # f-string을 사용하지 않고 큰 따옴표만을 사용한다면, python을 그 내부를 그대로 텍스트로 인식한다.
-                                                                  # 따라서 {snp_nucleotide}조차 그대로 단순한 문자의 나열 {, s, n, ..., }으로 인식하여 위에서 정의한 값을 불러오지 않는다.
+  print(f"TAS2R38 유전자 서열 ({ptc_group}): {tas2r38_seq.seq[:200]} …")  
+     # tas2r38_seq.seq는 전체 염기서열(ATGC...)이다.
+     # [:200] 은 처음 200개만 잘라서 print하라는 의미이다.
+     # 문자열 앞에 f를 붙이면 f-string이라고 부른다.
+     # f-string을 사용해야 {} 내부의 변수, 연산 등을 실제 값으로 평가해서 문자열에 삽입해준다.
+     # f-string을 사용하지 않고 큰 따옴표만을 사용한다면, python을 그 내부를 그대로 텍스트로 인식한다.
+     # 따라서 {snp_nucleotide}조차 그대로 단순한 문자의 나열 {, s, n, ..., }으로 인식하여 위에서 정의한 값을 불러오지 않는다.
   ```
 
 ## TAS2R38 서열 분석 및 SNP 위치 확인
