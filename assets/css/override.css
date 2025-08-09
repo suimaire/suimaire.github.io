@@ -1,51 +1,37 @@
-/* ===== 중앙 본문을 화면 폭에 맞춰 강제로 넓히기 ===== */
+/* ===== pmarsceill/just-the-docs (구버전) 레이아웃 최종 정리 ===== */
 @media (min-width: 50rem) {
-  /* 1) 본문 래퍼/컨테이너 전부 폭 제한 해제 */
-  .main-content-wrap,
-  .main-content,
-  #main-content,
-  .page-content {
-    max-width: none !important;
-    width: auto !important;
+  /* 0) 사이드바: 화면 맨 왼쪽에 고정 */
+  .side-bar {
+    position: fixed;
+    left: 0 !important;
+    width: 260px !important;   /* DevTools로 .side-bar width 확인 후 필요시 270~280px로 조절 */
   }
 
-
-@media (min-width: 50rem) {
-  /* 사이드바 고정 + 폭 지정 */
-  .side-bar { left: 0 !important; width: 260px !important; position: fixed; }
-
-  /* 본문 래퍼를 사이드바만큼만 밀고, 내부 여백은 0 */
-  .main,
-  .main-content-wrap { margin-left: 260px !important; padding-left: 0 !important; }
-
-  .page { padding-left: 0 !important; }
-
-  /* 실제 본문 컨테이너 여백 제거 + 폭 상한 */
-  #main-content,
-  .main-content,
-  .page-content,
-  .main-header {
+  /* 1) 본문 래퍼: 사이드바 폭만큼만 밀고, 내부 여백은 모두 제거 */
+  .main {
+    margin-left: 260px !important;
     padding-left: 0 !important;
+  }
+
+  .main-header,
+  .main-content-wrap,
+  .page-content,
+  .main-content,
+  #main-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     margin-left: 0 !important;
-    width: clamp(800px, calc(100vw - 260px), 1000px) !important; /* 필요시 1100/1000으로 */
-    max-width: 1000px !important;
+    border-left: 0 !important;
+  }
+
+  /* 2) 본문 실제 폭: 좌측에 딱 붙이되, 너무 넓어지지 않도록 상한선 */
+  .main-content,
+  #main-content {
+    width: clamp(820px, calc(100vw - 260px), 1100px) !important;  /* 1100px이 넓으면 1000/1200으로 조절 */
+    max-width: 1100px !important;
   }
 }
 
-/* 화면이 커져도 본문은 최대 1200px까지만 */
-@media (min-width: 50rem) {
-  .main-content, #main-content {
-    /* 800px 이상으로는 커지되, 1200px을 넘지 않음 */
-    width: clamp(800px, calc(100vw - 320px), 1000px) !important;
-    max-width: 1000px !important;
-    
-  }
-}
-
+/* 3) 표/코드 잘림 방지 */
 .table-wrapper { overflow-x: auto; }
-table { width: 100%; }
-
-  
-
-/* 코드블록 잘림 방지(가로 스크롤 허용) */
 pre, .highlight pre { overflow-x: auto; }
