@@ -1,10 +1,20 @@
-/* assets/css/override.css */
-
-/* 본문 폭 확대 — 구버전 JTD용 ‘직접’ 오버라이드 */
+/* ===== 중앙 본문을 화면 폭에 맞춰 강제로 넓히기 ===== */
 @media (min-width: 50rem) {
-  .main-content       { max-width: 1800px !important; width: auto !important; }
-  .main-content-wrap  { max-width: none !important;  width: auto !important; }
-  .page-content       { max-width: none !important;  width: auto !important; }
+  /* 1) 본문 래퍼/컨테이너 전부 폭 제한 해제 */
+  .main-content-wrap,
+  .main-content,
+  #main-content,
+  .page-content {
+    max-width: none !important;
+    width: auto !important;
+  }
+
+  /* 2) 실제 표시 폭을 '화면 - 사이드바'로 강제
+     사이드바(좌측 네비) 폭이 대략 260~280px + 여백을 감안해 320px 뺍니다. */
+  .main-content,
+  #main-content {
+    width: calc(100vw - 320px) !important;
+  }
 }
 
 /* 코드블록 잘림 방지(가로 스크롤 허용) */
