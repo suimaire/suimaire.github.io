@@ -15,9 +15,14 @@
     /* 800px 이상으로는 커지되, 1200px을 넘지 않음 */
     width: clamp(800px, calc(100vw - 320px), 1200px) !important;
     max-width: 1200px !important;
+    
   }
 }
 
+.table-wrapper { overflow-x: auto; }
+table { width: 100%; }
+
+  
 
 /* 코드블록 잘림 방지(가로 스크롤 허용) */
 pre, .highlight pre { overflow-x: auto; }
