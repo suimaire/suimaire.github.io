@@ -29,7 +29,7 @@
 @media (min-width: 50rem) {
   .main-content, #main-content {
     /* 800px 이상으로는 커지되, 1200px을 넘지 않음 */
-    width: clamp(800px, calc(100vw - 320px), 1200px) !important;
+    width: clamp(800px, calc(100vw - 320px), 1000px) !important;
     max-width: 1200px !important;
     
   }
