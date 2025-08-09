@@ -1,5 +1,18 @@
-/* 본문 중앙 트랙 폭: 기본 80rem → 1200px 등으로 확장 */
-:root { --content-width: 100%; }         /* 원하는 값으로 조절 */
+/* 1) 가운데 컨텐츠 폭을 1200px로: 그리드 정의를 직접 덮어쓰기 */
+@media (min-width: 50rem) {
+  .page {
+    /* 좌/우 여백(1fr) + 가운데 열 폭을 직접 지정 */
+    grid-template-columns: 1fr minmax(0, 1800px) 1fr !important;
+  }
+}
 
-/* 코드 블록 잘림 방지(가로 스크롤 허용) */
+/* 2) 혹시 .main-content에 max-width가 걸려 있으면 같이 풀어주기 */
+@media (min-width: 50rem) {
+  .main-content {
+    max-width: 1800px !important;  /* 테마별 잔여 제한 제거용 */
+    width: auto !important;
+  }
+}
+
+/* 3) 코드 블록 잘림 방지 */
 pre, .highlight pre { overflow-x: auto; }
