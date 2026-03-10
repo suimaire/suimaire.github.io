@@ -3,7 +3,7 @@ title: Home
 nav_order: 1
 ---
 
-# 2025 HSHS basic of bioinformatics 
+# 2026 HAFS basic of bioinformatics 
 수업에 오신 것을 환영합니다!
 
 - **Home**: 메인 화면
