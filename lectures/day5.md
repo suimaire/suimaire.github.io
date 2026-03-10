@@ -269,8 +269,8 @@ Phylo.draw(tree, label_colors={
 
 ### 생각해보기
 - 방금 작성한 코드 셀을 이용하여, BA.5 / XBB.1.5 FASTA를 추가한 뒤 다시 셀을 실행해봅시다.
-- 5번의 수업으로 작성한 활동지를 업로드 합시다. [구글 클래스룸](https://classroom.google.com/c/NzgyNjQ3NDk1OTk1?cjc=e2ijgvhz)
-- 5번의 수업으로 느낀 점을 활동지에 작성합시다. [구글 클래스룸](https://classroom.google.com/c/NzgyNjQ3NDk1OTk1?cjc=e2ijgvhz)
+- 5번의 수업으로 작성한 활동지를 업로드 합시다. [구글 클래스룸](https로시작하는링크)
+- 5번의 수업으로 느낀 점을 활동지에 작성합시다. [구글 클래스룸](https로시작하는링크)
 
 ```python
 
