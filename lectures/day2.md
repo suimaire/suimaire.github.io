@@ -1,7 +1,8 @@
 ---
 layout: default
 title: "Day 2"
-nav_order: 3
+parent: 생물정보학 기초
+nav_order: 2
 ---
 
 # Day 2: Biopython 환경 준비 및 기본 실습

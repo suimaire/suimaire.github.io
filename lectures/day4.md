@@ -1,7 +1,8 @@
 ---
 layout: default
 title: "Day 4"
-nav_order: 5
+parent: 생물정보학 기초
+nav_order: 4
 ---
 
 # Day 4 하디-바인베르크 평형<br>(Hardy-Weinberg Equilibrium) 실습

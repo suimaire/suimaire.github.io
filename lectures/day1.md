@@ -1,7 +1,8 @@
 ---
 layout: default
 title: "Day 1"
-nav_order: 2
+parent: 생물정보학 기초
+nav_order: 1
 ---
 
 # Day 1 기본 개념 소개 및 환경 구축

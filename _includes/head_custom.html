@@ -1,6 +1,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{{ '/assets/css/override.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/portal.css' | relative_url }}">
 
 <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap" rel="stylesheet">
 <script src="{{ '/assets/js/heading-numbers.js' | relative_url }}"></script>
+
+{% assign share_title = page.title | default: site.title %}
+{% assign share_description = page.description | default: site.description %}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:title" content="{{ share_title }}">
+<meta property="og:description" content="{{ share_description }}">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta property="og:image" content="{{ '/assets/img/social/science-portal.png' | absolute_url }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ share_title }}">
+<meta name="twitter:description" content="{{ share_description }}">
+<meta name="twitter:image" content="{{ '/assets/img/social/science-portal.png' | absolute_url }}">

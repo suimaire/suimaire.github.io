@@ -1,0 +1,599 @@
+/* Science portal landing page — scoped to avoid changing existing lectures. */
+:root {
+  --portal-ink: #142e2b;
+  --portal-muted: #526a66;
+  --portal-paper: #f6f3ea;
+  --portal-teal: #087f73;
+  --portal-teal-dark: #075d56;
+  --portal-lime: #d8ed75;
+  --portal-blue: #cbe5f1;
+  --portal-coral: #ff8a6a;
+  --portal-line: rgba(20, 46, 43, 0.14);
+}
+
+.science-portal {
+  color: var(--portal-ink);
+  font-family: "NanumSquareNeo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 1.25rem 0 4rem;
+}
+
+.science-portal * {
+  box-sizing: border-box;
+}
+
+.portal-hero {
+  background:
+    radial-gradient(circle at 12% 16%, rgba(216, 237, 117, 0.58), transparent 26%),
+    linear-gradient(135deg, #f9f7f0 0%, #edf5ee 100%);
+  border: 1px solid var(--portal-line);
+  border-radius: 28px;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  min-height: 520px;
+  overflow: hidden;
+  padding: clamp(2.25rem, 5vw, 4.75rem);
+  position: relative;
+}
+
+.portal-hero::before {
+  background-image: radial-gradient(rgba(8, 127, 115, 0.2) 1px, transparent 1px);
+  background-size: 18px 18px;
+  content: "";
+  inset: 0 0 0 55%;
+  mask-image: linear-gradient(90deg, transparent, #000);
+  opacity: 0.45;
+  position: absolute;
+}
+
+.portal-hero__copy,
+.portal-hero__visual {
+  position: relative;
+  z-index: 1;
+}
+
+.portal-kicker,
+.portal-eyebrow {
+  color: var(--portal-teal-dark);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  margin: 0 0 1.35rem;
+}
+
+.portal-hero h1 {
+  color: var(--portal-ink);
+  font-size: clamp(2.5rem, 5.2vw, 4.6rem);
+  letter-spacing: -0.055em;
+  line-height: 1.08;
+  margin: 0;
+}
+
+.portal-hero h1 span {
+  color: var(--portal-teal);
+}
+
+.portal-hero__lead {
+  color: var(--portal-muted);
+  font-size: 1.05rem;
+  line-height: 1.85;
+  margin: 1.6rem 0 0;
+  max-width: 590px;
+}
+
+.portal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.portal-button {
+  align-items: center;
+  border: 1px solid var(--portal-ink);
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 0.92rem;
+  font-weight: 800;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0.7rem 1.25rem;
+  text-decoration: none !important;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.portal-button:hover {
+  transform: translateY(-2px);
+}
+
+.portal-button--primary {
+  background: var(--portal-ink);
+  box-shadow: 0 8px 22px rgba(20, 46, 43, 0.2);
+  color: #fff !important;
+}
+
+.portal-button--quiet {
+  background: rgba(255, 255, 255, 0.62);
+  color: var(--portal-ink) !important;
+}
+
+.portal-hero__visual {
+  min-height: 330px;
+}
+
+.orbit {
+  border: 1px solid rgba(8, 127, 115, 0.35);
+  border-radius: 50%;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-14deg);
+}
+
+.orbit--one {
+  height: 230px;
+  width: 330px;
+}
+
+.orbit--two {
+  height: 330px;
+  transform: translate(-50%, -50%) rotate(56deg);
+  width: 230px;
+}
+
+.science-core,
+.science-node {
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 14px 38px rgba(20, 46, 43, 0.14);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+}
+
+.science-core {
+  background: var(--portal-ink);
+  color: #fff;
+  height: 146px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 146px;
+}
+
+.science-core span {
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+}
+
+.science-core strong {
+  color: var(--portal-lime);
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.science-node {
+  border: 5px solid rgba(255, 255, 255, 0.72);
+  height: 82px;
+  width: 82px;
+}
+
+.science-node strong {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+}
+
+.science-node span {
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.science-node--question {
+  background: var(--portal-lime);
+  left: 3%;
+  top: 15%;
+}
+
+.science-node--explore {
+  background: var(--portal-blue);
+  right: 0;
+  top: 22%;
+}
+
+.science-node--explain {
+  background: var(--portal-coral);
+  bottom: 7%;
+  color: #3f251e;
+  right: 25%;
+}
+
+.portal-section {
+  padding: clamp(3.5rem, 7vw, 6rem) 0 0;
+}
+
+.portal-section__heading {
+  margin-bottom: 1.5rem;
+}
+
+.portal-section__heading h2 {
+  color: var(--portal-ink);
+  font-size: clamp(1.85rem, 4vw, 2.8rem);
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+
+.portal-section__heading p:last-child {
+  color: var(--portal-muted);
+  margin: 0.8rem 0 0;
+}
+
+.course-card {
+  border: 1px solid var(--portal-line);
+  border-radius: 24px;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.course-card--featured {
+  background: var(--portal-ink);
+  color: #fff;
+  position: relative;
+}
+
+.course-card__topline {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.course-card__subject,
+.course-card__status {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.course-card__status--muted {
+  background: rgba(20, 46, 43, 0.08);
+  color: var(--portal-muted);
+}
+
+.course-card__status {
+  background: var(--portal-lime);
+  border-radius: 999px;
+  color: var(--portal-ink);
+  padding: 0.38rem 0.7rem;
+}
+
+.course-card h3 {
+  color: #fff;
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  margin: 1.6rem 0 0.8rem;
+}
+
+.course-card > p {
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.75;
+  max-width: 720px;
+}
+
+.course-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1.5rem 0;
+}
+
+.course-card__meta span {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.78rem;
+  padding: 0.4rem 0.65rem;
+}
+
+.course-card__link {
+  color: var(--portal-lime) !important;
+  font-weight: 800;
+  text-decoration: none !important;
+}
+
+.portal-course-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.course-card--coming {
+  background: var(--portal-paper);
+}
+
+.course-card--coming h3 {
+  color: var(--portal-ink);
+  font-size: 1.3rem;
+  margin: 1.4rem 0 0.6rem;
+}
+
+.course-card--coming > p {
+  color: var(--portal-muted);
+  margin-bottom: 0;
+}
+
+.portal-method {
+  display: grid;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.25fr);
+}
+
+.method-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.method-list li {
+  align-items: flex-start;
+  border-top: 1px solid var(--portal-line);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 44px 1fr;
+  padding: 1.35rem 0;
+}
+
+.method-list li:last-child {
+  border-bottom: 1px solid var(--portal-line);
+}
+
+.method-list > li > strong {
+  color: var(--portal-teal);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding-top: 0.25rem;
+}
+
+.method-list h3 {
+  color: var(--portal-ink);
+  font-size: 1.12rem;
+  margin: 0;
+}
+
+.method-list p {
+  color: var(--portal-muted);
+  line-height: 1.7;
+  margin: 0.35rem 0 0;
+}
+
+.portal-preservation {
+  align-items: flex-end;
+  background: var(--portal-blue);
+  border-radius: 24px;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  margin-top: clamp(3.5rem, 7vw, 6rem);
+  padding: clamp(1.6rem, 4vw, 2.75rem);
+}
+
+.portal-preservation .portal-eyebrow {
+  margin-bottom: 0.8rem;
+}
+
+.portal-preservation h2 {
+  color: var(--portal-ink);
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  letter-spacing: -0.035em;
+  margin: 0;
+}
+
+.portal-preservation p:not(.portal-eyebrow) {
+  color: var(--portal-muted);
+  line-height: 1.7;
+  margin: 0.7rem 0 0;
+  max-width: 710px;
+}
+
+.portal-preservation > a {
+  color: var(--portal-ink) !important;
+  flex: 0 0 auto;
+  font-weight: 800;
+  text-decoration: none !important;
+}
+
+.course-overview {
+  color: var(--portal-ink);
+  font-family: "NanumSquareNeo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.course-overview__hero {
+  background: var(--portal-ink);
+  border-radius: 24px;
+  color: #fff;
+  overflow: hidden;
+  padding: clamp(2rem, 5vw, 4rem);
+  position: relative;
+}
+
+.course-overview__hero::after {
+  background: var(--portal-lime);
+  border-radius: 50%;
+  content: "";
+  height: 210px;
+  opacity: 0.85;
+  position: absolute;
+  right: -70px;
+  top: -80px;
+  width: 210px;
+}
+
+.course-overview__hero .portal-eyebrow,
+.course-overview__hero h1,
+.course-overview__hero p {
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.course-overview__hero h1 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+
+.course-overview__hero > p:last-child {
+  color: rgba(255, 255, 255, 0.76);
+  line-height: 1.8;
+  margin: 1rem 0 0;
+  max-width: 670px;
+}
+
+.course-overview__intro {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 1rem 0 3rem;
+}
+
+.course-overview__fact {
+  background: var(--portal-paper);
+  border-radius: 18px;
+  padding: 1.2rem;
+}
+
+.course-overview__fact span {
+  color: var(--portal-muted);
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
+}
+
+.course-overview__fact strong {
+  font-size: 1rem;
+}
+
+.lesson-list {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.lesson-link {
+  align-items: center;
+  border: 1px solid var(--portal-line);
+  border-radius: 18px;
+  color: var(--portal-ink) !important;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 54px 1fr auto;
+  padding: 1.15rem;
+  text-decoration: none !important;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.lesson-link:hover {
+  border-color: var(--portal-teal);
+  transform: translateX(4px);
+}
+
+.lesson-link__day {
+  color: var(--portal-teal);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.lesson-link strong {
+  display: block;
+}
+
+.lesson-link small {
+  color: var(--portal-muted);
+  display: block;
+  line-height: 1.55;
+  margin-top: 0.25rem;
+}
+
+.lesson-link__arrow {
+  color: var(--portal-teal);
+  font-size: 1.3rem;
+}
+
+.portal-button:focus-visible,
+.course-card__link:focus-visible {
+  outline: 3px solid var(--portal-coral);
+  outline-offset: 4px;
+}
+
+@media (max-width: 760px) {
+  .science-portal {
+    padding-top: 0;
+  }
+
+  .portal-hero {
+    border-radius: 20px;
+    grid-template-columns: 1fr;
+    padding: 2rem 1.25rem;
+  }
+
+  .portal-hero::before {
+    inset: 52% 0 0;
+    mask-image: linear-gradient(0deg, #000, transparent);
+  }
+
+  .portal-hero__visual {
+    min-height: 300px;
+  }
+
+  .orbit--one {
+    height: 190px;
+    width: 270px;
+  }
+
+  .orbit--two {
+    height: 270px;
+    width: 190px;
+  }
+
+  .science-core {
+    height: 124px;
+    width: 124px;
+  }
+
+  .science-node {
+    height: 72px;
+    width: 72px;
+  }
+
+  .science-node--question {
+    left: 0;
+  }
+
+  .science-node--explore {
+    right: 1%;
+  }
+
+  .portal-course-grid,
+  .portal-method,
+  .course-overview__intro {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-preservation {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .lesson-link {
+    grid-template-columns: 44px 1fr auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-button {
+    transition: none;
+  }
+}

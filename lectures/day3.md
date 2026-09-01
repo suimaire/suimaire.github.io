@@ -1,7 +1,8 @@
 ---
 layout: default
 title: "Day 3"
-nav_order: 4
+parent: 생물정보학 기초
+nav_order: 3
 ---
 
 # Day 3 낫 모양 적혈구 빈혈증 탐색
