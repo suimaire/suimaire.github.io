@@ -9,7 +9,7 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
   <section class="portal-hero" aria-labelledby="portal-title">
     <div class="portal-hero__copy">
       <p class="portal-kicker">HAFS SCIENCE LEARNING LAB</p>
-      <h1 id="portal-title">데이터로 확인하는 과학</span></h1>
+      <h1 id="portal-title">데이터로 확인하는 과학</h1>
       <p class="portal-hero__lead">
         시각 자료를 관찰하고 분석하며 설명을 만들어 가는
         과학 수업 공간
@@ -51,13 +51,14 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
     </article>
 
     <div class="portal-course-grid" aria-label="준비 중인 수업 영역">
-      <article class="course-card course-card--coming">
+      <article class="course-card course-card--coming course-card--available">
         <div class="course-card__topline">
           <span class="course-card__subject">생태 · 모델링</span>
-          <span class="course-card__status course-card__status--muted">준비 중</span>
+          <span class="course-card__status">운영 중</span>
         </div>
         <h3>생태계 시뮬레이션</h3>
-        <p>개체군의 상호작용을 조절하고 시간에 따른 변화를 해석하는 탐구 수업을 준비하고 있습니다.</p>
+        <p>토끼와 늑대의 개체군 조건을 조절하고 시간에 따른 생태계 변화를 직접 관찰합니다.</p>
+        <a class="course-card__link course-card__link--dark" href="{{ '/predator-prey-simulation-2/' | relative_url }}">시뮬레이션 바로가기 <span aria-hidden="true">→</span></a>
       </article>
 
       <article class="course-card course-card--coming">

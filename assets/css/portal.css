@@ -322,6 +322,19 @@
   margin-bottom: 0;
 }
 
+.course-card--available {
+  background: linear-gradient(145deg, var(--portal-paper), #edf5ee);
+  border-color: rgba(8, 127, 115, 0.3);
+}
+
+.course-card--available > p {
+  margin-bottom: 1.25rem;
+}
+
+.course-card__link--dark {
+  color: var(--portal-teal-dark) !important;
+}
+
 .portal-method {
   display: grid;
   gap: clamp(1.5rem, 5vw, 4rem);
