@@ -335,86 +335,6 @@
   color: var(--portal-teal-dark) !important;
 }
 
-.portal-method {
-  display: grid;
-  gap: clamp(1.5rem, 5vw, 4rem);
-  grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.25fr);
-}
-
-.method-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.method-list li {
-  align-items: flex-start;
-  border-top: 1px solid var(--portal-line);
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 44px 1fr;
-  padding: 1.35rem 0;
-}
-
-.method-list li:last-child {
-  border-bottom: 1px solid var(--portal-line);
-}
-
-.method-list > li > strong {
-  color: var(--portal-teal);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  padding-top: 0.25rem;
-}
-
-.method-list h3 {
-  color: var(--portal-ink);
-  font-size: 1.12rem;
-  margin: 0;
-}
-
-.method-list p {
-  color: var(--portal-muted);
-  line-height: 1.7;
-  margin: 0.35rem 0 0;
-}
-
-.portal-preservation {
-  align-items: flex-end;
-  background: var(--portal-blue);
-  border-radius: 24px;
-  display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-  margin-top: clamp(3.5rem, 7vw, 6rem);
-  padding: clamp(1.6rem, 4vw, 2.75rem);
-}
-
-.portal-preservation .portal-eyebrow {
-  margin-bottom: 0.8rem;
-}
-
-.portal-preservation h2 {
-  color: var(--portal-ink);
-  font-size: clamp(1.4rem, 3.5vw, 2rem);
-  letter-spacing: -0.035em;
-  margin: 0;
-}
-
-.portal-preservation p:not(.portal-eyebrow) {
-  color: var(--portal-muted);
-  line-height: 1.7;
-  margin: 0.7rem 0 0;
-  max-width: 710px;
-}
-
-.portal-preservation > a {
-  color: var(--portal-ink) !important;
-  flex: 0 0 auto;
-  font-weight: 800;
-  text-decoration: none !important;
-}
-
 .course-overview {
   color: var(--portal-ink);
   font-family: "NanumSquareNeo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -590,14 +510,8 @@
   }
 
   .portal-course-grid,
-  .portal-method,
   .course-overview__intro {
     grid-template-columns: 1fr;
-  }
-
-  .portal-preservation {
-    align-items: flex-start;
-    flex-direction: column;
   }
 
   .lesson-link {

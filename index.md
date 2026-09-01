@@ -33,8 +33,7 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
   <section class="portal-section" id="courses" aria-labelledby="courses-title">
     <div class="portal-section__heading">
       <p class="portal-eyebrow">COURSE LIBRARY</p>
-      <h2 id="courses-title">지금 만날 수 있는 수업</h2>
-      <p>기존 생물정보학 자료는 원래 주소 그대로 보존되어 있습니다.</p>
+      <h2 id="courses-title">수업자료(공개 중)</h2>
     </div>
 
     <article class="course-card course-card--featured">
@@ -50,47 +49,26 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
       <a class="course-card__link" href="{{ '/bioinformatics/' | relative_url }}">강좌 안내 보기 <span aria-hidden="true">→</span></a>
     </article>
 
-    <div class="portal-course-grid" aria-label="준비 중인 수업 영역">
+    <div class="portal-course-grid" aria-label="공개 중인 시뮬레이션 수업">
       <article class="course-card course-card--coming course-card--available">
         <div class="course-card__topline">
           <span class="course-card__subject">생태 · 모델링</span>
           <span class="course-card__status">운영 중</span>
         </div>
-        <h3>생태계 시뮬레이션</h3>
+        <h3>토끼와 늑대 숲 생태계</h3>
         <p>토끼와 늑대의 개체군 조건을 조절하고 시간에 따른 생태계 변화를 직접 관찰합니다.</p>
         <a class="course-card__link course-card__link--dark" href="{{ '/predator-prey-simulation-2/' | relative_url }}">시뮬레이션 바로가기 <span aria-hidden="true">→</span></a>
       </article>
 
-      <article class="course-card course-card--coming">
+      <article class="course-card course-card--coming course-card--available">
         <div class="course-card__topline">
-          <span class="course-card__subject">과학 · 탐구</span>
-          <span class="course-card__status course-card__status--muted">확장 예정</span>
+          <span class="course-card__subject">생태 · 개체군</span>
+          <span class="course-card__status">운영 중</span>
         </div>
-        <h3>다음 질문을 위한 자리</h3>
-        <p>새로운 수업을 같은 방식으로 모을 수 있도록 포털의 구조를 열어 두었습니다.</p>
+        <h3>포식자-피식자 동역학 실험실</h3>
+        <p>포식자와 피식자 개체군이 시간에 따라 어떻게 달라지는지 시뮬레이션으로 관찰합니다.</p>
+        <a class="course-card__link course-card__link--dark" href="{{ '/predator-prey-simulation/' | relative_url }}">시뮬레이션 바로가기 <span aria-hidden="true">→</span></a>
       </article>
     </div>
   </section>
-
-  <section class="portal-section portal-method" aria-labelledby="method-title">
-    <div class="portal-section__heading">
-      <p class="portal-eyebrow">HOW WE LEARN</p>
-      <h2 id="method-title">답보다 먼저, 좋은 질문을 만듭니다</h2>
-    </div>
-
-    <ol class="method-list">
-      <li><strong>01</strong><div><h3>질문하기</h3><p>현상에서 궁금한 점을 찾고 검증 가능한 질문으로 다듬습니다.</p></div></li>
-      <li><strong>02</strong><div><h3>탐구하기</h3><p>관찰, 실험, 공개 데이터와 모델을 이용해 근거를 모읍니다.</p></div></li>
-      <li><strong>03</strong><div><h3>설명하기</h3><p>결과를 비교하고 한계까지 살펴보며 나만의 설명을 완성합니다.</p></div></li>
-    </ol>
-  </section>
-
-  <aside class="portal-preservation" aria-labelledby="preservation-title">
-    <div>
-      <p class="portal-eyebrow">CONTENT PRESERVATION</p>
-      <h2 id="preservation-title">기존 수업 자료를 안전하게 보존하고 있습니다</h2>
-      <p>현재 생물정보학 Day 1–5 문서와 이미지 주소는 바꾸지 않았습니다. 포털 초안은 그 위에 새로운 입구만 더한 상태입니다.</p>
-    </div>
-    <a href="{{ '/lectures/day1.html' | relative_url }}">기존 Day 1 열기 <span aria-hidden="true">→</span></a>
-  </aside>
 </div>
