@@ -1,3 +1,33 @@
+/* Explicit two-line brand inside the theme's existing home link. */
+.site-header .site-title {
+  min-width: 0;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.site-brand {
+  display: inline-grid;
+  justify-items: center;
+  gap: 2px;
+  font-family: "NanumSquareNeo", system-ui, sans-serif;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.site-brand__name {
+  color: #075d56;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.site-brand__subtitle {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
 /* ===== pmarsceill/just-the-docs (구버전) 레이아웃 최종 정리 ===== */
 @media (min-width: 50rem) {
   /* 0) 사이드바: 화면 맨 왼쪽에 고정 */
