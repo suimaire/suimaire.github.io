@@ -84,6 +84,19 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
 
       <article class="course-card course-card--featured">
         <div class="course-card__topline">
+          <span class="course-card__subject">생화학 · 분자 구조</span>
+          <span class="course-card__status">운영 중</span>
+        </div>
+        <h3>탄수화물 3D 구조 탐색기</h3>
+        <p>포도당을 비롯한 여러 탄수화물의 입체 구조를 직접 회전하고 비교하며 아노머, axial/equatorial, 입체 이성질체의 차이를 탐구합니다.</p>
+        <div class="course-card__meta" aria-label="강좌 정보">
+          <span>3D 분자 구조</span><span>탄수화물</span><span>인터랙티브 탐구</span>
+        </div>
+        <a class="course-card__link" href="https://suimaire.github.io/carbohydrate-3d-explorer/">탐색기 열기 <span aria-hidden="true">→</span></a>
+      </article>
+
+      <article class="course-card course-card--featured">
+        <div class="course-card__topline">
           <span class="course-card__subject">생명과학 · 데이터</span>
           <span class="course-card__status">운영 중</span>
         </div>
