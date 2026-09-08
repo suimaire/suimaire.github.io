@@ -8,6 +8,13 @@ just_the_docs:
   heading_numbers: false
   heading_number_levels: 6
 
+# 메인 포털(/)의 사이드바에서 숨길 navigation branch (제목 기준).
+# 홈에서는 아래 강좌가 COURSE LIBRARY 카드로 이미 안내되므로 사이드바에서는 접어 둡니다.
+# /bioinformatics/ 등 강좌 내부 페이지에서는 그대로 표시됩니다.
+# 처리: _includes/components/sidebar.html + _includes/components/site_nav.html
+home_nav_hidden_branches:
+  - 생물정보학 기초
+
 # 사이드바에 표시할 수업 영역 (메인 COURSE LIBRARY 의 각 영역으로 이동)
 # 세부 자료는 사이드바가 아니라 메인 COURSE LIBRARY 에서 찾습니다.
 nav_external_links:
