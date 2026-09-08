@@ -97,6 +97,19 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
 
       <article class="course-card course-card--featured">
         <div class="course-card__topline">
+          <span class="course-card__subject">생화학 · 세포막과 대사</span>
+          <span class="course-card__status">운영 중</span>
+        </div>
+        <h3>지질의 생화학 3D 탐색기</h3>
+        <p>세포막 지질의 종류와 막 비대칭성, PIP2가 잘려 IP3와 DAG가 되는 신호전달, 지방산 β-산화를 3D 모델과 단계별 애니메이션으로 탐구합니다.</p>
+        <div class="course-card__meta" aria-label="강좌 정보">
+          <span>3D 애니메이션</span><span>세포막 · 지질 대사</span><span>단계별 탐구</span>
+        </div>
+        <a class="course-card__link" href="https://suimaire.github.io/lipid-3d-explorer/">탐색기 열기 <span aria-hidden="true">→</span></a>
+      </article>
+
+      <article class="course-card course-card--featured">
+        <div class="course-card__topline">
           <span class="course-card__subject">생명과학 · 데이터</span>
           <span class="course-card__status">운영 중</span>
         </div>
