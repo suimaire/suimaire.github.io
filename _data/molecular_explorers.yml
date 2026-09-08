@@ -1,0 +1,35 @@
+# 포털 1.2 "분자·생화학 3D 탐구" 영역의 카드 목록
+#
+# 새 탐색기(예: 1.2.3 단백질 3D 구조 탐색기)를 추가하려면
+# 이 파일 맨 아래에 항목 하나만 덧붙이면 됩니다. index.md 는 고치지 않아도 됩니다.
+# 표시 번호(1.2.1, 1.2.2 ...)는 여기 적힌 순서대로 화면에서 자동으로 매겨집니다.
+#
+#   - label:       카드 왼쪽 위의 콘텐츠 타입 표시
+#   - title:       카드 제목
+#   - description: 카드 설명 한 문단
+#   - meta:        카드 아래 작은 태그들
+#   - url:         이동할 주소 (별도 GitHub Pages 앱이면 절대 주소)
+#   - cta:         링크 문구
+#   - status:      오른쪽 위 상태 표시
+
+- label: "01 · 3D EXPLORER"
+  title: "탄수화물 3D 구조 탐색기"
+  description: "포도당을 비롯한 여러 탄수화물의 입체 구조를 직접 회전하고 비교하며 아노머, axial/equatorial, 입체 이성질체의 차이를 탐구합니다."
+  meta:
+    - "구조 관찰 중심"
+    - "탄수화물"
+    - "인터랙티브 탐구"
+  url: "https://suimaire.github.io/carbohydrate-3d-explorer/"
+  cta: "탐색기 열기"
+  status: "운영 중"
+
+- label: "02 · 3D MECHANISM"
+  title: "지질의 생화학 3D 탐색기"
+  description: "세포막 지질의 종류와 비대칭성, PIP₂ 신호전달, 지방산 β-산화를 3D 모델과 단계별 애니메이션으로 탐구합니다."
+  meta:
+    - "생화학 기전 애니메이션"
+    - "세포막 · 지질 대사"
+    - "단계별 탐구"
+  url: "https://suimaire.github.io/lipid-3d-explorer/"
+  cta: "탐색기 열기"
+  status: "운영 중"

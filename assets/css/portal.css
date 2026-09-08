@@ -392,7 +392,8 @@
   margin-bottom: 0.55rem;
 }
 
-.ecosystem-module__heading h3 {
+.ecosystem-module__heading h3,
+.ecosystem-module__heading h2 {
   color: var(--portal-ink);
   font-size: clamp(1.55rem, 3vw, 2.1rem);
   letter-spacing: -0.035em;
@@ -563,28 +564,34 @@
   outline-offset: 4px;
 }
 
-.bioinformatics-module {
+.bioinformatics-module,
+.library-module {
   border-top: 1px solid var(--portal-line);
   margin-top: clamp(2.5rem, 5vw, 4rem);
   padding-top: clamp(2rem, 4vw, 3rem);
 }
 
-.bioinformatics-module__heading {
+.bioinformatics-module__heading,
+.library-module__heading {
   margin-bottom: 1.25rem;
 }
 
-.bioinformatics-module__heading .portal-eyebrow {
+.bioinformatics-module__heading .portal-eyebrow,
+.library-module__heading .portal-eyebrow {
   margin-bottom: 0.55rem;
 }
 
-.bioinformatics-module__heading h3 {
+.bioinformatics-module__heading h3,
+.library-module__heading h3,
+.library-module__heading h2 {
   color: var(--portal-ink);
   font-size: clamp(1.55rem, 3vw, 2.1rem);
   letter-spacing: -0.035em;
   margin: 0;
 }
 
-.bioinformatics-module__heading > p:last-child {
+.bioinformatics-module__heading > p:last-child,
+.library-module__heading > p:last-child {
   color: var(--portal-muted);
   line-height: 1.7;
   margin: 0.65rem 0 0;

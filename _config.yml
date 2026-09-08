@@ -8,3 +8,18 @@ just_the_docs:
   heading_numbers: false
   heading_number_levels: 6
 
+# 사이드바에 표시할 수업 영역 (메인 COURSE LIBRARY 의 각 영역으로 이동)
+# 세부 자료는 사이드바가 아니라 메인 COURSE LIBRARY 에서 찾습니다.
+nav_external_links:
+  - title: 생태계·개체군 모델링
+    url: /#ecosystem
+    hide_icon: true
+    opens_in_new_tab: false
+  - title: 분자·생화학 3D 탐구
+    url: /#molecular
+    hide_icon: true
+    opens_in_new_tab: false
+  - title: 생물정보학·데이터
+    url: /#bioinformatics
+    hide_icon: true
+    opens_in_new_tab: false

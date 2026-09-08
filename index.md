@@ -17,23 +17,20 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
     <a class="portal-button portal-button--primary" href="#courses">수업자료 보기 <span aria-hidden="true">↓</span></a>
   </section>
 
-  <section class="portal-section" id="courses" aria-labelledby="courses-title">
-    <div class="portal-section__heading">
-      <p class="portal-eyebrow">COURSE LIBRARY</p>
-      <h2 id="courses-title">수업자료(공개 중)</h2>
-    </div>
+  <section class="portal-section" id="courses" aria-label="수업자료">
+    <p class="portal-eyebrow">COURSE LIBRARY</p>
 
-    <section class="ecosystem-module" aria-labelledby="ecosystem-module-title">
+    <section class="ecosystem-module" id="ecosystem" aria-labelledby="ecosystem-module-title">
       <div class="ecosystem-module__heading">
         <div>
           <p class="portal-eyebrow">01 · ECOSYSTEM &amp; POPULATION MODELING</p>
-          <h3 id="ecosystem-module-title">생태계와 개체군 모델링</h3>
+          <h2 id="ecosystem-module-title">생태계·개체군 모델링</h2>
           <p>서로 다른 두 모형으로 생태계의 변화를 관찰하고, 그래프에 나타난 관계를 학습지에서 해석합니다.</p>
         </div>
         <span class="ecosystem-module__sequence">모형 탐구 <b aria-hidden="true">→</b> 자료 해석</span>
       </div>
 
-      <div class="portal-course-grid ecosystem-model-grid" aria-label="생태계와 개체군 모델링 시뮬레이션">
+      <div class="portal-course-grid ecosystem-model-grid" aria-label="생태계·개체군 모델링 시뮬레이션">
         <article class="course-card course-card--coming course-card--available ecosystem-card">
           <div class="course-card__topline">
             <span class="ecosystem-card__number">01 · SIMULATION</span>
@@ -75,59 +72,50 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
       </article>
     </section>
 
-    <section class="bioinformatics-module" aria-labelledby="bioinformatics-module-title">
-      <div class="bioinformatics-module__heading">
-        <p class="portal-eyebrow">02 · BIOCHEMISTRY &amp; MOLECULES</p>
-        <h3 id="bioinformatics-module-title">생화학과 분자 구조</h3>
-        <p>분자의 입체 구조와 대사 과정을 3D 모델로 직접 조작하며 탐구하는 수업자료입니다.</p>
+    <section class="library-module" id="molecular" aria-labelledby="molecular-module-title">
+      <div class="library-module__heading">
+        <p class="portal-eyebrow">02 · MOLECULAR BIOCHEMISTRY</p>
+        <h2 id="molecular-module-title">분자·생화학 3D 탐구</h2>
+        <p>생체분자의 구조를 직접 회전하고, 분자 간 상호작용과 생화학적 기전을 3D 모델과 애니메이션으로 탐구하는 수업자료입니다.</p>
+      </div>
+
+      <div class="portal-course-grid" aria-label="분자·생화학 3D 탐구 자료">
+        {%- for item in site.data.molecular_explorers %}
+        <article class="course-card course-card--featured">
+          <div class="course-card__topline">
+            <span class="course-card__subject">{{ item.label }}</span>
+            <span class="course-card__status">{{ item.status }}</span>
+          </div>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+          <div class="course-card__meta" aria-label="자료 정보">
+            {%- for tag in item.meta %}<span>{{ tag }}</span>{% endfor %}
+          </div>
+          <a class="course-card__link" href="{{ item.url }}">{{ item.cta }} <span aria-hidden="true">→</span></a>
+        </article>
+        {%- endfor %}
+      </div>
+    </section>
+
+    <section class="library-module" id="bioinformatics" aria-labelledby="bioinformatics-module-title">
+      <div class="library-module__heading">
+        <p class="portal-eyebrow">03 · BIOINFORMATICS &amp; DATA</p>
+        <h2 id="bioinformatics-module-title">생물정보학·데이터</h2>
+        <p>공개 생명과학 데이터와 분석 도구를 활용해 생명 현상을 탐구하는 수업자료입니다.</p>
       </div>
 
       <article class="course-card course-card--featured">
         <div class="course-card__topline">
-          <span class="course-card__subject">생화학 · 분자 구조</span>
+          <span class="course-card__subject">01 · DATA COURSE</span>
           <span class="course-card__status">운영 중</span>
         </div>
-        <h3>탄수화물 3D 구조 탐색기</h3>
-        <p>포도당을 비롯한 여러 탄수화물의 입체 구조를 직접 회전하고 비교하며 아노머, axial/equatorial, 입체 이성질체의 차이를 탐구합니다.</p>
-        <div class="course-card__meta" aria-label="강좌 정보">
-          <span>3D 분자 구조</span><span>탄수화물</span><span>인터랙티브 탐구</span>
+        <h3>생물정보학 기초</h3>
+        <p>Biopython과 공개 생명과학 데이터를 활용해 서열, 단백질 구조, 유전 평형과 변이를 탐구합니다.</p>
+        <div class="course-card__meta" aria-label="자료 정보">
+          <span>5일 과정</span><span>Google Colab</span><span>탐구 활동 중심</span>
         </div>
-        <a class="course-card__link" href="https://suimaire.github.io/carbohydrate-3d-explorer/">탐색기 열기 <span aria-hidden="true">→</span></a>
-      </article>
-
-      <article class="course-card course-card--featured">
-        <div class="course-card__topline">
-          <span class="course-card__subject">생화학 · 세포막과 대사</span>
-          <span class="course-card__status">운영 중</span>
-        </div>
-        <h3>지질의 생화학 3D 탐색기</h3>
-        <p>세포막 지질의 종류와 막 비대칭성, PIP2가 잘려 IP3와 DAG가 되는 신호전달, 지방산 β-산화를 3D 모델과 단계별 애니메이션으로 탐구합니다.</p>
-        <div class="course-card__meta" aria-label="강좌 정보">
-          <span>3D 애니메이션</span><span>세포막 · 지질 대사</span><span>단계별 탐구</span>
-        </div>
-        <a class="course-card__link" href="https://suimaire.github.io/lipid-3d-explorer/">탐색기 열기 <span aria-hidden="true">→</span></a>
+        <a class="course-card__link" href="{{ '/bioinformatics/' | relative_url }}">강좌 안내 보기 <span aria-hidden="true">→</span></a>
       </article>
     </section>
-  </section>
-
-  <section class="portal-section" id="bioinformatics" aria-labelledby="bioinformatics-title">
-    <div class="portal-section__heading">
-      <p class="portal-eyebrow">BIOINFORMATICS &amp; DATA</p>
-      <h2 id="bioinformatics-title">생물정보학</h2>
-      <p>공개 생명과학 데이터와 분석 도구를 활용해 생명 현상을 탐구하는 수업자료입니다.</p>
-    </div>
-
-    <article class="course-card course-card--featured">
-      <div class="course-card__topline">
-        <span class="course-card__subject">생명과학 · 데이터</span>
-        <span class="course-card__status">운영 중</span>
-      </div>
-      <h3>생물정보학 기초</h3>
-      <p>Biopython과 공개 생명과학 데이터를 활용해 서열, 단백질 구조, 유전 평형과 변이를 탐구합니다.</p>
-      <div class="course-card__meta" aria-label="강좌 정보">
-        <span>5일 과정</span><span>Google Colab</span><span>탐구 활동 중심</span>
-      </div>
-      <a class="course-card__link" href="{{ '/bioinformatics/' | relative_url }}">강좌 안내 보기 <span aria-hidden="true">→</span></a>
-    </article>
   </section>
 </div>
