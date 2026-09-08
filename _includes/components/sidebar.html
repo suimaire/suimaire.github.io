@@ -26,10 +26,16 @@
     site.home_nav_hidden_branches are left out, because the home page already
     lists those courses as COURSE LIBRARY cards. Every other page gets the
     unmodified theme navigation.
-    include_cached keys on the parameters, so this yields two cached variants.
+    The home variant uses a plain (uncached) include on purpose: the
+    include_cached entry for components/site_nav.html is shared with the
+    theme's own callers (components/breadcrumbs.html and
+    components/children_nav.html call it with all=true), so a parameterised
+    cached call here would hand the home page whichever variant happened to
+    fill the cache first. Every other page keeps the theme's cached call
+    untouched.
   {%- endcomment -%}
   {% if page.url == '/' %}
-    {% include_cached components/site_nav.html hide_home_nav_branches=true %}
+    {% include components/site_nav.html hide_home_nav_branches=true %}
   {% else %}
     {% include_cached components/site_nav.html %}
   {% endif %}
