@@ -77,9 +77,9 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
 
     <section class="bioinformatics-module" aria-labelledby="bioinformatics-module-title">
       <div class="bioinformatics-module__heading">
-        <p class="portal-eyebrow">02 · BIOINFORMATICS &amp; DATA</p>
-        <h3 id="bioinformatics-module-title">생물정보학과 데이터</h3>
-        <p>공개 생명과학 데이터와 분석 도구를 활용해 생명 현상을 탐구하는 수업자료입니다.</p>
+        <p class="portal-eyebrow">02 · BIOCHEMISTRY &amp; MOLECULES</p>
+        <h3 id="bioinformatics-module-title">생화학과 분자 구조</h3>
+        <p>분자의 입체 구조와 대사 과정을 3D 모델로 직접 조작하며 탐구하는 수업자료입니다.</p>
       </div>
 
       <article class="course-card course-card--featured">
@@ -107,19 +107,27 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
         </div>
         <a class="course-card__link" href="https://suimaire.github.io/lipid-3d-explorer/">탐색기 열기 <span aria-hidden="true">→</span></a>
       </article>
-
-      <article class="course-card course-card--featured">
-        <div class="course-card__topline">
-          <span class="course-card__subject">생명과학 · 데이터</span>
-          <span class="course-card__status">운영 중</span>
-        </div>
-        <h3>생물정보학 기초</h3>
-        <p>Biopython과 공개 생명과학 데이터를 활용해 서열, 단백질 구조, 유전 평형과 변이를 탐구합니다.</p>
-        <div class="course-card__meta" aria-label="강좌 정보">
-          <span>5일 과정</span><span>Google Colab</span><span>탐구 활동 중심</span>
-        </div>
-        <a class="course-card__link" href="{{ '/bioinformatics/' | relative_url }}">강좌 안내 보기 <span aria-hidden="true">→</span></a>
-      </article>
     </section>
+  </section>
+
+  <section class="portal-section" id="bioinformatics" aria-labelledby="bioinformatics-title">
+    <div class="portal-section__heading">
+      <p class="portal-eyebrow">BIOINFORMATICS &amp; DATA</p>
+      <h2 id="bioinformatics-title">생물정보학</h2>
+      <p>공개 생명과학 데이터와 분석 도구를 활용해 생명 현상을 탐구하는 수업자료입니다.</p>
+    </div>
+
+    <article class="course-card course-card--featured">
+      <div class="course-card__topline">
+        <span class="course-card__subject">생명과학 · 데이터</span>
+        <span class="course-card__status">운영 중</span>
+      </div>
+      <h3>생물정보학 기초</h3>
+      <p>Biopython과 공개 생명과학 데이터를 활용해 서열, 단백질 구조, 유전 평형과 변이를 탐구합니다.</p>
+      <div class="course-card__meta" aria-label="강좌 정보">
+        <span>5일 과정</span><span>Google Colab</span><span>탐구 활동 중심</span>
+      </div>
+      <a class="course-card__link" href="{{ '/bioinformatics/' | relative_url }}">강좌 안내 보기 <span aria-hidden="true">→</span></a>
+    </article>
   </section>
 </div>
