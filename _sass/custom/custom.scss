@@ -15,12 +15,21 @@
 .page__content {
   max-width: none;
 }
+/* 한글·영문·숫자를 한 계열로 묶는다.
+   NanumSquareNeo 가 있으면 그것을, 없으면 OS 기본 sans-serif 로 떨어진다.
+   (assets/fonts/*.ttf 는 현재 빈 파일이라 사실상 시스템 폰트가 쓰인다.)
+   장식용 webfont 는 쓰지 않는다. */
 body,
 .site-nav,
 h1, h2, h3, h4, h5, h6 {
   font-family:
-    "Coming Soon",       /* 영문 */
-    "NanumSquareNeo",    /* 한글 */
+    "NanumSquareNeo",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Apple SD Gothic Neo",
+    "Malgun Gothic",
+    system-ui,
     sans-serif;
 }
 /* 연한 회색 머리글 번호 */
