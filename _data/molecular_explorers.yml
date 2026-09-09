@@ -33,3 +33,14 @@
   url: "https://suimaire.github.io/lipid-3d-explorer/"
   cta: "탐색기 열기"
   status: "운영 중"
+
+- label: "03 · 3D EXPLORER"
+  title: "단백질 3D 구조 탐색기"
+  description: "펩타이드 결합의 평면성과 φ/ψ 회전을 직접 조작하고, 라마찬드란 도표와 입체 겹침 표시, α-헬릭스의 i→i+4 수소 결합을 3D로 탐구합니다."
+  meta:
+    - "구조 형성 원리"
+    - "펩타이드 · α-헬릭스"
+    - "직접 조작 탐구"
+  url: "https://suimaire.github.io/protein-3d-explorer/"
+  cta: "탐색기 열기"
+  status: "운영 중"
