@@ -44,17 +44,17 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
       </p>
 
       <ol class="portal-resources">
-        <li class="portal-resource">
-          <h3><a href="{{ '/predator-prey-simulation-2/' | relative_url }}">토끼와 늑대 숲 생태계</a></h3>
+        <li class="portal-resource portal-resource--compact">
+          <h3><a href="{{ '/predator-prey-worksheet/' | relative_url }}">포식자와 피식자, 누가 먼저 변할까?</a></h3>
           <p class="portal-resource__meta">
-            <span class="portal-resource__kind">개체 기반 모형</span>
-            <span class="portal-resource__status">운영 중</span>
+            <span class="portal-resource__kind">자료 해석 학습지</span>
+            <span class="portal-resource__status">약 20분</span>
           </p>
           <p class="portal-resource__desc">
-            개별 토끼와 늑대의 이동·먹이·번식 조건을 조절하고, 그 행동이 모여 전체 생태계 변화를 만드는 과정을 관찰합니다.
+            두 시뮬레이션에서 관찰한 개체군 변화의 순서와 시간 지연을 그래프로 해석하고 하나의 설명으로 연결합니다.
           </p>
           <p class="portal-resource__action">
-            <a href="{{ '/predator-prey-simulation-2/' | relative_url }}">시뮬레이션 열기 <span class="arrow" aria-hidden="true">→</span></a>
+            <a href="{{ '/predator-prey-worksheet/' | relative_url }}">학습지 시작하기 <span class="arrow" aria-hidden="true">→</span></a>
           </p>
         </li>
 
@@ -72,17 +72,17 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
           </p>
         </li>
 
-        <li class="portal-resource portal-resource--compact">
-          <h3><a href="{{ '/predator-prey-worksheet/' | relative_url }}">포식자와 피식자, 누가 먼저 변할까?</a></h3>
+        <li class="portal-resource">
+          <h3><a href="{{ '/predator-prey-simulation-2/' | relative_url }}">토끼와 늑대 숲 생태계</a></h3>
           <p class="portal-resource__meta">
-            <span class="portal-resource__kind">자료 해석 학습지</span>
-            <span class="portal-resource__status">약 20분</span>
+            <span class="portal-resource__kind">개체 기반 모형</span>
+            <span class="portal-resource__status">운영 중</span>
           </p>
           <p class="portal-resource__desc">
-            두 시뮬레이션에서 관찰한 개체군 변화의 순서와 시간 지연을 그래프로 해석하고 하나의 설명으로 연결합니다.
+            개별 토끼와 늑대의 이동·먹이·번식 조건을 조절하고, 그 행동이 모여 전체 생태계 변화를 만드는 과정을 관찰합니다.
           </p>
           <p class="portal-resource__action">
-            <a href="{{ '/predator-prey-worksheet/' | relative_url }}">학습지 시작하기 <span class="arrow" aria-hidden="true">→</span></a>
+            <a href="{{ '/predator-prey-simulation-2/' | relative_url }}">시뮬레이션 열기 <span class="arrow" aria-hidden="true">→</span></a>
           </p>
         </li>
       </ol>
