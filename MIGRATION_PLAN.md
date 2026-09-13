@@ -2,6 +2,7 @@
 title: 과학 수업 메인 포털 전환 계획
 nav_exclude: true
 search_exclude: true
+page_views: false
 ---
 
 # 과학 수업 메인 포털 전환 계획

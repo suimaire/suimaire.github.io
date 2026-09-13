@@ -4,6 +4,18 @@ url: "https://suimaire.github.io"
 
 remote_theme: pmarsceill/just-the-docs
 
+# Jekyll 3.x 는 exclude 를 지정하면 기본 목록을 대체하므로 기본값을 함께 적습니다.
+# tests/ : assets/js/page-views.js 단위 테스트(node --test tests/page-views.test.mjs). 사이트에 배포하지 않습니다.
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/
+  - tests/
+
 just_the_docs:
   heading_numbers: false
   heading_number_levels: 6

@@ -1,0 +1,15 @@
+{%- comment -%}
+  just-the-docs 의 footer 확장 지점(components/footer.html 이 include).
+  테마 기본 동작(site.footer_content)을 그대로 유지하고, 조회수 한 줄을 덧붙인다.
+
+  조회수: assets/js/page-views.js (포털과 모든 학습 앱이 공유하는 모듈)
+  page_key 는 스크립트가 URL pathname 에서 계산한다. 페이지별로 집계를 끄려면 front matter 에
+    page_views: false
+{%- endcomment -%}
+{%- if site.footer_content -%}
+  <p class="text-small mb-0">{{ site.footer_content }}</p>
+{%- endif -%}
+{%- unless page.page_views == false -%}
+  <p class="page-views mb-0" data-page-views hidden></p>
+  <script type="module" src="{{ '/assets/js/page-views.js' | relative_url }}"></script>
+{%- endunless -%}
