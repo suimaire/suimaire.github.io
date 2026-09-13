@@ -1,5 +1,5 @@
 /*
- * HAFS 과학 수업 포털 공통 조회수 표시 ("오늘 조회 37 · 전체 조회 1,284")
+ * HAFS 과학 수업 포털 공통 조회수 표시 ("today 37 · total 1,284")
  *
  * 이 파일 하나를 포털(Jekyll)과 모든 학습 앱(별도 GitHub Pages 저장소)이 함께 씁니다.
  *   포털  : _includes/footer_custom.html 이 로드
@@ -90,7 +90,7 @@ export function isWithinDedupeWindow(lastCountedAt, now, windowMs = PAGE_VIEWS_C
 
 export function formatCounts(today, total) {
   const f = (value) => Number(value).toLocaleString('ko-KR');
-  return `오늘 조회 ${f(today)} · 전체 조회 ${f(total)}`;
+  return `today ${f(today)} · total ${f(total)}`;
 }
 
 function openStorage() {

@@ -101,6 +101,9 @@
   line-height: 1.85;
   margin: 0.85rem 0 0;
   max-width: 40rem;
+  /* 한국어 어절이 음절 단위로 쪼개지지 않게("관 / 찰하고" 방지). 어절 전체가 다음 줄로 넘어간다. */
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 /* 자료 영역 바로가기 (목차 한 줄) */
@@ -118,7 +121,9 @@
   display: inline-flex;
   font-size: 0.86rem;
   gap: 0.5rem;
+  overflow-wrap: break-word;
   text-decoration: none !important;
+  word-break: keep-all;
 }
 
 .portal-contents a:hover {
@@ -153,8 +158,10 @@
   letter-spacing: -0.015em;
   line-height: 1.4;
   margin: 0;
+  overflow-wrap: break-word;
   padding-left: 4.75rem;
   position: relative;
+  word-break: keep-all;
 }
 
 .science-portal h2 .heading-number {

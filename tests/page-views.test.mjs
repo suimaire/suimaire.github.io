@@ -67,8 +67,8 @@ test('isWithinDedupeWindow: 30분', () => {
 });
 
 test('formatCounts: ko-KR 천 단위', () => {
-  assert.equal(formatCounts(37, 1284), '오늘 조회 37 · 전체 조회 1,284');
-  assert.equal(formatCounts(0, 1234567), '오늘 조회 0 · 전체 조회 1,234,567');
+  assert.equal(formatCounts(37, 1284), 'today 37 · total 1,284');
+  assert.equal(formatCounts(0, 1234567), 'today 0 · total 1,234,567');
 });
 
 function memoryStorage() {
