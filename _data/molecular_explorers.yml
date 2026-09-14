@@ -24,7 +24,7 @@
   status: "운영 중"
 
 - label: "3D MECHANISM"
-  title: "지질의 생화학 3D 탐색기"
+  title: "지질 생화학 3D 탐색기"
   description: "세포막 지질의 종류와 비대칭성, PIP₂ 신호전달, 지방산 β-산화를 3D 모델과 단계별 애니메이션으로 탐구합니다."
   meta:
     - "생화학 기전 애니메이션"
