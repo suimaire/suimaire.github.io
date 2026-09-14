@@ -88,6 +88,8 @@
   letter-spacing: -0.02em;
   line-height: 1.25;
   margin: 0.7rem 0 0;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 /* masthead 에서는 자동 번호("1")를 숨긴다 — 아래 절 번호는 그대로 쓴다. */
@@ -150,6 +152,14 @@
   margin-top: 3rem;
 }
 
+/* 영역이 어느 수업의 자료인지 알리는 라벨. 제목에 이어 붙이지 않고 한 단 위에 둔다. */
+.portal-part .portal-eyebrow {
+  margin-bottom: 0.45rem;
+  overflow-wrap: break-word;
+  padding-left: 4.75rem;
+  word-break: keep-all;
+}
+
 /* 절 제목: 번호는 왼쪽 rail 로 빠진다 */
 .science-portal h2 {
   color: var(--portal-ink);
@@ -182,7 +192,9 @@
   line-height: 1.8;
   margin: 0.6rem 0 0;
   max-width: 38rem;
+  overflow-wrap: break-word;
   padding-left: 4.75rem;
+  word-break: keep-all;
 }
 
 /* ------------------------------------------------------------- 자료 목록 */
@@ -226,7 +238,9 @@
   letter-spacing: -0.01em;
   line-height: 1.5;
   margin: 0;
+  overflow-wrap: break-word;
   position: relative;
+  word-break: keep-all;
 }
 
 /* 항목 번호(1.2.1)도 같은 rail 위에 정렬 */
@@ -267,6 +281,8 @@
   gap: 0.3rem 0.85rem;
   letter-spacing: 0.06em;
   margin: 0.4rem 0 0;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 .portal-resource__kind {
@@ -295,6 +311,8 @@
   line-height: 1.8;
   margin: 0.6rem 0 0;
   max-width: 36rem;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 /* 부가 정보 한 줄 (분류 태그) — pill 로 만들지 않는다 */
@@ -304,6 +322,8 @@
   letter-spacing: 0.01em;
   line-height: 1.6;
   margin: 0.5rem 0 0;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 .portal-resource__action {
@@ -314,7 +334,9 @@
   color: var(--portal-accent) !important;
   font-size: 0.86rem;
   font-weight: 700;
+  overflow-wrap: break-word;
   text-decoration: none !important;
+  word-break: keep-all;
 }
 
 .portal-resource__action a:hover {
@@ -503,6 +525,7 @@
 
   /* 좁은 화면에서는 번호 rail 을 접고 번호를 제목 위에 올린다 */
   .science-portal h2,
+  .portal-part .portal-eyebrow,
   .portal-part__note,
   .portal-resource {
     padding-left: 0;
