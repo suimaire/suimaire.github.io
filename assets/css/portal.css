@@ -354,6 +354,86 @@
   transform: translateX(3px);
 }
 
+/* 1.2.3 안의 사전학습 도구 — 독립 자료가 아닌 보조 위계로 표시 */
+.portal-prelearning {
+  border-top: 1px solid var(--portal-rule);
+  margin-top: 1.15rem;
+  max-width: 36rem;
+  padding-top: 0.95rem;
+}
+
+.portal-prelearning__label {
+  color: var(--portal-accent);
+  font-family: var(--portal-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.portal-prelearning__title {
+  color: var(--portal-ink);
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 0.35rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.portal-prelearning__title a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.portal-prelearning__title a:hover {
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+}
+
+.portal-prelearning__meta {
+  color: var(--portal-faint);
+  font-family: var(--portal-mono);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  margin: 0.25rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.portal-prelearning__desc {
+  color: var(--portal-muted);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  margin: 0.35rem 0 0;
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
+.portal-prelearning__action {
+  margin: 0.5rem 0 0;
+}
+
+.portal-prelearning__action a {
+  color: var(--portal-accent) !important;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+.portal-prelearning__action a:hover {
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+}
+
+.portal-prelearning__action .arrow {
+  display: inline-block;
+  transition: transform 140ms ease;
+}
+
+.portal-prelearning__action a:hover .arrow {
+  transform: translateX(3px);
+}
+
 /* 보조 자료(학습지 등)는 한 단계 조밀하게 */
 .portal-resource--compact {
   padding-bottom: 1.1rem;
@@ -562,6 +642,7 @@
 @media (prefers-reduced-motion: reduce) {
   .portal-resource,
   .portal-resource__action .arrow,
+  .portal-prelearning__action .arrow,
   .lesson-link,
   .lesson-link__arrow {
     transition: none;

@@ -111,6 +111,21 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
           <p class="portal-resource__action">
             <a href="{{ item.url }}">{{ item.cta }} <span class="arrow" aria-hidden="true">→</span></a>
           </p>
+          {%- if item.prelearning %}
+          <div class="portal-prelearning">
+            <p class="portal-prelearning__label">{{ item.prelearning.label }}</p>
+            <p class="portal-prelearning__title">
+              <a href="{{ item.prelearning.url }}">{{ item.prelearning.title }}</a>
+            </p>
+            <p class="portal-prelearning__meta">{{ item.prelearning.meta }}</p>
+            <p class="portal-prelearning__desc">{{ item.prelearning.description }}</p>
+            <p class="portal-prelearning__action">
+              <a href="{{ item.prelearning.url }}" aria-label="{{ item.prelearning.title }} 학습하기">
+                {{ item.prelearning.cta }} <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </p>
+          </div>
+          {%- endif %}
         </li>
         {%- endfor %}
       </ol>

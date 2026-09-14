@@ -44,3 +44,10 @@
   url: "https://suimaire.github.io/protein-3d-explorer/"
   cta: "탐색기 열기"
   status: "운영 중"
+  prelearning:
+    label: "PRE-LEARNING"
+    title: "Amino Acids, by Heart."
+    meta: "Structure / Name / 3-Letter / 1-Letter"
+    description: "20종 표준 아미노산의 구조와 코드를 연결해 익힙니다."
+    url: "https://suimaire.github.io/amino-acid-trainer/"
+    cta: "학습하기"
