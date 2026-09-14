@@ -90,7 +90,7 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
     </section>
 
     <section class="portal-part" id="molecular" aria-labelledby="molecular-module-title">
-      <p class="portal-eyebrow">ET Basic Biochemistry</p>
+      <p class="portal-eyebrow">2026 HAFS Elective Track - Basic Biochemistry</p>
       <h2 id="molecular-module-title">분자 · 생화학 3D 탐구</h2>
       <p class="portal-part__note">
         생체분자의 구조를 직접 회전하고, 분자 간 상호작용과 생화학적 기전을 3D 모델과 애니메이션으로 탐구하는 수업자료입니다.
