@@ -21,7 +21,8 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
 
 <div class="science-portal">
   <header class="portal-masthead">
-    <p class="portal-masthead__org">HAFS Science Learning Lab</p>
+    <p class="portal-masthead__org">HAFS Biology Lab</p>
+    <p class="portal-masthead__credit">Teacher-built interactive science tools · CH Park</p>
     <h1 id="portal-title">데이터로 확인하는 과학</h1>
     <p class="portal-masthead__lead">
       생명과학 수업에서 사용하는 시뮬레이션, 3D 분자 모델, 데이터 탐구 자료를 모았습니다.

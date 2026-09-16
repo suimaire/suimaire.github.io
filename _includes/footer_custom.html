@@ -1,6 +1,8 @@
 {%- comment -%}
   just-the-docs 의 footer 확장 지점(components/footer.html 이 include).
-  테마 기본 동작(site.footer_content)을 그대로 유지하고, 조회수 한 줄을 덧붙인다.
+  테마 기본 동작(site.footer_content)을 그대로 유지하고, 브랜드 두 줄과 조회수 한 줄을 덧붙인다.
+
+  브랜드: 홈(/)은 masthead 최상단에 같은 두 줄이 이미 있으므로 footer 에서는 생략한다.
 
   조회수: assets/js/page-views.js (포털과 모든 학습 앱이 공유하는 모듈)
   page_key 는 스크립트가 URL pathname 에서 계산한다. 페이지별로 집계를 끄려면 front matter 에
@@ -9,6 +11,10 @@
 {%- if site.footer_content -%}
   <p class="text-small mb-0">{{ site.footer_content }}</p>
 {%- endif -%}
+{%- unless page.url == "/" -%}
+  <p class="site-credit__name mb-0">HAFS Biology Lab</p>
+  <p class="site-credit__line mb-0">Teacher-built interactive science tools · CH Park</p>
+{%- endunless -%}
 {%- unless page.page_views == false -%}
   <p class="page-views mb-0" data-page-views hidden></p>
   <script type="module" src="{{ '/assets/js/page-views.js' | relative_url }}"></script>

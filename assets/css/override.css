@@ -57,6 +57,20 @@
   color: #687470;
 }
 
+/* 본문 하단 footer 의 브랜드 두 줄 (_includes/footer_custom.html) */
+.site-credit__name {
+  color: #0d5751;
+  font-size: 13px !important;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.site-credit__line {
+  color: #687470;
+  font-size: 12px !important;
+  line-height: 1.5;
+}
+
 /* navigation: 색 블록 대신 얇은 세로 지시선과 아주 옅은 바탕 */
 .side-bar .nav-list .nav-list-item .nav-list-link {
   color: #2f3634;

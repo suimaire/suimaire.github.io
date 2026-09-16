@@ -70,14 +70,22 @@
   padding-bottom: 1.6rem;
 }
 
+/* 브랜드명은 대소문자 그대로("HAFS Biology Lab") 보이게 한다. 제목(h1)보다 약하게. */
 .portal-masthead__org {
   color: var(--portal-accent);
-  font-family: var(--portal-mono);
-  font-size: 0.7rem;
+  font-family: var(--portal-sans);
+  font-size: 0.95rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
   margin: 0;
-  text-transform: uppercase;
+}
+
+.portal-masthead__credit {
+  color: var(--portal-faint);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 0.1rem 0 0;
 }
 
 .science-portal h1 {
