@@ -15,7 +15,7 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
     · 자료를 넣고 빼면 번호는 알아서 다시 매겨진다.
 
   자료 추가 위치
-    1.2 분자·생화학 3D 탐구 → _data/molecular_explorers.yml 에만 항목 추가
+    1.2 분자·생화학 탐구   → _data/molecular_explorers.yml 에만 항목 추가
     1.1 / 1.3             → 아래 해당 <ol class="portal-resources"> 안에 <li> 추가
 {%- endcomment -%}
 
@@ -32,7 +32,7 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
 
   <nav class="portal-contents" aria-label="자료 영역 바로가기">
     <a href="#ecosystem"><span class="portal-contents__num">1.1</span>생태계 · 개체군 모델링</a>
-    <a href="#molecular"><span class="portal-contents__num">1.2</span>분자 · 생화학 3D 탐구</a>
+    <a href="#molecular"><span class="portal-contents__num">1.2</span>분자 · 생화학 탐구</a>
     <a href="#bioinformatics"><span class="portal-contents__num">1.3</span>생물정보학 · 데이터</a>
   </nav>
 
@@ -92,9 +92,9 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
 
     <section class="portal-part" id="molecular" aria-labelledby="molecular-module-title">
       <p class="portal-eyebrow">2026 HAFS Elective Track - Basic Biochemistry</p>
-      <h2 id="molecular-module-title">분자 · 생화학 3D 탐구</h2>
+      <h2 id="molecular-module-title">분자 · 생화학 탐구</h2>
       <p class="portal-part__note">
-        생체분자의 구조를 직접 회전하고, 분자 간 상호작용과 생화학적 기전을 3D 모델과 애니메이션으로 탐구하는 수업자료입니다.
+        생체분자의 구조와 화학적 성질을 3D 모델, 그래프, 시뮬레이션으로 직접 조작하며 분자 간 상호작용과 생화학적 기전을 탐구하는 수업자료입니다.
       </p>
 
       <ol class="portal-resources">
@@ -112,24 +112,28 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
           <p class="portal-resource__action">
             <a href="{{ item.url }}">{{ item.cta }} <span class="arrow" aria-hidden="true">→</span></a>
           </p>
-          {%- if item.prelearning %}
-          <div class="portal-prelearning">
-            <p class="portal-prelearning__label">{{ item.prelearning.label }}</p>
-            <p class="portal-prelearning__title">
-              <a href="{{ item.prelearning.url }}">{{ item.prelearning.title }}</a>
-            </p>
-            <p class="portal-prelearning__meta">{{ item.prelearning.meta }}</p>
-            <p class="portal-prelearning__desc">{{ item.prelearning.description }}</p>
-            <p class="portal-prelearning__action">
-              <a href="{{ item.prelearning.url }}" aria-label="{{ item.prelearning.title }} 학습하기">
-                {{ item.prelearning.cta }} <span class="arrow" aria-hidden="true">→</span>
-              </a>
-            </p>
-          </div>
-          {%- endif %}
         </li>
         {%- endfor %}
       </ol>
+
+      {%- comment -%} 사전학습 도구는 탐색기 번호 목록 아래 별도 영역으로 둔다 {%- endcomment -%}
+      {%- for item in site.data.molecular_explorers %}
+      {%- if item.prelearning %}
+      <div class="portal-prelearning portal-prelearning--section">
+        <p class="portal-prelearning__label">{{ item.prelearning.label }}</p>
+        <p class="portal-prelearning__title">
+          <a href="{{ item.prelearning.url }}">{{ item.prelearning.title }}</a>
+        </p>
+        <p class="portal-prelearning__meta">{{ item.prelearning.meta }}</p>
+        <p class="portal-prelearning__desc">{{ item.prelearning.description }}</p>
+        <p class="portal-prelearning__action">
+          <a href="{{ item.prelearning.url }}" aria-label="{{ item.prelearning.title }} 학습하기">
+            {{ item.prelearning.cta }} <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </p>
+      </div>
+      {%- endif %}
+      {%- endfor %}
     </section>
 
     <section class="portal-part" id="bioinformatics" aria-labelledby="bioinformatics-module-title">

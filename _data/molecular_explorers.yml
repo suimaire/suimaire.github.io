@@ -1,6 +1,6 @@
-# 포털 1.2 "분자·생화학 3D 탐구" 영역의 자료 목록
+# 포털 1.2 "분자·생화학 탐구" 영역의 자료 목록
 #
-# 새 탐색기(예: 효소·핵산 3D 탐색기)를 추가하려면 이 파일 맨 아래에 항목
+# 새 탐색기(예: 핵산 3D 탐색기)를 추가하려면 이 파일 맨 아래에 항목
 # 하나만 덧붙이면 됩니다. index.md 는 고치지 않아도 됩니다.
 # 표시 번호(1.2.1, 1.2.2 ...)는 여기 적힌 순서대로 화면에서 자동으로 매겨집니다.
 #
@@ -11,6 +11,8 @@
 #   - url:         이동할 주소 (별도 GitHub Pages 앱이면 절대 주소)
 #   - cta:         링크 문구
 #   - status:      분류 표시 옆의 상태 (작은 점 + 텍스트로 표시됩니다)
+#   - prelearning: 사전학습 도구 (생략 가능). 해당 항목 안이 아니라
+#                  탐색기 목록 전체 아래에 별도 PRE-LEARNING 영역으로 표시됩니다.
 
 - label: "3D EXPLORER"
   title: "탄수화물 3D 구조 탐색기"
@@ -51,3 +53,14 @@
     description: "20종 표준 아미노산의 구조와 코드를 연결해 익힙니다."
     url: "https://suimaire.github.io/amino-acid-trainer/"
     cta: "학습하기"
+
+- label: "INTERACTIVE LAB"
+  title: "효소 촉매와 반응속도론 탐색기"
+  description: "반응 에너지와 활성화 장벽을 비교하고, 탄산무수화효소의 활성 부위를 3D 구조에서 탐색하며, Michaelis–Menten 반응속도론의 변수를 직접 조절해 효소 반응의 원리를 탐구합니다."
+  meta:
+    - "촉매 · 활성 부위"
+    - "Michaelis–Menten"
+    - "매개변수 탐구"
+  url: "https://suimaire.github.io/enzyme-explorer/"
+  cta: "탐색기 열기"
+  status: "운영 중"

@@ -362,12 +362,19 @@
   transform: translateX(3px);
 }
 
-/* 1.2.3 안의 사전학습 도구 — 독립 자료가 아닌 보조 위계로 표시 */
+/* 1.2 사전학습 도구 — 독립 자료가 아닌 보조 위계로 표시 */
 .portal-prelearning {
   border-top: 1px solid var(--portal-rule);
   margin-top: 1.15rem;
   max-width: 36rem;
   padding-top: 0.95rem;
+}
+
+/* 탐색기 목록 전체 아래에 따로 두는 경우 — 항목 본문과 같은 rail 위치에 맞춘다 */
+.portal-prelearning--section {
+  margin-top: 0;
+  max-width: calc(36rem + 4.75rem);
+  padding: 1.1rem 0 0.2rem 4.75rem;
 }
 
 .portal-prelearning__label {
@@ -615,7 +622,8 @@
   .science-portal h2,
   .portal-part .portal-eyebrow,
   .portal-part__note,
-  .portal-resource {
+  .portal-resource,
+  .portal-prelearning--section {
     padding-left: 0;
   }
 
