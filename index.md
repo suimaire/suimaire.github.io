@@ -99,6 +99,22 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
 
       <ol class="portal-resources">
         {%- for item in site.data.molecular_explorers %}
+        {%- comment -%} 사전학습 도구는 번호 없이, 연결된 탐색기 바로 앞에 별도 줄로 둔다 {%- endcomment -%}
+        {%- if item.prelearning %}
+        <li class="portal-prelearning portal-prelearning--section">
+          <p class="portal-prelearning__label">{{ item.prelearning.label }}</p>
+          <p class="portal-prelearning__title">
+            <a href="{{ item.prelearning.url }}">{{ item.prelearning.title }}</a>
+          </p>
+          <p class="portal-prelearning__meta">{{ item.prelearning.meta }}</p>
+          <p class="portal-prelearning__desc">{{ item.prelearning.description }}</p>
+          <p class="portal-prelearning__action">
+            <a href="{{ item.prelearning.url }}" aria-label="{{ item.prelearning.title }} 학습하기">
+              {{ item.prelearning.cta }} <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </p>
+        </li>
+        {%- endif %}
         <li class="portal-resource">
           <h3><a href="{{ item.url }}">{{ item.title }}</a></h3>
           <p class="portal-resource__meta">
@@ -115,25 +131,6 @@ description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업
         </li>
         {%- endfor %}
       </ol>
-
-      {%- comment -%} 사전학습 도구는 탐색기 번호 목록 아래 별도 영역으로 둔다 {%- endcomment -%}
-      {%- for item in site.data.molecular_explorers %}
-      {%- if item.prelearning %}
-      <div class="portal-prelearning portal-prelearning--section">
-        <p class="portal-prelearning__label">{{ item.prelearning.label }}</p>
-        <p class="portal-prelearning__title">
-          <a href="{{ item.prelearning.url }}">{{ item.prelearning.title }}</a>
-        </p>
-        <p class="portal-prelearning__meta">{{ item.prelearning.meta }}</p>
-        <p class="portal-prelearning__desc">{{ item.prelearning.description }}</p>
-        <p class="portal-prelearning__action">
-          <a href="{{ item.prelearning.url }}" aria-label="{{ item.prelearning.title }} 학습하기">
-            {{ item.prelearning.cta }} <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </p>
-      </div>
-      {%- endif %}
-      {%- endfor %}
     </section>
 
     <section class="portal-part" id="bioinformatics" aria-labelledby="bioinformatics-module-title">

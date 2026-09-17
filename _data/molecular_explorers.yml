@@ -11,8 +11,8 @@
 #   - url:         이동할 주소 (별도 GitHub Pages 앱이면 절대 주소)
 #   - cta:         링크 문구
 #   - status:      분류 표시 옆의 상태 (작은 점 + 텍스트로 표시됩니다)
-#   - prelearning: 사전학습 도구 (생략 가능). 해당 항목 안이 아니라
-#                  탐색기 목록 전체 아래에 별도 PRE-LEARNING 영역으로 표시됩니다.
+#   - prelearning: 사전학습 도구 (생략 가능). 번호 없이 해당 탐색기 바로 앞에
+#                  별도 PRE-LEARNING 줄로 표시됩니다.
 
 - label: "3D EXPLORER"
   title: "탄수화물 3D 구조 탐색기"

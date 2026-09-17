@@ -370,11 +370,11 @@
   padding-top: 0.95rem;
 }
 
-/* 탐색기 목록 전체 아래에 따로 두는 경우 — 항목 본문과 같은 rail 위치에 맞춘다 */
+/* 목록 안에서 연결된 탐색기 바로 앞에 두는 경우 — 항목 본문과 같은 rail 위치에 맞춘다 */
 .portal-prelearning--section {
   margin-top: 0;
-  max-width: calc(36rem + 4.75rem);
-  padding: 1.1rem 0 0.2rem 4.75rem;
+  max-width: none; /* 구분선은 다른 항목과 같은 전체 폭 */
+  padding: 1.1rem 0 1.15rem 4.75rem;
 }
 
 .portal-prelearning__label {
