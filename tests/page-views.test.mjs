@@ -6,6 +6,7 @@ import {
   resolveMode,
   isWithinDedupeWindow,
   formatCounts,
+  renderCounts,
   loadCounts,
   callCounterRpc,
   PAGE_VIEWS_CONFIG,
@@ -18,6 +19,9 @@ test('normalizePageKey: 요구사항 예시', () => {
   assert.equal(normalizePageKey('https://suimaire.github.io/bioinformatics/'), '/bioinformatics/');
   assert.equal(normalizePageKey('https://suimaire.github.io/bioinformatics/?x=123#foo'), '/bioinformatics/');
   assert.equal(normalizePageKey('https://suimaire.github.io/lipid-3d-explorer/?foo=1#section2'), '/lipid-3d-explorer/');
+  assert.equal(normalizePageKey('https://suimaire.github.io/enzyme-explorer/'), '/enzyme-explorer/');
+  assert.equal(normalizePageKey('https://suimaire.github.io/enzyme-explorer/?foo=1'), '/enzyme-explorer/');
+  assert.equal(normalizePageKey('https://suimaire.github.io/enzyme-explorer/#kinetics'), '/enzyme-explorer/');
 });
 
 test('normalizePageKey: Jekyll .html, index.html, 중복 슬래시, 대소문자', () => {
@@ -69,6 +73,37 @@ test('isWithinDedupeWindow: 30분', () => {
 test('formatCounts: ko-KR 천 단위', () => {
   assert.equal(formatCounts(37, 1284), 'today 37 · total 1,284');
   assert.equal(formatCounts(0, 1234567), 'today 0 · total 1,234,567');
+});
+
+// renderCounts 가 쓰는 DOM API 만 흉내 낸 최소 element
+function fakeElement() {
+  const doc = {
+    createElement: () => {
+      const span = { className: '', textContent: '' };
+      return span;
+    },
+  };
+  const element = {
+    ownerDocument: doc,
+    children: [],
+    replaceChildren(...nodes) { this.children = nodes; },
+    append(...nodes) { this.children.push(...nodes); },
+    get text() { return this.children.map((n) => (typeof n === 'string' ? n : n.textContent)).join(''); },
+  };
+  return element;
+}
+
+test('renderCounts: 기본 텍스트는 formatCounts 와 동일, today/sep/total 이 span 으로 분리', () => {
+  const element = fakeElement();
+  renderCounts(element, 1234, 18392);
+  assert.equal(element.text, formatCounts(1234, 18392));
+  assert.deepEqual(element.children.map((n) => [n.className, n.textContent]), [
+    ['page-views__today', 'today 1,234'],
+    ['page-views__sep', ' · '],
+    ['page-views__total', 'total 18,392'],
+  ]);
+  renderCounts(element, 24, 1392, ' (mock)');
+  assert.equal(element.text, 'today 24 · total 1,392 (mock)');
 });
 
 function memoryStorage() {

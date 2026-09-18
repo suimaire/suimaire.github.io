@@ -88,9 +88,31 @@ export function isWithinDedupeWindow(lastCountedAt, now, windowMs = PAGE_VIEWS_C
   return age >= 0 && age < windowMs;
 }
 
+const formatNumber = (value) => Number(value).toLocaleString('ko-KR');
+
 export function formatCounts(today, total) {
-  const f = (value) => Number(value).toLocaleString('ko-KR');
-  return `today ${f(today)} · total ${f(total)}`;
+  return `today ${formatNumber(today)} · total ${formatNumber(total)}`;
+}
+
+/**
+ * 표시 줄을 semantic span 으로 채웁니다. 기본 표시는 formatCounts 와 같은 한 줄
+ *   <span class="page-views__today">today 37</span><span class="page-views__sep"> · </span><span class="page-views__total">total 1,284</span>
+ * 앱은 이 class 로 배치를 바꿀 수 있습니다(예: separator 숨기고 today/total 을 두 줄로).
+ */
+export function renderCounts(element, today, total, suffix = '') {
+  const doc = element.ownerDocument;
+  const part = (className, text) => {
+    const span = doc.createElement('span');
+    span.className = className;
+    span.textContent = text;
+    return span;
+  };
+  element.replaceChildren(
+    part('page-views__today', `today ${formatNumber(today)}`),
+    part('page-views__sep', ' · '),
+    part('page-views__total', `total ${formatNumber(total)}`),
+  );
+  if (suffix) element.append(suffix);
 }
 
 function openStorage() {
@@ -188,6 +210,7 @@ export async function loadCounts({ pageKey, mode, storage = openStorage(), now =
 const STYLE_ID = 'hafs-page-views-style';
 const STYLE = `
 .page-views{font-size:12px;line-height:1.5;color:var(--page-views-color,#56626b);font-variant-numeric:tabular-nums;letter-spacing:0;overflow-wrap:anywhere}
+.page-views__today,.page-views__total{white-space:nowrap}
 .page-views--standalone{display:block;margin:0;padding:12px 16px 20px;text-align:center}
 `;
 
@@ -266,7 +289,7 @@ export async function initPageViewCounter(options = {}) {
     element.hidden = false;
     try {
       const { today, total } = await countsPromise;
-      element.textContent = formatCounts(today, total) + (mode === 'mock' ? ' (mock)' : mode === 'read' ? ' (읽기 전용)' : '');
+      renderCounts(element, today, total, mode === 'mock' ? ' (mock)' : mode === 'read' ? ' (읽기 전용)' : '');
     } catch (error) {
       element.hidden = true;
       element.textContent = '';
