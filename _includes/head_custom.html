@@ -3,6 +3,39 @@
 
 <script src="{{ '/assets/js/heading-numbers.js' | relative_url }}"></script>
 
+{%- if page.og_title -%}
+{% assign share_title = page.og_title %}
+{% assign share_description = page.og_description | default: page.description | default: site.description %}
+{% assign share_image = page.og_image | absolute_url %}
+{% assign share_image_alt = page.og_image_alt | default: share_title %}
+{% assign canonical_url = page.url | absolute_url %}
+<title>{{ page.title | escape }} | {{ site.title | escape }}</title>
+<meta name="description" content="{{ page.description | default: site.description | escape }}">
+<link rel="canonical" href="{{ canonical_url }}">
+<meta property="og:locale" content="{{ page.locale | default: site.locale | default: 'en_US' }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.title | escape }}">
+<meta property="og:title" content="{{ share_title | escape }}">
+<meta property="og:description" content="{{ share_description | escape }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:image" content="{{ share_image }}">
+<meta property="og:image:alt" content="{{ share_image_alt | escape }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ share_title | escape }}">
+<meta name="twitter:description" content="{{ share_description | escape }}">
+<meta name="twitter:image" content="{{ share_image }}">
+<meta name="twitter:image:alt" content="{{ share_image_alt | escape }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "description": {{ page.description | default: site.description | jsonify }},
+  "headline": {{ page.title | jsonify }},
+  "name": {{ site.title | jsonify }},
+  "url": {{ canonical_url | jsonify }}
+}
+</script>
+{%- else -%}
 {% assign share_title = page.title | default: site.title %}
 {% assign share_description = page.description | default: site.description %}
 <meta property="og:type" content="website">
@@ -15,3 +48,4 @@
 <meta name="twitter:title" content="{{ share_title }}">
 <meta name="twitter:description" content="{{ share_description }}">
 <meta name="twitter:image" content="{{ '/assets/img/social/science-portal.png' | absolute_url }}">
+{%- endif -%}
