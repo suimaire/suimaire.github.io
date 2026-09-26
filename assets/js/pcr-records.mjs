@@ -1,5 +1,6 @@
 import { normalizeSequence } from './pcr-core.mjs';
 import { emptyWorkbench } from './pcr-design.mjs';
+import { emptyReview, REVIEW_LENSES } from './pcr-review.mjs';
 export const STORAGE_KEY = 'hafs:pcr-primer:v1';
 export const DATA_VERSION = 'hafs-pcr-synthetic-20260926-v1';
 export const MAX_IMPORT_BYTES = 1000000;
@@ -10,7 +11,7 @@ export function emptyIntroView() {
 }
 export function emptyRecord() {
   return { schemaVersion: 1, dataVersion: DATA_VERSION, updatedAt: new Date().toISOString(), answers: {}, draft: { forward: '', reverse: '' }, designs: [], cycle: 0,
-    initialPrimerPrediction: { reference: 'A', units: 'relative-percent', forward: null, reverse: null }, introView: emptyIntroView(), workbench: emptyWorkbench() };
+    initialPrimerPrediction: { reference: 'A', units: 'relative-percent', forward: null, reverse: null }, introView: emptyIntroView(), workbench: emptyWorkbench(), review: emptyReview() };
 }
 const object = x => x !== null && typeof x === 'object' && !Array.isArray(x);
 function string(x, max = 12000) { if (typeof x !== 'string' || x.length > max) throw new Error('기록 문자열의 형식 또는 길이가 올바르지 않습니다.'); return x; }
@@ -54,9 +55,14 @@ export function validateRecord(value, allowedKeys) {
     if (!object(d) || d.id !== i + 1) throw new Error('설계 순서가 올바르지 않습니다.');
     return { id: d.id, createdAt: date(d.createdAt), forward: normalizeSequence(string(d.forward, 100)), reverse: normalizeSequence(string(d.reverse, 100)), prediction: string(d.prediction), reason: string(d.reason), unresolved: string(d.unresolved), ...bindingFields(d.bindings) };
   });
+  const review = value.review === undefined ? emptyReview() : value.review;
+  if (!object(review) || !REVIEW_LENSES.includes(review.lens) || ![0, 1, 2].includes(review.stage) ||
+      (review.designId !== null && (!Number.isInteger(review.designId) || !designs.some(d => d.id === review.designId)))) throw new Error('프라이머 검토 보기 설정이 올바르지 않습니다.');
+  if (answers['review-length-choice'] !== undefined && !['', 'yes', 'no'].includes(answers['review-length-choice'])) throw new Error('길이와 GC 질문의 선택값이 올바르지 않습니다.');
   return { schemaVersion: 1, dataVersion: DATA_VERSION, updatedAt: date(value.updatedAt), answers,
     draft: { forward: string(value.draft.forward, 1000), reverse: string(value.draft.reverse, 1000), ...bindingFields(value.draft.bindings) }, designs, cycle: value.cycle,
     workbench: { mode: workbench.mode, windowStart: workbench.windowStart, showPrediction: workbench.showPrediction },
+    review: { lens: review.lens, designId: review.designId, stage: review.stage },
     initialPrimerPrediction: { reference: 'A', units: 'relative-percent', forward: initialPrimerPrediction.forward, reverse: initialPrimerPrediction.reverse },
     introView: { stage: introView.stage, comparisonCycle: introView.comparisonCycle, flipped: introView.flipped, arrangement: introView.arrangement, complementConfirmed: introView.complementConfirmed, reverseShown: introView.reverseShown } };
 }

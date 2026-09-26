@@ -9,10 +9,10 @@ test('runtime data equals supplied teaching fixture exactly', () => {
   if (existsSync(new URL('../_codex/pcr_primer_teaching_fixture.json', import.meta.url))) assert.deepEqual(fixture, JSON.parse(read('_codex/pcr_primer_teaching_fixture.json')));
 });
 test('worksheet source, scripts and styling contain no forbidden decorative dots', () => {
-  for (const path of ['bioinformatics/pcr-primer-design.html', '_layouts/pcr-worksheet.html', 'assets/css/pcr-worksheet.css', 'assets/js/pcr-worksheet.mjs', 'assets/js/pcr-core.mjs', 'assets/js/pcr-records.mjs', 'assets/js/pcr-intro.mjs', 'assets/js/pcr-design.mjs', 'assets/js/pcr-workbench.mjs']) assert.doesNotMatch(read(path), /[\u00b7\u2022\u2027\u2219\u22c5\u30fb\u318d]/u, path);
+  for (const path of ['bioinformatics/pcr-primer-design.html', '_layouts/pcr-worksheet.html', 'assets/css/pcr-worksheet.css', 'assets/js/pcr-worksheet.mjs', 'assets/js/pcr-core.mjs', 'assets/js/pcr-records.mjs', 'assets/js/pcr-intro.mjs', 'assets/js/pcr-design.mjs', 'assets/js/pcr-workbench.mjs', 'assets/js/pcr-review.mjs', 'assets/js/pcr-review-view.mjs']) assert.doesNotMatch(read(path), /[\u00b7\u2022\u2027\u2219\u22c5\u30fb\u318d]/u, path);
 });
 test('no whole-storage clear or unsafe imported HTML rendering', () => {
-  const source = read('assets/js/pcr-worksheet.mjs') + read('assets/js/pcr-intro.mjs') + read('assets/js/pcr-workbench.mjs');
+  const source = read('assets/js/pcr-worksheet.mjs') + read('assets/js/pcr-intro.mjs') + read('assets/js/pcr-workbench.mjs') + read('assets/js/pcr-review-view.mjs');
   assert.doesNotMatch(source, /localStorage\.clear|innerHTML|insertAdjacentHTML|eval\(/);
   assert.doesNotMatch(read('_layouts/pcr-worksheet.html'), /head_custom|page-views|heading-numbers|supabase/i);
 });

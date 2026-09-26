@@ -240,21 +240,74 @@ page_views: false
     </section>
     <section id="activity-04" class="pcr-activity">
       <p class="pcr-section-label">04 / 10분</p><h2>숫자가 적절하면 좋은 프라이머인가?</h2>
-      <p>약 18~25 nt와 GC 약 40~60%는 일반적인 출발점입니다. 합격선이 아닙니다. 두 프라이머의 Tm, 3′ 말단, 자기 상보성, 서로의 상보성, 비표적 결합은 서로 다른 검토 항목입니다.</p>
-      <div id="candidate-sequences"></div>
-      <label for="candidate-prediction">P1, P2, P3 중 어떤 차이가 중요할 것으로 예상하는가?</label><textarea id="candidate-prediction" data-answer rows="3"></textarea>
-      <div class="pcr-tools"><button type="button" id="compare-ab">A와 B에서 비교</button><button type="button" id="compare-abc">배경 C까지 비교</button></div>
-      <div id="candidate-results" class="pcr-computed" aria-live="polite"></div>
-      <p><strong>Tm: 정밀 계산 전</strong></p>
-      <details id="simple-tm"><summary>간이 Tm 보기</summary><p>2×(A+T)+4×(G+C)는 염기 조성 기반 근사값입니다. 반응의 염, Mg2+, 올리고 농도와 최근접 염기 효과를 반영하지 않습니다. 적정 결합 온도, 성공률이나 합격 여부를 판정할 수 없습니다.</p><div id="tm-values">현재 F와 R 서열을 입력하세요.</div></details>
-      <details><summary>상보 구간 관찰을 위한 고정 예시</summary><p>아래는 입력한 프라이머의 분석 결과가 아닌 고정 교육 예시입니다. 상보 구간 관찰, 열역학적 안정성 미평가.</p><h3>Hairpin / 한 분자 안의 상보 구간</h3><p class="pcr-sequence">5′-GCGCAAAAGCGC-3′</p><pre class="pcr-structure">5′ G C G C ┐
-   | | | |  A A
-3′ C G C G ┘A A</pre><p>양쪽 GCGC 구간이 역평행으로 짝지을 수 있고 가운데 AAAA는 고리 구간입니다.</p><h3>Primer dimer / 두 분자 사이의 상보 구간</h3><pre class="pcr-structure">5′ A A A A G C G C 3′
-           | | | |
-        3′ C G C G T T T T 5′</pre><p>교육 예시 주문 서열은 5′-AAAAGCGC-3′와 5′-TTTTGCGC-3′입니다. 두 3′ 쪽 상보 구간을 관찰할 수 있습니다. 안정한 구조나 형성 확률을 확정하지 않으며 ΔG를 계산하지 않습니다.</p></details>
-      <label for="candidate-judgment">A와 B의 예상 산물만 보았을 때와 C까지 확인했을 때, 설계 판단이 어떻게 달라지는가?</label><textarea id="candidate-judgment" data-answer rows="3"></textarea>
-      <label for="candidate-negative">P3으로 B에서 산물이 예측되지 않는다는 사실만으로 B에 해당 DNA가 없다고 결론 내릴 수 있는가?</label><textarea id="candidate-negative" data-answer rows="3"></textarea>
-      <details class="pcr-explanation"><summary>세 후보 해설 열기</summary><p>P2는 표적 A와 B의 길이 차이를 보여 주지만 배경 C에서도 추가 산물이 예상됩니다. P3의 F는 결실 내부에 결합합니다. 결실 여부를 선택적으로 구별하려는 다른 목적에는 검토할 수 있으나 두 형태를 모두 증폭하려는 목적에는 맞지 않습니다. P1도 이 세 인공 서열 밖의 특이성이나 실제 반응 성공을 검증한 프라이머가 아닙니다.</p></details>
+      <p>03에서 만든 primer를 여러 관점에서 검토합니다. 하나의 숫자나 기준만으로 좋은 primer를 판정하지 않습니다.</p>
+      <div class="pcr-review-source">
+        <div><h3>내 설계</h3><p class="pcr-small">03에서 직접 만든 결과입니다. 검토할 저장 설계를 선택하거나 현재 초안을 살펴보세요.</p></div>
+        <div><label for="review-design">검토할 설계</label><select id="review-design"><option value="draft">03의 현재 초안</option></select></div>
+      </div>
+      <p id="review-status" role="status">03에서 먼저 primer를 설계하세요. JavaScript를 사용할 수 없다면 종이에 적은 F/R 서열로 아래 질문을 검토하세요.</p>
+      <div id="review-my-design" class="pcr-computed"></div>
+      <p class="pcr-small pcr-review-lenses">아직 살펴볼 관점: 길이와 GC / Tm / 3′ 말단 / 자기 상보성 / F/R 상호 상보성 / 비표적 결합. 각 관점에서 무엇을 관찰할 수 있는지 살펴보세요.</p>
+      <div id="review-tabs" class="pcr-review-tabs" role="tablist" aria-label="같은 primer pair를 보는 검토 관점" hidden>
+        <button type="button" id="review-tab-length-gc" role="tab" aria-controls="review-panel-length-gc" data-review-lens="length-gc">길이와 GC</button>
+        <button type="button" id="review-tab-tm" role="tab" aria-controls="review-panel-tm" data-review-lens="tm">Tm</button>
+        <button type="button" id="review-tab-end" role="tab" aria-controls="review-panel-end" data-review-lens="end">3′ 말단</button>
+        <button type="button" id="review-tab-complementarity" role="tab" aria-controls="review-panel-complementarity" data-review-lens="complementarity">상보성</button>
+        <button type="button" id="review-tab-off-target" role="tab" aria-controls="review-panel-off-target" data-review-lens="off-target">비표적 결합</button>
+      </div>
+      <div id="review-panel-length-gc" class="pcr-review-panel" role="tabpanel" aria-labelledby="review-tab-length-gc" tabindex="0">
+        <h3>길이와 GC / 조성을 비교하기</h3>
+        <div id="review-length-values" class="pcr-computed"></div>
+        <p>약 18~25 nt, GC 약 40~60%는 일반적인 PCR primer에서 흔히 사용하는 출발점입니다. 범위 안에 있다고 실제 PCR 성공이나 specificity가 보장되는 것은 아닙니다.</p>
+        <label for="review-length-choice">Length와 GC만으로 이 primer pair가 좋은 설계라고 결론 내릴 수 있는가?</label>
+        <select id="review-length-choice" data-answer><option value="">선택하세요</option><option value="yes">결론 내릴 수 있다</option><option value="no">결론 내릴 수 없다</option></select>
+        <label for="review-length-reason">그렇게 생각한 이유</label><textarea id="review-length-reason" data-answer rows="2"></textarea>
+      </div>
+      <div id="review-panel-tm" class="pcr-review-panel" role="tabpanel" aria-labelledby="review-tab-tm" tabindex="0">
+        <h3>Tm / 두 primer의 결합 조건 비교하기</h3>
+        <div id="tm-values" class="pcr-computed"></div>
+        <p><strong>간이 Tm / 교육용 근사</strong><br>2×(A+T)+4×(G+C) °C로 계산합니다. 염기 개수만 사용하는 Wallace 근사이며 nearest-neighbor 계산이 아닙니다.</p>
+        <p>실제 Tm은 sequence와 함께 이온 농도, primer 농도, dNTP, 계산 모델 등의 영향을 받습니다. 이 간이값은 Na+, Mg2+, primer 농도, dNTP와 최근접 염기 효과를 반영하지 않습니다.</p>
+        <p>F와 R의 Tm이 크게 다르면 하나의 annealing 조건에서 두 primer의 결합 조건을 맞추기 어려울 수 있습니다. 이 값만으로 annealing 온도나 실제 반응 성공을 결정할 수 없습니다.</p>
+      </div>
+      <div id="review-panel-end" class="pcr-review-panel" role="tabpanel" aria-labelledby="review-tab-end" tabindex="0">
+        <h3>3′ 말단 / 연장이 시작되는 곳</h3>
+        <div id="review-end-values" class="pcr-computed"></div>
+        <p>DNA polymerase는 primer의 3′ OH에서 연장을 시작하므로 3′ 말단의 결합 특성은 특히 중요합니다. 마지막 염기와 마지막 5 nt를 관찰하세요. 5 nt보다 짧으면 전체 서열을 표시합니다.</p>
+        <p class="pcr-small">GC 개수와 반복 염기는 검토할 특징입니다. 3′ GC clamp 하나의 유무로 좋은 primer를 판정하지 않습니다.</p>
+        <label for="review-end-observation">두 primer의 3′ 말단에서 눈에 띄는 특징이 있는가?</label><textarea id="review-end-observation" data-answer rows="2"></textarea>
+      </div>
+      <div id="review-panel-complementarity" class="pcr-review-panel" role="tabpanel" aria-labelledby="review-tab-complementarity" tabindex="0">
+        <h3>상보성 / primer가 서로 붙을 수 있는 구간</h3>
+        <p class="pcr-small">현재 단순 모형에서의 관찰입니다. 두 서열을 역평행으로 옮겨 가며 가장 긴 연속 상보 구간을 찾습니다. 밑줄과 |는 선택한 연속 구간을 나타냅니다.</p>
+        <div id="review-complementarity-values" class="pcr-computed"></div>
+        <p>자기 상보성은 같은 primer 두 사본의 서열을 비교합니다. 이 정렬은 실제 hairpin 형성 확률이나 자유에너지를 뜻하지 않습니다. 한 분자가 접힐 때의 고리 크기와 구조는 계산하지 않습니다.</p>
+        <p>3′ 말단 상보성이 있으면 polymerase가 연장 가능한 primer-primer 구조가 형성될 가능성을 검토할 필요가 있습니다. 실제 primer-dimer 발생 확률과 열역학적 안정성은 현재 단순 sequence model이 계산하지 않습니다.</p>
+      </div>
+      <div id="review-panel-off-target" class="pcr-review-panel" role="tabpanel" aria-labelledby="review-tab-off-target" tabindex="0">
+        <h3>비표적 결합 / 비교 범위를 넓히기</h3>
+        <p><strong>비교용 primer pair P1/P2/P3</strong>는 특정 개념을 비교하기 위한 교육용 고정 사례입니다. 위의 ‘내 설계’와 구분하며 자동 추천이나 정답을 뜻하지 않습니다.</p>
+        <details id="candidate-sequences"><summary>P1/P2/P3의 F/R 서열 보기</summary><div id="candidate-sequence-values"></div></details>
+        <label for="candidate-prediction">P1, P2, P3 중 어떤 차이가 중요할 것으로 예상하는가?</label><textarea id="candidate-prediction" data-answer rows="2"></textarea>
+        <div class="pcr-tools"><button type="button" id="compare-ab" aria-controls="candidate-results">A와 B에서 비교</button><button type="button" id="compare-abc" aria-controls="candidate-results" disabled>배경 C까지 확인</button></div>
+        <p id="review-candidate-status" role="status">먼저 A와 B에서 비교하세요.</p>
+        <div id="candidate-results" class="pcr-computed"></div>
+        <div id="review-ab-question">
+          <label for="review-ab-reason">현재 정보만으로 P1과 P2를 구별할 근거가 충분한가?</label><textarea id="review-ab-reason" data-answer rows="2"></textarea>
+        </div>
+        <div id="review-c-question">
+          <label for="candidate-judgment">A와 B만 보았을 때와 C까지 확인했을 때 판단이 어떻게 달라졌는가?</label><textarea id="candidate-judgment" data-answer rows="3"></textarea>
+          <label for="candidate-negative">P3에서 B의 산물이 예측되지 않는다는 사실만으로 B에 해당 DNA가 없다고 결론 내릴 수 있는가?</label><textarea id="candidate-negative" data-answer rows="2" aria-describedby="review-p3-hint"></textarea>
+          <p id="review-p3-hint" class="pcr-small">03에서 결실 위에 primer를 놓았던 경우와 비교해 보세요.</p>
+          <details id="review-p3-explanation" class="pcr-explanation"><summary>P3의 결합 부위 해설 열기</summary><div id="review-p3-binding" class="pcr-computed"></div><p>B에서 target 자체가 없는 경우와 primer binding site가 사라지거나 손상되어 증폭되지 않는 경우를 구분해야 합니다. P3의 F 결합 부위는 B의 결실 안에 있으므로 이 모형에서 B 산물이 예측되지 않습니다.</p></details>
+          <p>표적 A/B에서 원하는 산물이 나온다는 것만으로 다른 sequence에서 off-target product가 생기지 않는다고 결론 낼 수 없습니다. C는 배경 서열 하나일 뿐입니다. 실제 설계에는 더 넓은 데이터베이스 검색이 필요하며, 활동 06에서 Primer-BLAST의 검색 범위를 확인합니다.</p>
+        </div>
+      </div>
+      <div class="pcr-review-conclusion">
+        <label for="review-unresolved">현재 primer를 실제 실험에 사용하기 전에 아직 무엇을 확인해야 하는가?</label><textarea id="review-unresolved" data-answer rows="3"></textarea>
+        <p>계산으로 예상한 산물과 실제 실험에서 관찰한 증거는 같은 종류의 정보일까?</p>
+        <a href="#activity-05">활동 05에서 실험 증거 살펴보기 →</a>
+      </div>
     </section>
     <section id="activity-05" class="pcr-activity">
       <p class="pcr-section-label">05 / 10분</p><h2>예상 산물과 실험 증거 구별하기</h2>

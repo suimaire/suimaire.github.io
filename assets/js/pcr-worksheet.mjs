@@ -1,8 +1,9 @@
-import { analyzeAll, normalizeSequence, primerStats, combineProducts, gelPosition } from './pcr-core.mjs';
+import { analyzeAll, normalizeSequence, combineProducts, gelPosition } from './pcr-core.mjs';
 import { STORAGE_KEY, DATA_VERSION, MAX_IMPORT_BYTES, emptyRecord, parseRecord, INTRO_CHOICE_KEYS } from './pcr-records.mjs';
 
 import { initializeIntro } from './pcr-intro.mjs';
 import { initializeWorkbench } from './pcr-workbench.mjs';
+import { initializeReview } from './pcr-review-view.mjs';
 import { cloneBindings, inspectDesign } from './pcr-design.mjs';
 
 const root = document.querySelector('#pcr-worksheet');
@@ -43,11 +44,12 @@ async function initialize() {
     status('save-status', `이전 기록을 읽을 수 없습니다: ${error.message} 기존 저장값을 덮어쓰지 않습니다. 현재 작업은 기록 내보내기로 보관하세요.`, true);
   }
   const intro = initializeIntro(root, () => state, save);
+  const review = initializeReview(root, () => state, () => fixture, save);
   const workbench = initializeWorkbench(root, () => state, () => fixture, save, model => {
     currentResult = model.result ? { forward: state.draft.forward.replace(/\s/g, '').toUpperCase(), reverse: state.draft.reverse.replace(/\s/g, '').toUpperCase(), result: model.result } : null;
     if (model.result) renderGel(model.result);
     else $('gel-results').replaceChildren(textNode('p', '활동 03에서 두 primer의 유효한 결합 부위를 선택하세요.'));
-    renderTm();
+    review.render();
   });
   function reflectState() {
     for (const f of fields) f.value = state.answers[f.id] ?? defaults[f.id];
@@ -70,7 +72,7 @@ async function initialize() {
     currentResult = null;
     if (fixture) workbench.refresh();
     else $('gel-results').replaceChildren(textNode('p', '활동 03에서 현재 설계를 확인하세요.'));
-    renderTm();
+    review.render();
   }
   function table(headers, rows, caption) {
     const el = textNode('table', ''), head = document.createElement('thead'), body = document.createElement('tbody'), hr = document.createElement('tr');
@@ -106,29 +108,12 @@ async function initialize() {
     $('gel-results').replaceChildren(svg, table(['시료', '출처를 보존한 산물 목록'], Object.entries(lanes).map(([name, list]) => [name, summarize(list)]), '완전 일치 모형의 예상 산물'));
     if (Object.values(lanes).flat().some(p => p.length < 20)) $('gel-results').append(textNode('p', '20 bp 미만 산물은 그림 범위 밖입니다. 위 목록에는 보존되어 있습니다.'));
   }
-  function renderTm() {
-    try { $('tm-values').replaceChildren(table(['현재 입력', '조성 기반 간이 Tm'], ['forward', 'reverse'].map((key, i) => [i ? 'R' : 'F', `${primerStats(state.draft[key]).simpleTm} °C`]))); }
-    catch { $('tm-values').textContent = '유효한 현재 F와 R 서열을 모두 입력하면 간이값이 표시됩니다.'; }
-  }
-  function compareCandidates(sources) {
-    ready(); const rows = Object.entries(fixture.candidatePairs).map(([id, pair]) => {
-      const result = analyzeAll(fixture.templates, pair.forward, pair.reverse);
-      return [id, ...sources.map(source => summarize(result[source].products))];
-    });
-    $('candidate-results').replaceChildren(table(['후보', ...sources], rows, '완전 일치 모형의 예상 산물'));
-    for (const [id, pair] of Object.entries(fixture.candidatePairs)) {
-      const b = textNode('button', `${id}을 편집 입력으로 가져오기`); b.type = 'button';
-      b.addEventListener('click', () => { setDraft(pair.forward, pair.reverse); status('design-status', `${id}을 편집 입력에 넣었습니다. 저장 설계는 변경하지 않았습니다.`); workbench.focus(); });
-      $('candidate-results').append(b);
-    }
-  }
-  on('compare-ab', () => compareCandidates(['A', 'B'])); on('compare-abc', () => compareCandidates(['A', 'B', 'C']));
   on('save-design', () => {
     if (state.designs.length >= 3) return;
     const computed = currentResult || calculate();
     state.designs.push({ id: state.designs.length + 1, createdAt: new Date().toISOString(), forward: computed.forward, reverse: computed.reverse,
       prediction: $('design-prediction').value, reason: $('design-reason').value, unresolved: $('design-unresolved').value, ...(state.draft.bindings ? { bindings: cloneBindings(state.draft.bindings) } : {}) });
-    save(); renderDesigns(); renderFinal(); status('design-status', `설계 ${state.designs.length}을 별도로 보존했습니다. 이후 입력 변경은 이 설계를 덮어쓰지 않습니다.`);
+    save(); renderDesigns(); renderFinal(); review.render(); status('design-status', `설계 ${state.designs.length}을 별도로 보존했습니다. 이후 입력 변경은 이 설계를 덮어쓰지 않습니다.`);
   });
   function designSummary(design, withButton = false) {
     const block = textNode('div', '', 'pcr-saved');
@@ -187,13 +172,14 @@ async function initialize() {
     if (!window.confirm('이 학습지의 답안과 설계 1~3을 모두 초기화할까요? 다른 학습지의 기록은 유지합니다.')) return;
     try { localStorage.removeItem(STORAGE_KEY); } catch { /* In-memory reset still works with blocked storage. */ }
     state = emptyRecord(); storageCorrupt = false; reflectState();
-    $('candidate-results').replaceChildren(); $('direction-feedback').textContent = ''; workbench.resetSelection(); save();
+    $('direction-feedback').textContent = ''; workbench.resetSelection(); save();
   });
   function preparePrint() {
     root.dataset.printBlank = String(printBlank);
     root.querySelectorAll('.pcr-print-value').forEach(el => el.remove());
     for (const field of root.querySelectorAll('textarea, input:not([type=file]):not([type=radio]):not([type=range]), select')) {
-      const mirror = textNode('div', printBlank ? '' : field.value, 'pcr-print-value'); mirror.dataset.multiline = String(field.tagName === 'TEXTAREA'); mirror.dataset.rows = field.rows || 1; field.after(mirror);
+      const value = field.id === 'review-length-choice' ? (field.value ? field.selectedOptions[0].textContent : '') : field.value;
+      const mirror = textNode('div', printBlank ? '' : value, 'pcr-print-value'); mirror.dataset.multiline = String(field.tagName === 'TEXTAREA'); mirror.dataset.rows = field.rows || 1; field.after(mirror);
     }
     intro.preparePrint(printBlank, textNode);
   }
@@ -228,7 +214,6 @@ async function initialize() {
     if (fixture.id !== DATA_VERSION) throw new Error('교육 데이터 버전 불일치');
     const templateContainer = $('template-sequences'); templateContainer.replaceChildren();
     for (const [id, t] of Object.entries(fixture.templates)) templateContainer.append(textNode('h3', `${id} / ${t.length} nt / 상단 5′→3′`), textNode('p', t.sequence, 'pcr-sequence'));
-    $('candidate-sequences').append(table(['후보', 'F 주문 서열 5′→3′', 'R 주문 서열 5′→3′'], Object.entries(fixture.candidatePairs).map(([id, p]) => [id, p.forward, p.reverse]), '고정 교육 후보'));
     workbench.refresh(); renderDesigns(); renderFinal(); root.dataset.ready = 'true';
-  } catch (error) { fixture = null; status('analysis-status', `교육 데이터 로딩 실패: ${error.message} 답안 기록, JSON과 인쇄는 계속 사용할 수 있습니다.`, true); }
+  } catch (error) { fixture = null; review.render(); status('analysis-status', `교육 데이터 로딩 실패: ${error.message} 답안 기록, JSON과 인쇄는 계속 사용할 수 있습니다.`, true); }
 }

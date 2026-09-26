@@ -292,6 +292,63 @@
   #pcr-worksheet .pcr-workbench-layout { grid-template-columns: 1fr; }
   #pcr-worksheet .pcr-current-design { border-left: 0; border-top: 1px solid var(--pcr-rule); padding: 20px 0 0; }
 }
+/* Activity 04: one pair, distinct scientific observations. */
+#pcr-worksheet .pcr-review-source { display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, .65fr); gap: 24px; align-items: center; border-top: 1px solid var(--pcr-rule); margin-top: 28px; }
+#pcr-worksheet .pcr-review-source h3 { margin-bottom: 0; }
+#pcr-worksheet .pcr-review-source label { font-size: 13px; margin-top: 15px; }
+#pcr-worksheet .pcr-review-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; border-top: 1px solid var(--pcr-rule); padding-top: 15px; }
+#pcr-worksheet #activity-04 h4 { font-size: 15px; margin: 8px 0; }
+#pcr-worksheet #activity-04 h5 { font-size: 14px; margin: 0; }
+#pcr-worksheet .pcr-review-sequence { font-size: 16px; color: #2f3634; }
+#pcr-worksheet .pcr-review-products { display: flex; flex-wrap: wrap; gap: 8px 28px; font: 14px/1.8 Consolas, 'Malgun Gothic', monospace; }
+#pcr-worksheet .pcr-review-products p { margin: 0; }
+#pcr-worksheet .pcr-review-lenses { padding-bottom: 20px; }
+#pcr-worksheet .pcr-review-tabs { display: flex; flex-wrap: wrap; gap: 0 12px; border-bottom: 1px solid var(--pcr-rule); }
+#pcr-worksheet .pcr-review-tabs button { border: 0; border-bottom: 3px solid transparent; border-radius: 0; color: #55605d; padding: 12px 8px; }
+#pcr-worksheet .pcr-review-tabs button[aria-selected=true] { color: var(--pcr-accent); border-bottom-color: var(--pcr-accent); font-weight: 700; }
+#pcr-worksheet .pcr-review-panel { padding: 5px 0 25px; min-width: 0; }
+#pcr-worksheet .pcr-review-panel h3 { margin-top: 24px; }
+#pcr-worksheet #activity-04 textarea { max-width: 760px; }
+#pcr-worksheet #review-length-choice { max-width: 330px; }
+#pcr-worksheet .pcr-tm-values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; border-top: 1px solid var(--pcr-rule); border-bottom: 1px solid var(--pcr-rule); padding: 18px 0; }
+#pcr-worksheet .pcr-tm-values p { font-size: 20px; margin: 6px 0; }
+#pcr-worksheet .pcr-end-row { padding: 14px 0; border-top: 1px solid var(--pcr-rule); }
+#pcr-worksheet .pcr-review-end { border-bottom: 3px solid var(--pcr-accent); padding-bottom: 5px; font-weight: 700; }
+#pcr-worksheet .pcr-complementarity-row { border-top: 1px solid var(--pcr-rule); padding: 15px 0 22px; }
+#pcr-worksheet .pcr-complementarity-row p { margin: 8px 0; }
+#pcr-worksheet .pcr-alignment-scroll { max-width: 100%; overflow-x: auto; padding: 4px; }
+#pcr-worksheet .pcr-review-alignment { width: max-content; margin: 8px 0; overflow: visible; line-height: 1.4; letter-spacing: 0; font-size: 16px; }
+#pcr-worksheet .pcr-print-alignment { display: none; }
+#pcr-worksheet .pcr-alignment-match { text-decoration: underline; text-decoration-color: var(--pcr-accent); text-underline-offset: 4px; }
+#pcr-worksheet #activity-04 details { padding: 12px 0; border: 0; border-top: 1px solid var(--pcr-rule); }
+#pcr-worksheet .pcr-candidate-sequence { padding: 8px 0; }
+#pcr-worksheet .pcr-candidate-row { display: grid; grid-template-columns: 45px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-top: 1px solid var(--pcr-rule); }
+#pcr-worksheet .pcr-candidate-lanes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+#pcr-worksheet .pcr-candidate-lanes p { margin: 6px 0 12px; white-space: pre-line; }
+#pcr-worksheet .pcr-product-bracket { height: 7px; border: 1px solid #687470; border-top: 0; margin: 6px 0; }
+#pcr-worksheet .pcr-review-conclusion { border-top: 1px solid #8b9791; padding-top: 8px; }
+@media (max-width: 680px) {
+  #pcr-worksheet .pcr-review-source, #pcr-worksheet .pcr-review-pair { grid-template-columns: 1fr; gap: 8px; }
+  #pcr-worksheet .pcr-review-source label { margin-top: 0; }
+  #pcr-worksheet .pcr-review-tabs { gap: 0 4px; }
+  #pcr-worksheet .pcr-review-tabs button { padding: 12px 7px; }
+  #pcr-worksheet .pcr-tm-values { gap: 8px; }
+  #pcr-worksheet .pcr-tm-values p { font-size: 16px; }
+  #pcr-worksheet .pcr-candidate-row { grid-template-columns: 28px minmax(0, 1fr); gap: 10px; }
+  #pcr-worksheet .pcr-candidate-lanes { gap: 10px; }
+}
+@media print {
+  #pcr-worksheet .pcr-review-tabs, #pcr-worksheet .pcr-review-source { display: none !important; }
+  #pcr-worksheet .pcr-review-panel[hidden], #pcr-worksheet #review-ab-question[hidden], #pcr-worksheet #review-c-question[hidden] { display: block !important; }
+  #pcr-worksheet .pcr-review-panel { break-inside: auto; }
+  #pcr-worksheet .pcr-complementarity-row, #pcr-worksheet .pcr-end-row, #pcr-worksheet .pcr-candidate-row { break-inside: avoid; }
+  #pcr-worksheet .pcr-review-alignment { font-size: 7pt; }
+  #pcr-worksheet .pcr-long-alignment > pre { display: none; }
+  #pcr-worksheet .pcr-print-alignment { display: block; }
+  #pcr-worksheet .pcr-print-alignment pre { font-size: 9pt; letter-spacing: 0; }
+  #pcr-worksheet .pcr-alignment-scroll { overflow: visible; }
+  #pcr-worksheet #review-status, #pcr-worksheet #review-candidate-status { display: none; }
+}
 @media (max-width: 520px) {
   #pcr-worksheet #sequence-map text { font-size: 22px; }
   #pcr-worksheet #sequence-map .pcr-initial-label { font-size: 17px; }
