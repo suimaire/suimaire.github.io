@@ -35,7 +35,12 @@
 #pcr-worksheet legend { padding: 0 8px; font-weight: 700; }
 #pcr-worksheet details { margin: 24px 0; padding: 14px 18px; border: 1px solid var(--pcr-rule); }
 #pcr-worksheet summary { cursor: pointer; color: var(--pcr-accent); font-weight: 700; min-height: 32px; }
-#pcr-worksheet .pcr-explanation { background: #f7f8f7; }
+#pcr-worksheet .pcr-explanation { background: transparent; border: 0; border-top: 1px solid var(--pcr-rule); border-bottom: 1px solid var(--pcr-rule); padding: 13px 0; }
+#pcr-worksheet .pcr-explanation summary { display: grid; grid-template-columns: 1fr auto; gap: 3px 16px; list-style: none; color: #2f3634; }
+#pcr-worksheet .pcr-explanation summary::before { content: '해설'; grid-column: 1 / -1; color: var(--pcr-muted); font-size: 12px; font-weight: 400; }
+#pcr-worksheet .pcr-explanation summary::after { content: '펼치기 +'; color: var(--pcr-accent); font-size: 12px; font-weight: 400; align-self: center; }
+#pcr-worksheet .pcr-explanation[open] summary::after { content: '접기 −'; }
+#pcr-worksheet .pcr-explanation summary::-webkit-details-marker { display: none; }
 #pcr-worksheet .pcr-notice { border-left: 3px solid var(--pcr-accent); padding: 8px 0 8px 18px; }
 #pcr-worksheet .pcr-small, #pcr-worksheet figcaption, #pcr-worksheet [role=status] { font-size: 13px; color: var(--pcr-muted); line-height: 1.7; }
 #pcr-worksheet [data-error=true] { border: 1px solid #333; padding: 12px; color: #1a1d1c; text-decoration: underline; text-underline-offset: 3px; }
@@ -84,7 +89,89 @@
   #pcr-worksheet th, #pcr-worksheet td { padding: 10px 5px; }
   #pcr-worksheet svg text { font-size: 19px; }
 }
-@media (prefers-reduced-motion: reduce) { #pcr-worksheet *, .pcr-skip { scroll-behavior: auto; animation: none; transition: none; } }
+/* Shared worksheet tools and the introductory activities only. */
+#pcr-worksheet [hidden] { display: none !important; }
+#pcr-worksheet .pcr-heading-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: 20px; }
+#pcr-worksheet .pcr-document-menus { display: flex; gap: 20px; }
+#pcr-worksheet .pcr-menu { position: relative; border: 0; padding: 0; margin: 0; }
+#pcr-worksheet .pcr-menu > summary { list-style: none; padding: 8px 3px; min-height: 44px; font-size: 14px; }
+#pcr-worksheet .pcr-menu > summary::-webkit-details-marker { display: none; }
+#pcr-worksheet .pcr-menu > summary::after { content: ' +'; font-weight: 400; }
+#pcr-worksheet .pcr-menu[open] > summary::after { content: ' −'; }
+#pcr-worksheet .pcr-menu-body { position: absolute; right: 0; top: 100%; width: 235px; background: white; border: 1px solid var(--pcr-rule); padding: 12px; z-index: 10; }
+#pcr-worksheet #record-menu .pcr-menu-body { right: -60px; }
+#pcr-worksheet .pcr-menu-body button { width: 100%; text-align: left; border: 0; }
+#pcr-worksheet .pcr-menu-body .pcr-file { border: 0; }
+#pcr-worksheet .pcr-menu-body p { margin: 8px 14px; }
+#pcr-worksheet nav a { border-left: 2px solid transparent; padding-left: 12px; }
+#pcr-worksheet nav a[aria-current=location] { border-left-color: var(--pcr-accent); font-weight: 700; }
+#pcr-worksheet .pcr-toc-extension { border-top: 1px solid var(--pcr-rule); margin-top: 18px; padding-top: 16px; break-inside: avoid; }
+#pcr-worksheet .pcr-toc-extension > span { color: var(--pcr-muted); font-size: 12px; padding-left: 14px; }
+#pcr-worksheet textarea[rows='2'] { min-height: 68px; }
+#pcr-worksheet textarea[rows='3'] { min-height: 100px; }
+#pcr-worksheet textarea[rows='4'] { min-height: 136px; }
+#pcr-worksheet .pcr-prompt { font-size: 19px; font-weight: 700; }
+#pcr-worksheet button[aria-pressed=true] { font-weight: 700; border-bottom: 3px solid var(--pcr-accent); }
+#pcr-worksheet .pcr-sample-row { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 16px; margin: 32px 0; }
+#pcr-worksheet .pcr-sample-row > strong { padding-top: 14px; }
+#pcr-worksheet .pcr-map-ends { display: flex; justify-content: space-between; font-size: 13px; }
+#pcr-worksheet .pcr-dna-track { position: relative; height: 44px; margin-top: 16px; }
+#pcr-worksheet .pcr-dna-track::before { content: ''; position: absolute; top: 21px; width: 100%; border-top: 3px solid #505957; }
+#pcr-worksheet #prediction-track { cursor: crosshair; margin-top: 30px; }
+#pcr-worksheet .pcr-deletion-region { position: absolute; left: 28.6%; width: 19%; top: 7px; height: 30px; display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #7a8480; font-size: 12px; white-space: nowrap; }
+#pcr-worksheet .pcr-position-marker { position: absolute; transform: translateX(-50%); color: var(--pcr-accent); font-size: 15px; font-weight: 700; border-bottom: 2px solid var(--pcr-accent); top: 43px; white-space: nowrap; }
+#pcr-worksheet #prediction-reverse-marker { top: -25px; }
+#pcr-worksheet .pcr-short-sample { width: 81%; }
+#pcr-worksheet .pcr-deletion-junction { position: absolute; left: 35.3%; transform: translateX(-50%); top: 1px; background: white; padding: 0 2px; font-size: 24px; }
+#pcr-worksheet .pcr-background-dna::before { border-top-style: dashed; }
+#pcr-worksheet .pcr-region-caption { margin-top: 27px; }
+#pcr-worksheet .pcr-prediction-controls label { margin-top: 10px; }
+#pcr-worksheet input[type=range] { border: 0; padding: 0; min-height: 44px; accent-color: var(--pcr-accent); cursor: pointer; }
+#pcr-worksheet output { font-size: 13px; }
+#pcr-worksheet .pcr-step-buttons { display: flex; flex-wrap: wrap; gap: 4px 15px; border-bottom: 1px solid var(--pcr-rule); }
+#pcr-worksheet .pcr-step-buttons button { border: 0; border-bottom: 3px solid transparent; border-radius: 0; padding: 10px 5px; }
+#pcr-worksheet .pcr-step-buttons button[aria-pressed=true] { border-bottom-color: var(--pcr-accent); }
+#pcr-worksheet .pcr-cycle-layout { display: grid; grid-template-columns: minmax(0, 1fr) 195px; gap: 26px; }
+#pcr-worksheet #cycle-panel { min-width: 0; }
+#pcr-worksheet .pcr-mixture { border-left: 1px solid var(--pcr-rule); padding-left: 20px; }
+#pcr-worksheet .pcr-mixture h3 { font-size: 15px; }
+#pcr-worksheet .pcr-mixture ul { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+#pcr-worksheet .pcr-mixture li { margin-bottom: 13px; }
+#pcr-worksheet .pcr-mixture li > span { display: block; color: var(--pcr-muted); font-size: 12px; font-weight: 400; }
+#pcr-worksheet .pcr-mixture [data-active=true] { font-weight: 700; color: var(--pcr-accent); text-decoration: underline; text-underline-offset: 4px; }
+#pcr-worksheet .pcr-intro-primer { stroke: var(--pcr-accent); stroke-width: 5; fill: none; }
+#pcr-worksheet .pcr-new-dna { stroke: #151918; stroke-width: 3; fill: none; }
+#pcr-worksheet .pcr-boundary-guide { stroke: #a1aaa6; stroke-width: 1; stroke-dasharray: 4 4; fill: none; }
+#pcr-worksheet .pcr-pair-guide { stroke: #a1aaa6; stroke-width: 1; fill: none; }
+#pcr-worksheet .pcr-pol { fill: white; stroke: #2f3634; stroke-width: 1; }
+#pcr-worksheet svg .pcr-pol-label { font-size: 16px; }
+#pcr-worksheet svg .pcr-three-prime { font-weight: 700; fill: var(--pcr-accent); }
+#pcr-worksheet .pcr-line-growth { stroke-dasharray: 600; stroke-dashoffset: 0; animation: pcr-grow 650ms ease-out; }
+@keyframes pcr-grow { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
+#pcr-worksheet .pcr-cycle-comparison { border-top: 1px solid var(--pcr-rule); margin-top: 30px; }
+#pcr-worksheet #cycle-products-svg { max-width: 650px; margin-top: 20px; }
+#pcr-worksheet .pcr-choice { border: 0; border-top: 1px solid var(--pcr-rule); padding: 16px 0 0; }
+#pcr-worksheet .pcr-choice legend { padding: 0 10px 0 0; font-size: 16px; }
+#pcr-worksheet .pcr-choice label { display: inline-flex; align-items: center; gap: 8px; font-weight: 400; font-size: 14px; margin: 0 22px 0 0; min-height: 44px; }
+#pcr-worksheet input[type=radio] { width: 18px; height: 18px; margin: 0; accent-color: var(--pcr-accent); }
+#pcr-worksheet .pcr-direction-principles { padding-left: 22px; }
+#pcr-worksheet .pcr-complement-exercise { border-top: 1px solid var(--pcr-rule); border-bottom: 1px solid var(--pcr-rule); padding: 12px 0 20px; }
+#pcr-worksheet .pcr-base-example { font: clamp(15px, 2.4vw, 21px)/1.9 Consolas, monospace; white-space: pre-wrap; }
+#pcr-worksheet .pcr-oriented-input { display: grid; grid-template-columns: 26px minmax(0, 310px) 26px; align-items: center; gap: 8px; margin: 10px 0 14px; }
+@media (max-width: 1150px) {
+  #pcr-worksheet .pcr-cycle-layout { grid-template-columns: 1fr; gap: 0; }
+  #pcr-worksheet .pcr-mixture { border: 0; border-top: 1px solid var(--pcr-rule); padding: 0; }
+  #pcr-worksheet .pcr-mixture ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 16px; }
+}
+@media (max-width: 520px) {
+  #pcr-worksheet .pcr-desktop-break { display: none; }
+  #pcr-worksheet .pcr-mixture ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #pcr-worksheet .pcr-step-buttons { gap: 3px 12px; }
+  #pcr-worksheet .pcr-sample-row { gap: 10px; }
+  #pcr-worksheet .pcr-deletion-region { font-size: 10px; }
+  #pcr-worksheet #cycle-svg text, #pcr-worksheet #direction-svg text, #pcr-worksheet #cycle-products-svg text { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) { #pcr-worksheet *, .pcr-skip { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
 @media print {
   @page { margin: 16mm; }
   .pcr-sheet { font-size: 11pt; line-height: 1.65; }
@@ -106,4 +193,41 @@
   #pcr-worksheet #sequence-details:not([open]), #pcr-worksheet .pcr-extension-activity:not([open]) { display: none; }
   #pcr-worksheet[data-print-blank=true] .pcr-computed, #pcr-worksheet[data-print-blank=true] #tm-values, #pcr-worksheet[data-print-blank=true] #map-bindings { display: none; }
   #pcr-worksheet a { color: #1a1d1c; text-decoration: none; }
+}
+
+@media print {
+  #pcr-worksheet h2, #pcr-worksheet .pcr-section-label { break-after: avoid; }
+  #pcr-worksheet .pcr-heading-row { margin-top: 0; }
+  #pcr-worksheet .pcr-header { padding-bottom: 12px; }
+  #pcr-worksheet .pcr-header h1 { font-size: 22pt; margin: 4px 0; }
+  #pcr-worksheet .pcr-header p { margin: 6px 0; }
+  #pcr-worksheet .pcr-header .pcr-subtitle { font-size: 14pt; margin-bottom: 6px; }
+  #pcr-worksheet #activity-00 { padding: 12px 0; }
+  #pcr-worksheet #activity-00 h2 { margin-bottom: 10px; }
+  #pcr-worksheet #activity-00 p { margin-top: 8px; margin-bottom: 8px; }
+  #pcr-worksheet #activity-00 > .pcr-small, #pcr-worksheet .pcr-sample-map figcaption { display: none; }
+  #pcr-worksheet #activity-00 .pcr-prompt { font-size: 12pt; }
+  #pcr-worksheet .pcr-sample-map { margin: 10px 0; }
+  #pcr-worksheet .pcr-sample-row { margin: 12px 0; }
+  #pcr-worksheet .pcr-dna-track { height: 30px; margin-top: 6px; }
+  #pcr-worksheet #prediction-track { margin-top: 22px; }
+  #pcr-worksheet .pcr-dna-track::before { top: 14px; }
+  #pcr-worksheet .pcr-deletion-region { top: 0; height: 28px; }
+  #pcr-worksheet .pcr-position-marker { top: 29px; }
+  #pcr-worksheet .pcr-region-caption { margin: 8px 0 2px; }
+  #pcr-worksheet #prediction-track + .pcr-region-caption { margin-top: 25px; }
+  #pcr-worksheet .pcr-prediction-controls { display: grid; grid-template-columns: 1fr 1fr; }
+  #pcr-worksheet #activity-01, #pcr-worksheet #activity-02 { break-before: page; }
+  #pcr-worksheet #cycle-svg, #pcr-worksheet #direction-svg, #pcr-worksheet #cycle-products-svg { max-width: 135mm; }
+  #pcr-worksheet .pcr-document-menus, #pcr-worksheet .pcr-step-buttons, #pcr-worksheet .pcr-prediction-controls output { display: none !important; }
+  #pcr-worksheet .pcr-choice label { display: inline-block; }
+  #pcr-worksheet .pcr-cycle-layout { display: block; }
+  #pcr-worksheet #cycle-panel, #pcr-worksheet .pcr-complement-exercise, #pcr-worksheet .pcr-cycle-comparison { break-inside: avoid; }
+  #pcr-worksheet .pcr-mixture ul { display: grid; grid-template-columns: repeat(3, 1fr); }
+  #pcr-worksheet .pcr-print-value[data-rows='2'] { min-height: 45px; }
+  #pcr-worksheet .pcr-print-value[data-rows='3'] { min-height: 70px; }
+  #pcr-worksheet .pcr-print-value[data-rows='4'] { min-height: 100px; }
+  #pcr-worksheet[data-print-blank=true] .pcr-position-marker, #pcr-worksheet[data-print-blank=true] #reverse-demonstration, #pcr-worksheet[data-print-blank=true] .pcr-confirmed-complement { display: none !important; }
+  #pcr-worksheet #reverse-step[hidden] { display: block !important; }
+  #pcr-worksheet .pcr-line-growth { animation: none; }
 }

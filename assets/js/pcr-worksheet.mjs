@@ -1,5 +1,7 @@
-import { analyzeAll, complement, reverseComplement, normalizeSequence, primerStats, primerFromRange, combineProducts, gelPosition } from './pcr-core.mjs';
-import { STORAGE_KEY, DATA_VERSION, MAX_IMPORT_BYTES, emptyRecord, parseRecord } from './pcr-records.mjs';
+import { analyzeAll, complement, normalizeSequence, primerStats, primerFromRange, combineProducts, gelPosition } from './pcr-core.mjs';
+import { STORAGE_KEY, DATA_VERSION, MAX_IMPORT_BYTES, emptyRecord, parseRecord, INTRO_CHOICE_KEYS } from './pcr-records.mjs';
+
+import { initializeIntro } from './pcr-intro.mjs';
 
 const root = document.querySelector('#pcr-worksheet');
 if (root) initialize().catch(error => {
@@ -8,7 +10,7 @@ if (root) initialize().catch(error => {
 async function initialize() {
   const $ = id => root.querySelector(`#${id}`);
   const fields = [...root.querySelectorAll('[data-answer]')];
-  const keys = fields.map(f => f.id);
+  const keys = [...fields.map(f => f.id), ...INTRO_CHOICE_KEYS];
   for (const field of fields) if (field.tagName !== 'SELECT') field.maxLength = 12000;
   let state = emptyRecord(), fixture, currentResult = null, storageCorrupt = false, anchor = null, columns = 40, printBlank = false;
   const defaults = Object.fromEntries(fields.map(f => [f.id, f.value]));
@@ -38,10 +40,11 @@ async function initialize() {
     storageCorrupt = true;
     status('save-status', `이전 기록을 읽을 수 없습니다: ${error.message} 기존 저장값을 덮어쓰지 않습니다. 현재 작업은 기록 내보내기로 보관하세요.`, true);
   }
+  const intro = initializeIntro(root, () => state, save);
   function reflectState() {
     for (const f of fields) f.value = state.answers[f.id] ?? defaults[f.id];
     $('primer-f').value = state.draft.forward; $('primer-r').value = state.draft.reverse;
-    renderCycle(); invalidate(); renderDesigns(); renderFinal();
+    intro.render(); invalidate(); renderDesigns(); renderFinal();
   }
   root.addEventListener('input', event => {
     const f = event.target;
@@ -49,25 +52,6 @@ async function initialize() {
     if (f.id === 'primer-f' || f.id === 'primer-r') {
       state.draft = { forward: $('primer-f').value, reverse: $('primer-r').value }; save(); invalidate();
     }
-  });
-  const cycles = [
-    ['1. 변성 / 예시 95 °C', '가열로 상보적인 두 가닥이 분리됩니다. DNA의 당-인산 골격을 잘라내는 단계가 아닙니다.'],
-    ['2. 결합 / 예시 55 °C', '온도를 낮추면 프라이머가 상보적인 주형 구간에 결합할 수 있습니다. F와 R의 3′ 끝이 서로 안쪽을 향하는 기본 예입니다.'],
-    ['3. 신장 / 예시 72 °C', 'DNA 중합효소가 dNTP를 사용해 새 가닥의 3′ 끝에만 염기를 추가합니다. 새 가닥은 5′→3′로 자랍니다. 첫 주기에는 반대쪽 프라이머 위치에서 자동으로 잘리지 않고 더 길게 이어집니다.']
-  ];
-  function renderCycle() {
-    $('cycle-title').textContent = cycles[state.cycle][0]; $('cycle-description').textContent = cycles[state.cycle][1];
-    $('cycle-primers').setAttribute('visibility', state.cycle >= 1 ? 'visible' : 'hidden');
-    $('cycle-primer-ends').setAttribute('visibility', state.cycle === 1 ? 'visible' : 'hidden');
-    $('cycle-extension').setAttribute('visibility', state.cycle === 2 ? 'visible' : 'hidden');
-  }
-  on('cycle-next', () => { state.cycle = (state.cycle + 1) % 3; renderCycle(); save(); });
-  on('cycle-reset', () => { state.cycle = 0; renderCycle(); save(); });
-  on('check-direction', () => {
-    try {
-      const c = normalizeSequence($('direction-complement').value), r = normalizeSequence($('direction-reverse').value);
-      status('direction-feedback', `상보 서열: ${c === complement('AGTCCGTA') ? '일치합니다' : '다시 확인하세요'}. 주문용 역상보 서열: ${r === reverseComplement('AGTCCGTA') ? '일치합니다' : '다시 확인하세요'}. 3′와 5′ 방향을 함께 읽으세요.`);
-    } catch (error) { status('direction-feedback', error.message, true); }
   });
   function setDraft(forward, reverse) {
     state.draft = { forward, reverse }; $('primer-f').value = forward; $('primer-r').value = reverse; save(); invalidate();
@@ -293,13 +277,32 @@ async function initialize() {
   function preparePrint() {
     root.dataset.printBlank = String(printBlank);
     root.querySelectorAll('.pcr-print-value').forEach(el => el.remove());
-    for (const field of root.querySelectorAll('textarea, input:not([type=file]), select')) {
-      const mirror = textNode('div', printBlank ? '' : field.value, 'pcr-print-value'); mirror.dataset.multiline = String(field.tagName === 'TEXTAREA'); field.after(mirror);
+    for (const field of root.querySelectorAll('textarea, input:not([type=file]):not([type=radio]):not([type=range]), select')) {
+      const mirror = textNode('div', printBlank ? '' : field.value, 'pcr-print-value'); mirror.dataset.multiline = String(field.tagName === 'TEXTAREA'); mirror.dataset.rows = field.rows || 1; field.after(mirror);
     }
+    intro.preparePrint(printBlank, textNode);
   }
   window.addEventListener('beforeprint', preparePrint);
   window.addEventListener('afterprint', () => { printBlank = false; delete root.dataset.printBlank; root.querySelectorAll('.pcr-print-value').forEach(el => el.remove()); });
   for (const [id, blank] of [['print-filled', false], ['print-blank', true]]) on(id, () => { printBlank = blank; preparePrint(); window.print(); });
+  const menus = [...root.querySelectorAll('.pcr-menu')];
+  for (const menu of menus) {
+    menu.addEventListener('toggle', () => { if (menu.open) menus.filter(other => other !== menu).forEach(other => { other.open = false; }); });
+    menu.addEventListener('keydown', event => { if (event.key === 'Escape') { menu.open = false; menu.querySelector('summary').focus(); } });
+  }
+  document.addEventListener('click', event => menus.forEach(menu => { if (!menu.contains(event.target)) menu.open = false; }));
+  const tocLinks = [...root.querySelectorAll('.pcr-sidebar nav a')];
+  function markCurrentActivity() {
+    const current = [...tocLinks].reverse().find(link => root.querySelector(link.hash).getBoundingClientRect().top <= 180) || tocLinks[0];
+    for (const link of tocLinks) { if (link === current) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); }
+  }
+  let scrollScheduled = false;
+  window.addEventListener('scroll', () => {
+    if (scrollScheduled) return;
+    scrollScheduled = true;
+    requestAnimationFrame(() => { markCurrentActivity(); scrollScheduled = false; });
+  }, { passive: true });
+  markCurrentActivity();
   const wide = matchMedia('(min-width: 901px)'); $('worksheet-toc').open = wide.matches;
   wide.addEventListener('change', () => { $('worksheet-toc').open = wide.matches; });
   reflectState();

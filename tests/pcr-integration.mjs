@@ -36,6 +36,7 @@ await offline.goto(base + '/bioinformatics/pcr-primer-design/');
 await offline.waitForFunction(() => document.querySelector('#analysis-status').textContent.includes('로딩 실패'));
 await offline.locator('#first-placement').fill('자료 로딩 실패 시에도 답안은 보존');
 assert.match(await offline.locator('#save-status').innerText(), /자동 저장/);
+await offline.locator('#record-menu > summary').click();
 const download = offline.waitForEvent('download'); await offline.locator('#export-record').click(); await download;
 assert.match(await offline.locator('#activity-07').innerText(), /최종 설계 기록/);
 await browser.close();

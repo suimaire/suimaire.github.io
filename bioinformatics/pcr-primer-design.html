@@ -9,20 +9,26 @@ page_views: false
 ---
 <header class="pcr-header">
   <a class="pcr-back" href="{{ '/' | relative_url }}#bioinformatics">← HAFS Biology Lab 포털</a>
-  <p class="pcr-eyebrow">BIOINFORMATICS / WEB WORKSHEET / 약 80분</p>
+  <div class="pcr-heading-row">
+    <p class="pcr-eyebrow">1.3.2 생물정보학</p>
+    <div class="pcr-document-menus" aria-label="학습지 도구">
+      <details id="record-menu" class="pcr-menu"><summary>기록</summary><div class="pcr-menu-body">
+        <button type="button" id="export-record">JSON 내보내기</button>
+        <label class="pcr-file" for="import-record">JSON 불러오기 <input type="file" id="import-record" accept="application/json,.json"></label>
+        <button type="button" id="reset-record">기록 초기화</button>
+        <p class="pcr-small">이 브라우저에 자동 저장됩니다. 중요한 기록은 JSON으로 보관하세요.</p>
+      </div></details>
+      <details id="print-menu" class="pcr-menu"><summary>인쇄</summary><div class="pcr-menu-body">
+        <button type="button" id="print-filled">작성본 인쇄</button>
+        <button type="button" id="print-blank">빈 학습지 인쇄</button>
+      </div></details>
+    </div>
+  </div>
   <h1>PCR과 프라이머 디자인</h1>
   <p class="pcr-subtitle">어디부터 어디까지 복제할 것인가</p>
-  <p>두 DNA를 구별할 수 있는 프라이머를 설계하고, 계산이 말해 주는 것과 아직 알 수 없는 것을 실험 노트에 기록하세요.</p>
-  <div class="pcr-tools">
-    <button type="button" id="export-record">기록 내보내기</button>
-    <button type="button" id="print-filled">작성본 인쇄</button>
-    <button type="button" id="print-blank">빈 학습지 인쇄</button>
-    <label class="pcr-file">기록 불러오기 <input type="file" id="import-record" accept="application/json,.json"></label>
-    <button type="button" id="reset-record">이 학습지 기록 초기화</button>
-  </div>
+  <p>두 DNA 시료를 구별할 수 있는 프라이머를 직접 설계하고,<br class="pcr-desktop-break"> 예상 산물과 실험 증거를 비교하며 설계를 수정합니다.</p>
   <p id="save-status" role="status">기록 도구를 준비하고 있습니다. 이 안내가 계속 보이면 자동 저장과 계산을 사용할 수 없습니다. 기본 문항을 읽고 종이에 기록하거나 브라우저 인쇄를 사용하세요.</p>
   <noscript><p class="pcr-notice">JavaScript가 꺼져 있습니다. 아래의 질문과 자료를 읽을 수 있지만 계산, 자동 저장, JSON 내보내기는 동작하지 않습니다. 답안은 종이에 쓰고 브라우저의 인쇄 기능을 이용하세요.</p></noscript>
-  <p class="pcr-small">이 기기의 브라우저에만 기록합니다. 이름과 학번은 필요하지 않습니다. 중요한 기록은 JSON으로 내보내세요. 자유 서술은 자동 채점하지 않습니다.</p>
 </header>
 <div class="pcr-document">
   <aside class="pcr-sidebar">
@@ -37,57 +43,126 @@ page_views: false
         <a href="#activity-05">05 예상과 증거 <small>10분</small></a>
         <a href="#activity-06">06 Primer-BLAST <small>10분</small></a>
         <a href="#activity-07">07 최종 설계 기록 <small>5분</small></a>
-        <a href="#rna-extension">선택 RNA 발현 <small>15분</small></a>
+        <div class="pcr-toc-extension"><span>확장 활동</span><a href="#rna-extension">RNA 발현을 보려면? <small>15분</small></a></div>
       </nav>
     </details>
   </aside>
   <main id="pcr-main">
     <section id="activity-00" class="pcr-activity">
       <p class="pcr-section-label">00 / 5분</p><h2>두 시료를 어떻게 구별할 것인가?</h2>
-      <p>인공 DNA A는 420 bp입니다. B는 A의 121~200번 구간 80 bp가 결실된 340 bp DNA입니다. 배경 DNA C가 함께 존재할 수도 있습니다. 모두 수업을 위해 만든 인공 서열이며 자연 유전자나 실험 검증 자료가 아닙니다.</p>
-      <figure>
-        <svg viewBox="0 0 700 180" role="img" aria-labelledby="sample-title"><title id="sample-title">A의 내부 구간이 결실되어 B가 되는 모형. C는 별개의 배경 DNA</title>
-          <text x="5" y="35">A</text><path d="M45 30H660" class="pcr-strand"/><rect x="221" y="18" width="117" height="24" class="pcr-outline"/><text x="210" y="65">121~200 결실 구간</text>
-          <text x="5" y="102">B</text><path d="M45 98H221M225 98H543" class="pcr-strand"/><path d="M218 88l8 20m-8 0l8-20" class="pcr-outline"/><text x="240" y="129">결실 양옆이 연결됨</text>
-          <text x="5" y="165">C</text><path d="M45 160H660" class="pcr-strand"/><text x="420" y="151">함께 존재할 수 있는 배경 DNA</text>
-        </svg>
-        <figcaption>결실 위치를 표시한 개념도. 프라이머 위치는 아직 정하지 않았습니다.</figcaption>
+      <p>A는 420 bp 기준 서열이고, B는 A의 121~200 구간 80 bp가 결실된 DNA입니다. C는 함께 존재할 수 있는 배경 DNA입니다. 모두 수업을 위해 만든 인공 서열입니다.</p>
+      <p class="pcr-prompt">80 bp 차이가 PCR 산물 길이 차이로 나타나게 하려면, 두 primer 사이에 어떤 영역이 들어가야 할까요?</p>
+      <div class="pcr-tools pcr-prediction-tools" role="group" aria-label="구조도에 표시할 프라이머">
+        <button type="button" data-prediction-primer="forward" aria-pressed="true">Forward 위치 표시</button>
+        <button type="button" data-prediction-primer="reverse" aria-pressed="false">Reverse 위치 표시</button>
+      </div>
+      <figure class="pcr-sample-map">
+        <div class="pcr-sample-row"><strong>A</strong><div>
+          <div class="pcr-map-ends"><span>1</span><span>420 bp</span></div>
+          <div id="prediction-track" class="pcr-dna-track" aria-label="A 구조도. 아래 조절 막대로도 프라이머 위치를 정할 수 있습니다.">
+            <span class="pcr-deletion-region">121~200</span>
+            <span id="prediction-forward-marker" class="pcr-position-marker" hidden>F →</span>
+            <span id="prediction-reverse-marker" class="pcr-position-marker" hidden>← R</span>
+          </div>
+          <p class="pcr-small pcr-region-caption">상자: B에서 결실된 80 bp 구간</p>
+        </div></div>
+        <div class="pcr-sample-row"><strong>B</strong><div>
+          <div class="pcr-map-ends pcr-short-sample"><span>1</span><span>340 bp</span></div>
+          <div class="pcr-dna-track pcr-short-sample"><span class="pcr-deletion-junction">╳</span></div>
+          <p class="pcr-small pcr-region-caption">결실 구간의 양옆이 연결됨</p>
+        </div></div>
+        <div class="pcr-sample-row"><strong>C</strong><div>
+          <div class="pcr-dna-track pcr-background-dna"></div>
+          <p class="pcr-small pcr-region-caption">배경 DNA / A와 별개의 서열</p>
+        </div></div>
+        <figcaption>개략적인 위치 예측입니다. A 선 위를 누르거나 아래 막대를 움직이세요. 아직 염기 서열, 정밀 좌표와 Tm은 계산하지 않습니다.</figcaption>
       </figure>
-      <label for="first-placement">두 시료를 PCR로 구별하려면 프라이머를 어느 위치에 놓아야 하는가?</label><textarea id="first-placement" data-answer rows="4"></textarea>
-      <label for="first-negative">한 시료에서 밴드가 보이지 않으면 해당 DNA가 없다고 결론 내릴 수 있는가?</label><textarea id="first-negative" data-answer rows="3"></textarea>
-      <p class="pcr-small">이 두 칸은 처음 예측입니다. 이후 달라진 설명은 활동 07에 별도로 기록하세요.</p>
-      <details class="pcr-explanation"><summary>예측 후 해설 열기</summary><p>검출하려는 차이와 프라이머 결합 구간을 함께 고려해야 합니다. 밴드가 없을 때는 DNA의 부재 외에도 결합 부위 변화, 반응 억제, 시약이나 과정의 문제를 검토해야 합니다.</p></details>
+      <div class="pcr-fields pcr-prediction-controls">
+        <div><label for="prediction-forward">Forward 대략적 위치</label><input id="prediction-forward" type="range" min="5" max="95" step="5" value="50" aria-describedby="prediction-forward-value"><output id="prediction-forward-value" for="prediction-forward">아직 표시하지 않음</output></div>
+        <div><label for="prediction-reverse">Reverse 대략적 위치</label><input id="prediction-reverse" type="range" min="5" max="95" step="5" value="50" aria-describedby="prediction-reverse-value"><output id="prediction-reverse-value" for="prediction-reverse">아직 표시하지 않음</output></div>
+      </div>
+      <label for="first-placement">왜 이 위치에 놓았나요?</label><textarea id="first-placement" data-answer rows="3" class="pcr-answer-reason"></textarea>
+      <p class="pcr-small">위치와 설명은 초기 예측으로 저장됩니다. 정밀한 설계는 활동 03에서 시작합니다.</p>
+      <details id="legacy-first-negative" hidden><summary>이전 작성본의 음성 결과 예측</summary><label for="first-negative">한 시료에서 밴드가 보이지 않으면 해당 DNA가 없다고 결론 내릴 수 있는가?</label><textarea id="first-negative" data-answer rows="2"></textarea></details>
+      <details class="pcr-explanation"><summary>어떤 차이를 프라이머 사이에 담아야 할까?</summary><p>결실 구간을 사이에 두고 양옆의 보존된 위치에 두 프라이머가 결합하면, A와 B의 산물에 길이 차이가 나타날 수 있습니다. 아직 이 예측만으로 실제 결합과 증폭을 보장할 수는 없습니다.</p></details>
     </section>
     <section id="activity-01" class="pcr-activity">
-      <p class="pcr-section-label">01 / 10분</p><h2>PCR에서 매 단계 달라지는 것</h2>
-      <p>온도는 한 프로토콜의 예시입니다. 실제 조건은 효소, 프라이머와 시료에 따라 달라집니다. Taq는 신장 온도에서만 작동하기 시작하는 스위치가 아닙니다.</p>
-      <div class="pcr-tools"><button type="button" id="cycle-next">다음 단계</button><button type="button" id="cycle-reset">처음으로</button></div>
-      <div id="cycle-panel" aria-live="polite">
-        <h3 id="cycle-title">1. 변성 / 예시 95 °C</h3>
-        <svg id="cycle-svg" viewBox="0 0 720 240" role="img" aria-label="두 가닥의 DNA 주형이 분리되고 프라이머의 3′ 끝에서 새 가닥이 신장하는 단계 모형">
-          <text x="8" y="50">5′</text><text x="675" y="50">3′</text><path d="M40 45H660" class="pcr-strand"/>
-          <text x="8" y="200">3′</text><text x="675" y="200">5′</text><path d="M40 195H660" class="pcr-strand"/>
-          <g id="cycle-primers" visibility="hidden"><path d="M80 170H210" class="pcr-forward"/><text x="80" y="154">F 5′</text><g id="cycle-primer-ends"><text x="193" y="154">3′ →</text><text x="475" y="103">← 3′</text></g><rect x="490" y="66" width="130" height="9" class="pcr-outline"/><text x="582" y="103">5′ R</text></g>
-          <g id="cycle-extension" visibility="hidden"><path d="M210 170H660M490 70H40" class="pcr-extension"/><text x="310" y="155">새 DNA 5′ → 3′</text><text x="190" y="103">3′ ← 5′ 새 DNA</text><text x="560" y="225">3′ 끝에 첨가 →</text><text x="40" y="103">← 3′ 끝</text></g>
-        </svg>
-        <p id="cycle-description">가열로 상보적인 두 가닥이 분리됩니다. DNA의 당-인산 골격을 잘라내는 단계가 아닙니다.</p>
+      <p class="pcr-section-label">01 / 10분</p><h2>한 주기의 반응을 따라가 보기</h2>
+      <p>반응 혼합물을 준비한 뒤 변성 → 결합 → 신장을 반복합니다. 단계마다 주형과 프라이머가 어떻게 달라지는지 살펴보세요.</p>
+      <div class="pcr-step-buttons" role="group" aria-label="PCR 반응 단계">
+        <button type="button" data-cycle-stage="mixture" aria-pressed="true">반응 혼합</button>
+        <button type="button" data-cycle-stage="denaturation" aria-pressed="false">변성</button>
+        <button type="button" data-cycle-stage="annealing" aria-pressed="false">결합</button>
+        <button type="button" data-cycle-stage="extension" aria-pressed="false">신장</button>
       </div>
-      <table><caption>반응에 필요한 것</caption><thead><tr><th scope="col">구성 요소</th><th scope="col">역할</th></tr></thead><tbody>
-        <tr><th scope="row">DNA 주형</th><td>상보적인 새 가닥의 염기 순서를 결정합니다.</td></tr><tr><th scope="row">두 프라이머</th><td>상보적으로 결합하고 합성을 시작할 3′ 끝을 제공합니다.</td></tr><tr><th scope="row">DNA 중합효소</th><td>주형을 따라 새 가닥의 3′ 끝에 염기를 추가합니다.</td></tr><tr><th scope="row">dNTP</th><td>새 DNA 합성에 쓰이는 재료입니다.</td></tr><tr><th scope="row">완충액과 Mg2+</th><td>반응 환경을 유지하고 효소 반응을 돕습니다.</td></tr>
-      </tbody></table>
-      <label for="cycle-selector">이 반응에서 증폭할 구간을 선택하는 것은 중합효소인가, 프라이머인가? 근거는 무엇인가?</label><textarea id="cycle-selector" data-answer rows="3"></textarea>
-      <label for="cycle-template">새로 합성된 DNA가 다음 주기의 주형이 되면 무엇이 달라지는가?</label><textarea id="cycle-template" data-answer rows="3"></textarea>
-      <details class="pcr-explanation"><summary>초기 주기의 산물 해설 열기</summary><p>일반적인 긴 이중가닥 주형에서 1주기의 새 가닥은 한쪽 끝만 프라이머로 정해지고 반대쪽은 더 길게 이어집니다. 그 가닥이 주형이 되면 2주기부터 양 끝이 정해진 정확한 길이의 단일가닥이 생깁니다. 그 길이의 이중가닥 산물은 3주기부터 생깁니다. 위 신장 그림도 첫 주기의 긴 합성을 보여 줍니다. 2ⁿ은 모든 분자가 매 주기 복제된다는 이상적인 배증 모형이며 실제 수율 예측식이 아닙니다.</p></details>
+      <div class="pcr-cycle-layout">
+        <div id="cycle-panel">
+          <h3 id="cycle-title">반응 혼합</h3>
+          <svg id="cycle-svg" viewBox="0 0 600 260" role="img" aria-label="상보적인 두 DNA 가닥과 반응 혼합물">
+            <text x="10" y="110">5′</text><path d="M45 105H555" class="pcr-strand"/><text x="565" y="110">3′</text>
+            <text x="10" y="150">3′</text><path d="M45 145H555" class="pcr-strand"/><text x="565" y="150">5′</text>
+          </svg>
+          <p id="cycle-description" aria-live="polite">상보적인 두 DNA 가닥과 프라이머, 효소, 합성 재료를 함께 준비합니다.</p>
+        </div>
+        <aside class="pcr-mixture" aria-label="PCR mixture">
+          <h3>PCR mixture</h3><ul>
+            <li data-mixture="template">Template DNA <span>주형</span></li>
+            <li data-mixture="forward">Forward primer <span>합성 시작점</span></li>
+            <li data-mixture="reverse">Reverse primer <span>합성 시작점</span></li>
+            <li data-mixture="polymerase">DNA polymerase <span>가닥 연장</span></li>
+            <li data-mixture="dntp">dNTP <span>합성 재료</span></li>
+            <li data-mixture="buffer">Mg2+를 포함한 buffer <span>반응 환경</span></li>
+          </ul><p class="pcr-small">현재 단계의 주요 요소는 굵은 글자와 밑줄로 표시합니다.</p>
+        </aside>
+      </div>
+      <div class="pcr-tools"><button type="button" id="cycle-prev" disabled>이전 단계</button><button type="button" id="cycle-next">다음 단계</button><button type="button" id="cycle-reset">반응 혼합으로</button></div>
+      <p class="pcr-small">회색 선: 기존 DNA / 청록 선: primer / 검정 선: 새 DNA / Pol: 중합효소. 95°C, 60°C, 72°C는 한 예시 protocol입니다. 실제 조건은 프라이머와 반응 조건에 따라 달라지며 Taq가 72°C에서만 작동하는 것은 아닙니다.</p>
+      <div class="pcr-cycle-comparison">
+        <h3>다음 주기의 주형이 되면?</h3>
+        <div class="pcr-step-buttons" role="group" aria-label="초기 PCR 주기 비교"><button type="button" data-comparison-cycle="1" aria-pressed="true">1주기</button><button type="button" data-comparison-cycle="2" aria-pressed="false">2주기</button><button type="button" data-comparison-cycle="3" aria-pressed="false">3주기</button></div>
+        <svg id="cycle-products-svg" viewBox="0 0 600 200" role="img" aria-label="초기 주기의 긴 산물과 정확한 길이 산물 비교"></svg>
+        <p id="cycle-products-description" aria-live="polite">1주기: 새 가닥은 한쪽 끝만 프라이머로 정해진 긴 산물입니다.</p>
+        <p class="pcr-small">긴 이중가닥 주형에서 시작한 교육용 모형입니다. 대표적인 가닥만 보여 주며 실제 반응의 모든 분자와 비율을 나타내지 않습니다. 실제 PCR 효율은 항상 100%가 아닙니다.</p>
+      </div>
+      <fieldset class="pcr-choice" data-choice="cycle-boundary-choice"><legend>증폭할 영역의 양 끝을 직접 정하는 것은 무엇인가?</legend>
+        <label><input type="radio" name="cycle-boundary-choice" value="polymerase"> DNA polymerase</label><label><input type="radio" name="cycle-boundary-choice" value="primer-pair"> primer pair</label><label><input type="radio" name="cycle-boundary-choice" value="dntp"> dNTP</label><label><input type="radio" name="cycle-boundary-choice" value="buffer"> buffer</label>
+      </fieldset><p id="cycle-choice-feedback" role="status"></p>
+      <label for="cycle-selector">그렇게 생각한 이유를 1~2줄로 적어 보세요.</label><textarea id="cycle-selector" data-answer rows="2" class="pcr-answer-short"></textarea>
+      <label for="cycle-template">새로 합성된 DNA가 다음 주기의 주형이 되면서 산물의 길이와 구성은 어떻게 달라지는가?</label><textarea id="cycle-template" data-answer rows="3" class="pcr-answer-reason"></textarea>
+      <details class="pcr-explanation"><summary>정확한 길이의 산물은 언제 생길까?</summary><p>1주기의 새 가닥은 반대쪽 프라이머 위치에서 자동으로 끝나지 않습니다. 이 긴 가닥이 다음 주기의 주형이 되면 2주기부터 두 프라이머 위치로 양 끝이 정해진 단일가닥이 생깁니다. 3주기부터는 정확한 길이의 이중가닥 산물이 생기고 이후 축적됩니다. 초기의 긴 산물도 함께 존재합니다.</p></details>
     </section>
     <section id="activity-02" class="pcr-activity">
-      <p class="pcr-section-label">02 / 10분</p><h2>두 프라이머의 방향</h2>
-      <figure><svg viewBox="0 0 700 210" role="img" aria-labelledby="direction-title"><title id="direction-title">F는 하단 왼쪽에서 오른쪽으로, R은 상단 오른쪽에서 왼쪽으로 신장한다</title><text x="10" y="30">5′</text><path d="M45 25H650" class="pcr-strand"/><text x="661" y="30">3′</text><text x="10" y="192">3′</text><path d="M45 188H650" class="pcr-strand"/><text x="661" y="192">5′</text><path d="M90 150H250l-14-8m14 8l-14 8" class="pcr-forward"/><text x="90" y="130">F 5′ → 3′</text><rect x="420" y="50" width="170" height="12" class="pcr-outline"/><path d="M420 56h-40l14-8m-14 8l14 8" class="pcr-outline"/><text x="420" y="89">R 3′ ← 5′</text></svg><figcaption>R을 주형에 정렬하면 왼쪽에서 오른쪽으로 3′→5′입니다. 주문 서열은 F와 R 모두 5′→3′로 씁니다.</figcaption></figure>
-      <p class="pcr-sequence">상단 5′-AGTCCGTA-3′</p><p>아래 8 nt 예시는 방향 학습용이며 실제 PCR용 프라이머가 아닙니다.</p>
-      <label for="direction-complement">상단 아래에 정렬할 상보 서열을 왼쪽 3′에서 오른쪽 5′로 쓰세요.</label><input id="direction-complement" data-answer class="pcr-sequence" maxlength="100" autocomplete="off" spellcheck="false">
-      <label for="direction-reverse">같은 상보 가닥을 주문용 5′→3′ 역상보 서열로 쓰세요.</label><input id="direction-reverse" data-answer class="pcr-sequence" maxlength="100" autocomplete="off" spellcheck="false">
-      <button type="button" id="check-direction">두 서열 확인</button><p id="direction-feedback" role="status"></p>
-      <label for="direction-reason">Reverse primer를 오른쪽 주형 서열 그대로 주문하면 왜 의도한 구간을 증폭하지 못할 수 있는가?</label><textarea id="direction-reason" data-answer rows="3"></textarea>
-      <details class="pcr-explanation"><summary>방향 해설 열기</summary><p>상보 서열은 3′-TCAGGCAT-5′, 역상보 서열은 5′-TACGGACT-3′입니다. 오른쪽 상단 주형의 역상보 서열을 주문해야 상단에 결합해 왼쪽으로 신장하는 기본 배치를 만들 수 있습니다. F/R은 이름이며 실제 결합 방향은 서열이 결정합니다.</p></details>
+      <p class="pcr-section-label">02 / 10분</p><h2>두 프라이머의 3′ 말단은 어디를 향할까?</h2>
+      <ol class="pcr-direction-principles"><li>DNA polymerase는 primer의 <strong>3′ OH</strong>에서 연장을 시작합니다. 새 DNA는 <strong>5′→3′</strong> 방향으로 합성됩니다.</li><li>두 primer의 <strong>3′ 말단이 표적 내부</strong>를 향해야 양쪽 경계를 정할 수 있습니다.</li><li>논문과 주문서에는 F와 R 서열을 <strong>모두 5′→3′</strong> 방향으로 씁니다.</li></ol>
+      <div class="pcr-tools" role="group" aria-label="프라이머 배치 비교"><button type="button" data-arrangement="inward" aria-pressed="true">정상 배치: F → / ← R</button><button type="button" data-arrangement="parallel" aria-pressed="false">잘못된 예: F → / R →</button><button type="button" id="flip-strands" aria-pressed="false">가닥 뒤집어 보기</button></div>
+      <figure><svg id="direction-svg" viewBox="0 0 600 280" role="img" aria-label="두 프라이머의 3′ 말단은 표적 내부를 향한다">
+        <text x="45" y="22">Reference strand</text><text x="10" y="60">5′</text><path d="M45 55H555" class="pcr-strand"/><text x="565" y="60">3′</text>
+        <text x="10" y="240">3′</text><path d="M45 235H555" class="pcr-strand"/><text x="565" y="240">5′</text>
+        <text x="350" y="97">3′ ←──── 5′ R</text><text x="90" y="207">F 5′ ────→ 3′</text>
+      </svg><figcaption id="direction-caption">이 그림에서는 위쪽 가닥을 reference strand로 5′→3′ 방향으로 그렸습니다. 위아래 위치보다 각 가닥의 방향이 중요합니다.</figcaption></figure>
+      <p id="arrangement-description" aria-live="polite">두 primer의 3′ 말단에서 서로를 향해 합성이 진행됩니다.</p>
+      <h3>상보 가닥을 주문 방향으로 읽기</h3>
+      <p>앞서 본 reference strand의 오른쪽 결합 부위를 5′→3′로 읽은 8 nt 예제입니다. 방향 학습용이며 실제 PCR용 프라이머가 아닙니다.</p>
+      <div class="pcr-complement-exercise">
+        <p class="pcr-small">Original / 오른쪽 결합 부위</p>
+        <p class="pcr-base-example">5′ A G T C C G T A 3′<br><span aria-hidden="true">　 | | | | | | | |</span></p>
+        <label for="direction-complement">1. 아래 가닥의 complement를 왼쪽 3′에서 오른쪽 5′로 쓰세요.</label>
+        <div class="pcr-oriented-input"><span>3′</span><input id="direction-complement" data-answer class="pcr-sequence" maxlength="100" autocomplete="off" spellcheck="false" placeholder="_ _ _ _ _ _ _ _"><span>5′</span></div>
+        <button type="button" id="check-complement">상보 서열 확인</button><p id="complement-feedback" role="status"></p>
+        <div id="reverse-step" hidden>
+          <p><strong>2. 주문서에는 primer를 5′→3′로 기록합니다.</strong> 같은 상보 가닥을 반대 방향으로 읽어 보세요.</p>
+          <p class="pcr-base-example pcr-confirmed-complement">3′ T C A G G C A T 5′</p>
+          <button type="button" id="reverse-complement">5′→3′로 뒤집어 확인</button>
+          <p id="reverse-demonstration" class="pcr-base-example" hidden>↓ reverse<br>5′ T A C G G A C T 3′</p>
+          <label for="direction-reverse">Reverse complement / 주문 서열을 기록하세요.</label>
+          <div class="pcr-oriented-input"><span>5′</span><input id="direction-reverse" data-answer class="pcr-sequence" maxlength="100" autocomplete="off" spellcheck="false"><span>3′</span></div>
+          <button type="button" id="check-direction">주문 서열 확인</button><p id="direction-feedback" role="status"></p>
+        </div>
+      </div>
+      <p class="pcr-small">이처럼 reference strand를 5′→3′로 볼 때, 오른쪽 결합 부위의 역상보 서열이 그 가닥에 결합할 Reverse primer의 주문 서열이 됩니다. F/R의 화면 위아래 위치가 규칙인 것은 아닙니다.</p>
+      <fieldset class="pcr-choice" data-choice="direction-end-choice"><legend>Reverse primer의 어느 끝이 표적 내부를 향해야 하는가?</legend><label><input type="radio" name="direction-end-choice" value="5"> 5′</label><label><input type="radio" name="direction-end-choice" value="3"> 3′</label></fieldset><p id="direction-choice-feedback" role="status"></p>
+      <label for="direction-reason">왜 그런가?</label><textarea id="direction-reason" data-answer rows="3" class="pcr-answer-reason"></textarea>
+      <details class="pcr-explanation"><summary>왜 Reverse primer는 역상보 서열로 주문할까?</summary><p>이 그림의 위쪽 reference strand를 5′→3′로 읽으면, 그 아래에 결합하는 상보 가닥은 왼쪽 3′에서 오른쪽 5′로 놓입니다. 같은 가닥을 주문 방향인 5′→3′로 뒤집어 읽어야 합니다. 단순히 오른쪽 주형 서열을 복사하는 대신, 결합할 가닥과 3′ 말단의 합성 방향을 함께 확인하세요.</p></details>
     </section>
     <section id="activity-03" class="pcr-activity">
       <p class="pcr-section-label">03 / 20분</p><h2>직접 프라이머를 배치하기</h2>
