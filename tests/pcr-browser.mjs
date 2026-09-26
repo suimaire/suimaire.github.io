@@ -50,7 +50,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     await page.locator('#analysis-results summary').click();
     check((await page.locator('#analysis-results').innerText()).includes('A 41~300: 260 bp'), 'P1 A');
     check((await page.locator('#analysis-results').innerText()).includes('B 41~220: 180 bp'), 'P1 B');
-    check((await page.locator('#gel-results').innerText()).includes('A+C'), 'mixture gel');
+    check((await page.locator('#gel-results').innerText()).includes('260 bp'), 'student design calculated prediction');
     await page.locator('#save-design').click();
     await page.locator('#primer-f').fill('ACNT'); await page.locator('#analyze-design').click();
     check((await page.locator('#analysis-status').innerText()).includes('3번 N'), 'invalid base position');
@@ -152,7 +152,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
   const d = page.waitForEvent('download'); await page.locator('#record-menu > summary').click(); await page.locator('#export-record').click(); await d; checks++; await blocked.close();
   const nojs = await browser.newContext({ javaScriptEnabled: false }); const staticPage = await nojs.newPage(); await staticPage.goto(url);
   check(await staticPage.locator('#activity-07').innerText().then(t => t.includes('최종 설계 기록')), 'no-JS readable activities');
-  check(await staticPage.locator('noscript').innerText().then(t => t.includes('종이에')), 'no-JS instructions'); await nojs.close();
+  check(await staticPage.locator('.pcr-header noscript').innerText().then(t => t.includes('종이에')), 'no-JS instructions'); await nojs.close();
   await browser.close();
 }
 console.log(`PASS ${checks} browser assertions`);

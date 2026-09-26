@@ -311,15 +311,41 @@ page_views: false
     </section>
     <section id="activity-05" class="pcr-activity">
       <p class="pcr-section-label">05 / 10분</p><h2>예상 산물과 실험 증거 구별하기</h2>
-      <p><strong>완전 일치 모형의 예상 산물</strong>입니다. 실제 실험 결과가 아닙니다.</p>
-      <div id="gel-results" class="pcr-computed"><p>활동 03에서 현재 설계의 산물을 계산하면 A, B, C, A+C, B+C의 개념도가 표시됩니다.</p></div>
-      <p class="pcr-small">짧은 선형 DNA가 더 멀리 이동하도록 log10(bp)로 위치만 표시합니다. 밴드 밝기는 수율이나 발현량을 뜻하지 않습니다. 같은 길이의 산물은 한 위치에 겹칠 수 있으며 출처가 있는 산물 목록은 따로 보존합니다.</p>
-      <h3>가상 실험 결과 해석</h3><p>출처: 수업용 가상 자료. 학생 설계의 실제 실험 검증이 아닙니다. 아래 세 상황은 서로 독립적이며, 밴드의 정체는 아직 확인하지 않았습니다.</p>
-      <table><caption>별도로 주어진 관찰 자료</caption><thead><tr><th scope="col">상황</th><th scope="col">시료</th><th scope="col">양성 대조군</th><th scope="col">NTC</th></tr></thead><tbody><tr><th scope="row">1</th><td>예상 크기 밴드 1개</td><td>예상 크기 밴드</td><td>신호 없음</td></tr><tr><th scope="row">2</th><td>밴드 있음</td><td>밴드 있음</td><td>신호 있음</td></tr><tr><th scope="row">3</th><td>신호 없음</td><td>신호 없음</td><td>신호 없음</td></tr></tbody></table>
-      <label for="evidence-cases">각 상황에서 가능한 설명과 다음 확인을 기록하세요. 상황 2의 NTC 신호만으로 오염이나 primer dimer 중 하나를 확정할 수 있는가?</label><textarea id="evidence-cases" data-answer rows="5"></textarea>
-      <label for="evidence-controls">어떤 대조군이 있어야 시료의 음성 결과를 해석할 수 있는가?</label><textarea id="evidence-controls" data-answer rows="3"></textarea>
-      <label for="evidence-identity">밴드가 하나이며 예상 크기와 같으면 표적 서열임이 확정되는가? 추가로 무엇을 확인해야 하는가?</label><textarea id="evidence-identity" data-answer rows="3"></textarea>
-      <details class="pcr-explanation"><summary>실험 증거 해설 열기</summary><p>NTC는 주형을 넣지 않은 대조군입니다. NTC 신호에는 오염, 프라이머 유래 산물 등 여러 가능성이 있습니다. 양성 대조군도 실패했다면 시료 음성을 DNA 부재로 해석하기 어렵습니다. 양성 대조군과 NTC 외에 시료별 추출 상태와 반응 억제를 살피는 내부 대조도 검토하세요. 예상 크기의 밴드 하나는 정체의 확정이 아닙니다. 산물 서열 확인 등 추가 증거가 필요합니다.</p></details>
+      <p>계산으로 예상한 PCR 산물과 실험에서 관찰한 gel band는 같은 종류의 정보가 아닙니다. 대조군과 관찰 결과를 함께 해석해 보세요.</p>
+      <p class="pcr-small">04에서는 sequence와 계산을 이용해 primer를 검토했습니다. 이번에는 실제 실험에서 얻을 수 있는 종류의 증거를 해석합니다.</p>
+      <div id="evidence-workspace">
+        <div id="evidence-prediction" class="pcr-evidence-prediction">
+          <h3>내 설계의 계산된 예상</h3><p id="evidence-design-source" class="pcr-small pcr-computed"></p>
+          <div id="gel-results" class="pcr-computed"><p>03에서 유효한 primer pair를 먼저 설계하면 여기에 계산된 예상 산물이 표시됩니다.</p></div>
+        </div>
+        <p class="pcr-evidence-separation">이제부터의 gel은 학생이 설계한 primer를 실제로 실험한 결과가 아니라, PCR 결과 해석을 위한 <strong>수업용 가상 자료</strong>입니다.</p>
+        <div id="evidence-navigation" class="pcr-evidence-navigation" role="group" aria-label="가상 관찰 상황 선택" hidden>
+          <details id="evidence-additional"><summary>추가 사례</summary></details>
+        </div>
+        <div id="evidence-case-view" hidden>
+          <figure id="evidence-gel-figure" aria-labelledby="evidence-case-heading" aria-describedby="evidence-observation-summary">
+            <h3 id="evidence-case-heading"></h3><p id="evidence-case-expected" class="pcr-small"></p>
+            <div id="evidence-gel" class="pcr-gel" role="group" aria-label="관찰할 gel lane 선택"></div>
+            <figcaption>↓ 짧은 DNA가 더 멀리 이동합니다. Band 위치는 DNA 길이에 따른 이동을 단순화한 개념도입니다.<br>이 도식의 band 밝기는 수율이나 초기 DNA 양의 정량값을 뜻하지 않습니다.</figcaption>
+          </figure>
+          <div id="evidence-selected-lane" class="pcr-evidence-selection" role="status" aria-live="polite" aria-atomic="true"></div>
+          <details id="evidence-text-observations"><summary>모든 lane의 관찰을 텍스트로 읽기</summary><p id="evidence-observation-summary"></p></details>
+          <details id="evidence-lane-guide"><summary>Lane과 대조군 안내</summary>
+            <dl><dt>M / DNA size marker</dt><dd>DNA 길이를 비교하는 기준 ladder입니다.</dd><dt>Sample</dt><dd>해석하려는 시료입니다.</dd><dt>Positive control</dt><dd>해당 primer pair와 PCR 조건이 정상적으로 작동할 때 예상 band가 나와야 하는 대조군입니다.</dd><dt>NTC / no-template control</dt><dd>Template DNA를 넣지 않은 대조군입니다.</dd></dl>
+          </details>
+        </div>
+      </div>
+      <noscript><p>JavaScript 없이도 아래 자료를 읽고 종이에 관찰, 해석, 아직 확정할 수 없는 점을 나누어 적을 수 있습니다. 모두 학생 설계와 독립된 수업용 가상 관찰이며, 각 사례의 예상 산물은 260 bp입니다.</p><ol><li>상황 1: Sample과 Positive control에 약 260 bp band 하나씩, NTC에는 band가 없습니다. 크기의 일치만으로 목표 sequence라고 확정할 수 있는가?</li><li>상황 2: Sample과 Positive control에 약 260 bp band, NTC에는 100 bp보다 짧은 band가 있습니다. 어떤 설명과 추가 확인이 가능한가?</li><li>상황 3: Sample, Positive control, NTC 모두 band가 없습니다. Sample이 target-negative라고 결론 내릴 수 있는가?</li></ol><p>세 사례 모두 M에는 500, 400, 300, 200, 100 bp 기준 band가 있습니다. Positive control은 해당 primer pair와 조건에서 예상 band가 나와야 하는 대조군, NTC는 template DNA를 넣지 않은 대조군입니다.</p></noscript>
+      <div id="evidence-case-answers"></div>
+      <div id="evidence-final" class="pcr-evidence-final">
+        <h3>계산과 관찰을 구별해 설명하기</h3>
+        <p>컴퓨터가 260 bp 산물을 예측했다는 것과 gel에서 약 260 bp band를 관찰했다는 것은 같은 의미인가?</p>
+        <label for="evidence-identity">예상 크기의 band 하나가 보였다는 사실만으로 해당 band가 목표 sequence라고 확정할 수 없는 이유는 무엇인가?</label><textarea id="evidence-identity" data-answer rows="3"></textarea>
+        <label for="evidence-controls">PCR 결과를 해석할 때 대조군이 필요한 이유를 설명하세요.</label><textarea id="evidence-controls" data-answer rows="3"></textarea>
+        <details class="pcr-explanation"><summary>추가 증거를 생각하는 단서</summary><p>목적에 따라 sequencing, 별도의 primer pair, target-specific probe 또는 다른 독립 검증을 검토할 수 있습니다. 모든 PCR 실험에 동일한 추가 검증 하나가 필수인 것은 아닙니다.</p></details>
+      </div>
+      <details id="evidence-legacy" hidden><summary>이전 활동 05의 통합 해석 기록</summary><p class="pcr-small">이전 버전에서 작성한 답안을 보존했습니다. 기존 대조군과 band 정체 답안은 위 종합 문항에 유지됩니다.</p><label for="evidence-cases">이전 상황별 해석</label><textarea id="evidence-cases" data-answer rows="3"></textarea></details>
+      <div class="pcr-review-conclusion"><p>Gel에서 예상 크기의 band를 보았더라도 그 band의 sequence identity와 다른 genomic/transcript sequence에 대한 specificity를 어떻게 더 검토할 수 있을까?</p><a href="#activity-06">활동 06 Primer-BLAST로 이어가기 →</a></div>
     </section>
     <section id="activity-06" class="pcr-activity">
       <p class="pcr-section-label">06 / 10분</p><h2>NCBI Primer-BLAST로 옮겨가기</h2>

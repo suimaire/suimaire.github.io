@@ -1,9 +1,10 @@
-import { analyzeAll, normalizeSequence, combineProducts, gelPosition } from './pcr-core.mjs';
+import { analyzeAll, normalizeSequence } from './pcr-core.mjs';
 import { STORAGE_KEY, DATA_VERSION, MAX_IMPORT_BYTES, emptyRecord, parseRecord, INTRO_CHOICE_KEYS } from './pcr-records.mjs';
 
 import { initializeIntro } from './pcr-intro.mjs';
 import { initializeWorkbench } from './pcr-workbench.mjs';
 import { initializeReview } from './pcr-review-view.mjs';
+import { mountEvidence, initializeEvidence } from './pcr-evidence-view.mjs';
 import { cloneBindings, inspectDesign } from './pcr-design.mjs';
 
 const root = document.querySelector('#pcr-worksheet');
@@ -12,6 +13,7 @@ if (root) initialize().catch(error => {
 });
 async function initialize() {
   const $ = id => root.querySelector(`#${id}`);
+  mountEvidence(root);
   const fields = [...root.querySelectorAll('[data-answer]')];
   const keys = [...fields.map(f => f.id), ...INTRO_CHOICE_KEYS];
   for (const field of fields) if (field.tagName !== 'SELECT') field.maxLength = 12000;
@@ -45,16 +47,16 @@ async function initialize() {
   }
   const intro = initializeIntro(root, () => state, save);
   const review = initializeReview(root, () => state, () => fixture, save);
+  const evidence = initializeEvidence(root, () => state, () => fixture);
   const workbench = initializeWorkbench(root, () => state, () => fixture, save, model => {
     currentResult = model.result ? { forward: state.draft.forward.replace(/\s/g, '').toUpperCase(), reverse: state.draft.reverse.replace(/\s/g, '').toUpperCase(), result: model.result } : null;
-    if (model.result) renderGel(model.result);
-    else $('gel-results').replaceChildren(textNode('p', '활동 03에서 두 primer의 유효한 결합 부위를 선택하세요.'));
+    evidence.renderPrediction();
     review.render();
   });
   function reflectState() {
     for (const f of fields) f.value = state.answers[f.id] ?? defaults[f.id];
     $('primer-f').value = state.draft.forward; $('primer-r').value = state.draft.reverse;
-    intro.render(); workbench.resetSelection(); invalidate(); renderDesigns(); renderFinal();
+    intro.render(); workbench.resetSelection(); invalidate(); renderDesigns(); renderFinal(); evidence.render();
   }
   root.addEventListener('input', event => {
     const f = event.target;
@@ -64,6 +66,20 @@ async function initialize() {
       state.draft.bindings[f.id === 'primer-f' ? 'F' : 'R'] = null; workbench.cancelSelection(); invalidate(); save();
     }
   });
+  root.addEventListener('change', event => {
+    if (event.target.id === 'review-design') evidence.renderPrediction();
+  });
+  root.addEventListener('click', event => {
+    const caseButton = event.target.closest('[data-evidence-case]');
+    const laneButton = event.target.closest('[data-lane]');
+    if (caseButton) {
+      state.evidence.activeCase = caseButton.dataset.evidenceCase;
+      evidence.render(); save();
+    } else if (laneButton) {
+      state.evidence.selectedLanes[state.evidence.activeCase] = laneButton.dataset.lane;
+      evidence.renderSelection(); save();
+    }
+  });
   function setDraft(forward, reverse, bindings) {
     state.draft = { forward, reverse, ...(bindings ? { bindings: cloneBindings(bindings) } : {}) };
     $('primer-f').value = forward; $('primer-r').value = reverse; workbench.resetSelection(); invalidate(); save();
@@ -71,16 +87,8 @@ async function initialize() {
   function invalidate() {
     currentResult = null;
     if (fixture) workbench.refresh();
-    else $('gel-results').replaceChildren(textNode('p', '활동 03에서 현재 설계를 확인하세요.'));
+    else evidence.renderPrediction();
     review.render();
-  }
-  function table(headers, rows, caption) {
-    const el = textNode('table', ''), head = document.createElement('thead'), body = document.createElement('tbody'), hr = document.createElement('tr');
-    if (caption) el.append(textNode('caption', caption));
-    for (const h of headers) { const th = textNode('th', h); th.scope = 'col'; hr.append(th); }
-    head.append(hr);
-    for (const row of rows) { const tr = document.createElement('tr'); for (const value of row) tr.append(textNode('td', String(value))); body.append(tr); }
-    el.append(head, body); return el;
   }
   const productLabel = p => `${p.source} ${p.start + 1}~${p.end}: ${p.length} bp`;
   const summarize = products => products.length ? products.map(productLabel).join('\n') : '이 완전 일치 모형에서 산물 미검출';
@@ -90,30 +98,12 @@ async function initialize() {
     return currentResult;
   }
   on('analyze-design', calculate);
-  function svgNode(tag, attrs, text) {
-    const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
-    for (const [key, val] of Object.entries(attrs)) node.setAttribute(key, val);
-    if (text !== undefined) node.textContent = text; return node;
-  }
-  function renderGel(result) {
-    const lanes = { A: result.A.products, B: result.B.products, C: result.C.products, 'A+C': combineProducts(result.A.products, result.C.products), 'B+C': combineProducts(result.B.products, result.C.products) };
-    const svg = svgNode('svg', { viewBox: '0 0 700 310', role: 'img', 'aria-label': '완전 일치 모형의 예상 산물 전기영동 개념도. 실제 실험 결과가 아닙니다.' });
-    svg.append(svgNode('title', {}, '완전 일치 모형의 예상 산물'));
-    for (const size of [5000, 1000, 500, 200, 100, 20]) { const y = gelPosition(size); svg.append(svgNode('text', { x: 0, y: y + 5 }, `${size}`), svgNode('path', { d: `M55 ${y}H680`, stroke: '#ddd' })); }
-    svg.append(svgNode('text', { x: 5, y: 286 }, 'bp'));
-    Object.entries(lanes).forEach(([name, products], i) => {
-      const x = 115 + i * 115; svg.append(svgNode('text', { x: x - 17, y: 304 }, name), svgNode('rect', { x: x - 23, y: 7, width: 46, height: 6, fill: 'none', stroke: '#555' }));
-      for (const size of new Set(products.map(p => p.length))) if (size >= 20) svg.append(svgNode('path', { d: `M${x - 25} ${gelPosition(size)}h50`, stroke: '#222', 'stroke-width': 4 }));
-    });
-    $('gel-results').replaceChildren(svg, table(['시료', '출처를 보존한 산물 목록'], Object.entries(lanes).map(([name, list]) => [name, summarize(list)]), '완전 일치 모형의 예상 산물'));
-    if (Object.values(lanes).flat().some(p => p.length < 20)) $('gel-results').append(textNode('p', '20 bp 미만 산물은 그림 범위 밖입니다. 위 목록에는 보존되어 있습니다.'));
-  }
   on('save-design', () => {
     if (state.designs.length >= 3) return;
     const computed = currentResult || calculate();
     state.designs.push({ id: state.designs.length + 1, createdAt: new Date().toISOString(), forward: computed.forward, reverse: computed.reverse,
       prediction: $('design-prediction').value, reason: $('design-reason').value, unresolved: $('design-unresolved').value, ...(state.draft.bindings ? { bindings: cloneBindings(state.draft.bindings) } : {}) });
-    save(); renderDesigns(); renderFinal(); review.render(); status('design-status', `설계 ${state.designs.length}을 별도로 보존했습니다. 이후 입력 변경은 이 설계를 덮어쓰지 않습니다.`);
+    save(); renderDesigns(); renderFinal(); review.render(); evidence.renderPrediction(); status('design-status', `설계 ${state.designs.length}을 별도로 보존했습니다. 이후 입력 변경은 이 설계를 덮어쓰지 않습니다.`);
   });
   function designSummary(design, withButton = false) {
     const block = textNode('div', '', 'pcr-saved');
@@ -143,7 +133,7 @@ async function initialize() {
     const target = $('final-comparison');
     target.replaceChildren(textNode('h3', '처음 예측'), textNode('p', `배치: ${state.answers['first-placement'] || '기록 없음'}\n음성 해석: ${state.answers['first-negative'] || '기록 없음'}`, 'pcr-record-text'));
     target.append(...state.designs.map(d => designSummary(d)));
-    target.append(textNode('h3', '관찰과 판단의 출처'), textNode('p', `내부 계산을 본 뒤의 판단: ${state.answers['candidate-judgment'] || '기록 없음'}\n수업용 가상 자료 해석: ${state.answers['evidence-cases'] || '기록 없음'}\n학생이 기록한 외부 검색: ${state.answers['external-status'] || '미실시'}\n외부 후보 비교: ${state.answers['external-comparison'] || '기록 없음'}`, 'pcr-record-text'));
+    target.append(textNode('h3', '관찰과 판단의 출처'), textNode('p', `내부 계산을 본 뒤의 판단: ${state.answers['candidate-judgment'] || '기록 없음'}\n수업용 가상 자료 해석: ${Object.entries(state.answers).filter(([key, value]) => /^evidence-case-\d-interpretation$/.test(key) && value).map(([key, value]) => `상황 ${key.split('-')[2]}: ${value}`).join('\n') || state.answers['evidence-cases'] || '기록 없음'}\n학생이 기록한 외부 검색: ${state.answers['external-status'] || '미실시'}\n외부 후보 비교: ${state.answers['external-comparison'] || '기록 없음'}`, 'pcr-record-text'));
   }
   async function copy(text) {
     try { await navigator.clipboard.writeText(text); status('copy-status', '출처와 함께 클립보드에 복사했습니다.'); }
@@ -182,9 +172,10 @@ async function initialize() {
       const mirror = textNode('div', printBlank ? '' : value, 'pcr-print-value'); mirror.dataset.multiline = String(field.tagName === 'TEXTAREA'); mirror.dataset.rows = field.rows || 1; field.after(mirror);
     }
     intro.preparePrint(printBlank, textNode);
+    evidence.preparePrint();
   }
   window.addEventListener('beforeprint', preparePrint);
-  window.addEventListener('afterprint', () => { printBlank = false; delete root.dataset.printBlank; root.querySelectorAll('.pcr-print-value').forEach(el => el.remove()); });
+  window.addEventListener('afterprint', () => { printBlank = false; delete root.dataset.printBlank; root.querySelectorAll('.pcr-print-value').forEach(el => el.remove()); evidence.finishPrint(); });
   for (const [id, blank] of [['print-filled', false], ['print-blank', true]]) on(id, () => { printBlank = blank; preparePrint(); window.print(); });
   const menus = [...root.querySelectorAll('.pcr-menu')];
   for (const menu of menus) {
@@ -215,5 +206,5 @@ async function initialize() {
     const templateContainer = $('template-sequences'); templateContainer.replaceChildren();
     for (const [id, t] of Object.entries(fixture.templates)) templateContainer.append(textNode('h3', `${id} / ${t.length} nt / 상단 5′→3′`), textNode('p', t.sequence, 'pcr-sequence'));
     workbench.refresh(); renderDesigns(); renderFinal(); root.dataset.ready = 'true';
-  } catch (error) { fixture = null; review.render(); status('analysis-status', `교육 데이터 로딩 실패: ${error.message} 답안 기록, JSON과 인쇄는 계속 사용할 수 있습니다.`, true); }
+  } catch (error) { fixture = null; review.render(); evidence.renderPrediction(); status('analysis-status', `교육 데이터 로딩 실패: ${error.message} 답안 기록, JSON과 인쇄는 계속 사용할 수 있습니다.`, true); }
 }

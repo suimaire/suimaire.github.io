@@ -292,6 +292,72 @@
   #pcr-worksheet .pcr-workbench-layout { grid-template-columns: 1fr; }
   #pcr-worksheet .pcr-current-design { border-left: 0; border-top: 1px solid var(--pcr-rule); padding: 20px 0 0; }
 }
+/* Activity 05: calculated predictions and independent teaching observations. */
+#pcr-worksheet .pcr-evidence-prediction { border-top: 1px solid var(--pcr-rule); padding: 3px 0 14px; }
+#pcr-worksheet .pcr-evidence-prediction h3 { margin: 14px 0 4px; }
+#pcr-worksheet #evidence-design-source { margin: 0 0 8px; }
+#pcr-worksheet .pcr-evidence-products { display: flex; flex-wrap: wrap; gap: 12px 38px; margin: 12px 0; }
+#pcr-worksheet .pcr-evidence-products > div { display: flex; gap: 14px; }
+#pcr-worksheet .pcr-evidence-products dt { font-weight: 700; }
+#pcr-worksheet .pcr-evidence-products dd { margin: 0; }
+#pcr-worksheet .pcr-evidence-separation { border-top: 2px solid #55605d; padding-top: 20px; }
+#pcr-worksheet .pcr-evidence-navigation { display: flex; flex-wrap: wrap; align-items: start; gap: 6px 12px; border-bottom: 1px solid var(--pcr-rule); }
+#pcr-worksheet .pcr-evidence-navigation > button { order: 0; border: 0; border-bottom: 3px solid transparent; border-radius: 0; }
+#pcr-worksheet .pcr-evidence-navigation > button[aria-pressed=true] { border-bottom-color: var(--pcr-accent); }
+#pcr-worksheet #evidence-additional { order: 1; border: 0; margin: 0 0 0 auto; padding: 0; }
+#pcr-worksheet #evidence-additional summary { min-height: 44px; padding: 10px 2px; font-size: 14px; }
+#pcr-worksheet #evidence-additional button { margin: 5px 0 12px; }
+#pcr-worksheet #evidence-case-heading { margin: 12px 0 3px; }
+#pcr-worksheet #evidence-case-expected { margin: 0 0 16px; }
+#pcr-worksheet .pcr-gel { display: grid; grid-template-columns: 44px repeat(4, minmax(44px, 1fr)); gap: 12px; padding: 8px 8px 6px 0; border-top: 1px solid var(--pcr-rule); border-bottom: 1px solid var(--pcr-rule); }
+#pcr-worksheet .pcr-gel-lane { min-width: 44px; display: block; border: 1px solid transparent; border-bottom: 1px solid transparent; border-radius: 0; padding: 0 5px; color: #2f3634; background: white; }
+#pcr-worksheet .pcr-gel-lane:hover { background: #f5f7f6; }
+#pcr-worksheet .pcr-gel-lane[aria-pressed=true] { border: 1px solid var(--pcr-accent); }
+#pcr-worksheet .pcr-gel-lane-name { height: 52px; display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; }
+#pcr-worksheet .pcr-gel-track { display: block; position: relative; height: 260px; border-left: 1px solid #edf0ee; border-right: 1px solid #edf0ee; }
+#pcr-worksheet .pcr-gel-axis .pcr-gel-track { border: 0; }
+#pcr-worksheet .pcr-gel-well { position: absolute; top: 1%; left: 23%; width: 54%; height: 6px; border: 1px solid #65716c; }
+#pcr-worksheet .pcr-gel-band { position: absolute; left: 19%; width: 62%; height: 0; border-top: 5px solid #333b38; transform: translateY(-50%); }
+#pcr-worksheet .pcr-gel-tick { position: absolute; right: 2px; transform: translateY(-50%); font: 12px/1 Consolas, monospace; }
+#pcr-worksheet .pcr-gel-selection { display: block; height: 28px; font-size: 12px; line-height: 28px; text-decoration: underline; text-underline-offset: 3px; }
+#pcr-worksheet .pcr-evidence-selection { border-left: 2px solid var(--pcr-accent); padding: 8px 16px; margin: 16px 0; }
+#pcr-worksheet .pcr-evidence-selection p { margin: 4px 0; }
+#pcr-worksheet #evidence-text-observations, #pcr-worksheet #evidence-lane-guide { padding: 10px 0; margin: 0; border: 0; border-bottom: 1px solid var(--pcr-rule); font-size: 14px; }
+#pcr-worksheet #evidence-lane-guide dt { font-weight: 700; margin-top: 12px; }
+#pcr-worksheet #evidence-lane-guide dd { margin: 4px 0; }
+#pcr-worksheet .pcr-evidence-answers label { margin-bottom: 0; }
+#pcr-worksheet .pcr-evidence-answers label + .pcr-small { margin: 2px 0 8px; }
+#pcr-worksheet .pcr-evidence-question { max-width: 780px; }
+#pcr-worksheet .pcr-evidence-print-summary, #pcr-worksheet .pcr-evidence-print-selection { display: none; }
+#pcr-worksheet .pcr-evidence-final { border-top: 1px solid #8b9791; margin-top: 26px; }
+@media (max-width: 520px) {
+  #pcr-worksheet .pcr-gel { gap: 4px; grid-template-columns: 30px repeat(4, minmax(44px, 1fr)); }
+  #pcr-worksheet .pcr-gel-lane { padding: 0 2px; }
+  #pcr-worksheet .pcr-gel-lane-name { height: 66px; font-size: 12px; }
+  #pcr-worksheet .pcr-evidence-navigation { gap: 4px; }
+  #pcr-worksheet .pcr-evidence-navigation > button { padding: 10px 8px; }
+}
+@media print {
+  #pcr-worksheet #activity-05 { break-before: page; }
+  #pcr-worksheet .pcr-evidence-final { break-inside: avoid; }
+  #pcr-worksheet #evidence-gel-figure { break-inside: avoid; page-break-inside: avoid; margin: 16px 0; }
+  #pcr-worksheet .pcr-gel-lane { display: block !important; color: #111; }
+  #pcr-worksheet .pcr-gel-track { height: 180px; }
+  #pcr-worksheet .pcr-gel-band { border-color: #111; }
+  #pcr-worksheet .pcr-evidence-navigation, #pcr-worksheet #evidence-lane-guide, #pcr-worksheet #evidence-text-observations { display: none !important; }
+  #pcr-worksheet .pcr-evidence-answers[hidden] { display: block !important; }
+  #pcr-worksheet .pcr-evidence-print-summary, #pcr-worksheet .pcr-evidence-print-selection { display: block; }
+  #pcr-worksheet .pcr-evidence-print-summary { font-size: 9pt; }
+  #pcr-worksheet .pcr-evidence-answers { break-before: page; }
+  #pcr-worksheet #evidence-legacy:not([hidden]) > :not(summary) { display: block !important; }
+  #pcr-worksheet #evidence-legacy:not([hidden]) textarea { display: none !important; }
+  #pcr-worksheet #evidence-legacy::details-content { content-visibility: visible; }
+  #pcr-worksheet[data-print-blank=true] #evidence-prediction,
+  #pcr-worksheet[data-print-blank=true] #evidence-legacy,
+  #pcr-worksheet[data-print-blank=true] .pcr-evidence-print-selection { display: none !important; }
+  #pcr-worksheet[data-print-blank=true] .pcr-gel-selection { visibility: hidden; }
+  #pcr-worksheet[data-print-blank=true] .pcr-gel-lane[aria-pressed=true] { border-color: transparent; font-weight: 400; }
+}
 /* Activity 04: one pair, distinct scientific observations. */
 #pcr-worksheet .pcr-review-source { display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, .65fr); gap: 24px; align-items: center; border-top: 1px solid var(--pcr-rule); margin-top: 28px; }
 #pcr-worksheet .pcr-review-source h3 { margin-bottom: 0; }
