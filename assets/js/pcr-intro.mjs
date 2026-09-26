@@ -44,6 +44,7 @@ export function initializeIntro(root, getState, save) {
       slider.setAttribute('aria-valuetext', roughRegion(value));
       $(`prediction-${name}-value`).textContent = roughRegion(value);
     }
+    $('prediction-track').setAttribute('aria-label', `A의 대략적 예측 위치. Forward: ${roughRegion(getState().initialPrimerPrediction.forward)}. Reverse: ${roughRegion(getState().initialPrimerPrediction.reverse)}. 아래 조절 막대로 위치를 바꿀 수 있습니다.`);
     $('legacy-first-negative').hidden = !getState().answers['first-negative'];
   }
   function place(name, value) {
@@ -110,26 +111,42 @@ export function initializeIntro(root, getState, save) {
 
   const products = {
     1: '1주기: 한쪽 끝만 primer로 정해진 긴 새 가닥이 만들어집니다. 반대쪽 끝은 아직 다른 primer 위치로 정해지지 않았습니다.',
-    2: '2주기: 긴 산물이 주형이 되면서 정확한 길이의 단일가닥이 처음 생깁니다. 긴 산물도 함께 존재합니다.',
+    2: '2주기: 한쪽 끝이 이미 primer로 정해진 긴 새 가닥이 다음 주기의 주형이 됩니다. 반대쪽 primer에서 합성하면 이 주형의 끝까지 복사하므로 정확한 길이의 단일가닥이 처음 생깁니다. 긴 산물도 함께 존재합니다.',
     3: '3주기: 정확한 길이의 이중가닥 산물이 처음 생깁니다. 이후 주기를 거치며 축적되고, 긴 산물도 함께 존재합니다.'
   };
   function renderProducts() {
     const cycle = view().comparisonCycle, svg = $('cycle-products-svg');
     svg.replaceChildren(); svg.setAttribute('aria-label', products[cycle]);
-    for (const x of [140, 440]) line(svg, x, 15, x, 165, 'pcr-boundary-guide');
-    label(svg, 290, 22, 'primer로 정해지는 양 끝', 'middle');
-    line(svg, 140, 60, 550, 60, 'pcr-new-dna'); label(svg, 140, 49, '5′', 'middle'); label(svg, 550, 49, '3′', 'middle');
-    label(svg, 20, 87, '긴 산물');
-    if (cycle > 1) {
-      line(svg, 140, 117, 440, 117, 'pcr-new-dna');
-      label(svg, 128, 111, '3′', 'end'); label(svg, 452, 111, '5′');
-      if (cycle === 3) {
-        line(svg, 140, 138, 440, 138, 'pcr-new-dna');
-        label(svg, 128, 146, '5′', 'end'); label(svg, 452, 146, '3′');
-        for (let x = 155; x < 440; x += 25) line(svg, x, 120, x, 135, 'pcr-pair-guide');
-      }
-      label(svg, 290, 177, cycle === 2 ? '정확한 길이 / 단일가닥' : '정확한 길이 / 이중가닥', 'middle');
-    } else label(svg, 290, 137, '정확한 길이의 새 가닥은 아직 없음', 'middle');
+    if (cycle === 1) {
+      label(svg, 30, 24, '원래 주형 / 긴 가닥');
+      line(svg, 45, 58, 555, 58); label(svg, 12, 64, '3′'); label(svg, 565, 64, '5′');
+      label(svg, 30, 100, '새 가닥 / 한쪽 끝만 정해짐');
+      line(svg, 140, 136, 210, 136, 'pcr-intro-primer'); arrow(svg, 210, 136, 550, 'pcr-new-dna');
+      label(svg, 128, 142, '5′', 'end'); label(svg, 565, 142, '3′');
+      line(svg, 140, 147, 140, 185, 'pcr-pair-guide'); label(svg, 140, 210, 'primer에서 시작', 'middle');
+      line(svg, 440, 119, 440, 155, 'pcr-boundary-guide');
+      label(svg, 425, 184, '반대 primer 위치를 넘어 합성', 'middle');
+      label(svg, 300, 254, '반대쪽 끝은 아직 다른 primer로 정해지지 않음', 'middle');
+    } else if (cycle === 2) {
+      label(svg, 30, 24, '1주기의 새 가닥 → 이번 주기의 주형');
+      line(svg, 140, 62, 550, 62); label(svg, 125, 68, '5′', 'end'); label(svg, 565, 68, '3′');
+      line(svg, 440, 140, 370, 140, 'pcr-intro-primer'); arrow(svg, 370, 140, 140, 'pcr-new-dna');
+      label(svg, 125, 146, '3′', 'end'); label(svg, 455, 146, '5′');
+      for (const x of [140, 440]) line(svg, x, 46, x, 170, 'pcr-boundary-guide');
+      label(svg, 440, 109, '반대 primer에서 시작', 'middle');
+      label(svg, 140, 199, '주형의 끝에서 종료', 'middle');
+      label(svg, 300, 254, '양 끝이 정해진 단일가닥이 생김', 'middle');
+    } else {
+      svg.append(svgNode('path', { d: 'M140 50V36H440V50', class: 'pcr-pair-guide' }));
+      label(svg, 290, 24, '정확한 목표 길이', 'middle');
+      for (const x of [140, 440]) line(svg, x, 56, x, 166, 'pcr-boundary-guide');
+      line(svg, 140, 91, 440, 91, 'pcr-new-dna'); line(svg, 140, 129, 440, 129, 'pcr-new-dna');
+      label(svg, 125, 97, '5′', 'end'); label(svg, 455, 97, '3′'); label(svg, 125, 135, '3′', 'end'); label(svg, 455, 135, '5′');
+      for (let x = 155; x < 440; x += 25) line(svg, x, 97, x, 123, 'pcr-pair-guide');
+      line(svg, 140, 91, 210, 91, 'pcr-intro-primer'); line(svg, 370, 129, 440, 129, 'pcr-intro-primer');
+      label(svg, 290, 196, '정확한 길이 / 이중가닥', 'middle');
+      label(svg, 290, 254, '이후 축적됨 / 긴 산물도 함께 존재', 'middle');
+    }
     $('cycle-products-description').textContent = products[cycle];
     choose('[data-comparison-cycle]', cycle, 'comparisonCycle');
   }

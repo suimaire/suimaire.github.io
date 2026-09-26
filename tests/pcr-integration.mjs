@@ -16,7 +16,7 @@ await heading.locator('a[href="/bioinformatics/pcr-primer-design/"]').click(); a
 assert.equal(new URL(page.url()).pathname, '/bioinformatics/pcr-primer-design/');
 assert.equal((await page.reload()).status(), 200);
 await page.waitForSelector('#pcr-worksheet[data-ready=true]');
-await page.locator('#sequence-details > summary').click();
+await page.locator('#sequence-details').scrollIntoViewIfNeeded();
 await page.waitForSelector('[data-base="60"]');
 await page.locator('[data-base="41"]').scrollIntoViewIfNeeded();
 const from = await page.locator('[data-base="41"]').boundingBox(), to = await page.locator('[data-base="60"]').boundingBox();

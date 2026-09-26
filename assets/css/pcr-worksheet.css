@@ -121,6 +121,8 @@
 #pcr-worksheet .pcr-deletion-region { position: absolute; left: 28.6%; width: 19%; top: 7px; height: 30px; display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #7a8480; font-size: 12px; white-space: nowrap; }
 #pcr-worksheet .pcr-position-marker { position: absolute; transform: translateX(-50%); color: var(--pcr-accent); font-size: 15px; font-weight: 700; border-bottom: 2px solid var(--pcr-accent); top: 43px; white-space: nowrap; }
 #pcr-worksheet #prediction-reverse-marker { top: -25px; }
+#pcr-worksheet .pcr-position-marker::before { content: ''; position: absolute; left: 50%; top: -20px; height: 20px; border-left: 1px solid #919d96; }
+#pcr-worksheet #prediction-reverse-marker::before { top: 100%; }
 #pcr-worksheet .pcr-short-sample { width: 81%; }
 #pcr-worksheet .pcr-deletion-junction { position: absolute; left: 35.3%; transform: translateX(-50%); top: 1px; background: white; padding: 0 2px; font-size: 24px; }
 #pcr-worksheet .pcr-background-dna::before { border-top-style: dashed; }
@@ -230,4 +232,78 @@
   #pcr-worksheet[data-print-blank=true] .pcr-position-marker, #pcr-worksheet[data-print-blank=true] #reverse-demonstration, #pcr-worksheet[data-print-blank=true] .pcr-confirmed-complement { display: none !important; }
   #pcr-worksheet #reverse-step[hidden] { display: block !important; }
   #pcr-worksheet .pcr-line-growth { animation: none; }
+}
+/* Activity 03: sequence workbench, isolated from later activities. */
+#pcr-worksheet #activity-03 .pcr-workbench-subtitle { margin-top: -12px; font-size: 20px; }
+#pcr-worksheet .pcr-workbench-layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr); gap: 26px; margin-top: 32px; align-items: start; }
+#pcr-worksheet .pcr-workspace, #pcr-worksheet .pcr-current-design { min-width: 0; }
+#pcr-worksheet .pcr-map-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#pcr-worksheet .pcr-map-heading h3 { margin: 0; }
+#pcr-worksheet .pcr-map-heading button { font-size: 12px; padding: 8px; border-color: var(--pcr-rule); }
+#pcr-worksheet .pcr-workbench-map { margin: 16px 0 22px; }
+#pcr-worksheet #sequence-map text { font-size: 17px; }
+#pcr-worksheet .pcr-map-deletion { stroke: #79817e; stroke-width: 1; fill: #fff; }
+#pcr-worksheet .pcr-map-primer { stroke: var(--pcr-accent); stroke-width: 4; fill: none; }
+#pcr-worksheet .pcr-map-primer-label { fill: var(--pcr-accent); font-weight: 700; }
+#pcr-worksheet .pcr-map-amplicon { stroke: #4c5551; stroke-width: 1.5; fill: none; }
+#pcr-worksheet .pcr-initial-guide { stroke: #a8b0ad; stroke-width: 1; stroke-dasharray: 3 3; }
+#pcr-worksheet #sequence-map .pcr-initial-label { fill: #67716c; font-size: 13px; }
+#pcr-worksheet .pcr-current-design { border-left: 1px solid var(--pcr-rule); padding-left: 22px; font-size: 14px; }
+#pcr-worksheet .pcr-current-design > h3:first-child { margin: 0 0 15px; }
+#pcr-worksheet .pcr-primer-summary { padding: 14px 0; border-top: 1px solid var(--pcr-rule); }
+#pcr-worksheet #activity-03 h4 { font-size: 15px; margin: 0 0 8px; }
+#pcr-worksheet .pcr-primer-summary p { margin: 6px 0; }
+#pcr-worksheet .pcr-primer-coordinate { font: 17px/1.7 Consolas, monospace; }
+#pcr-worksheet .pcr-primer-metrics { font-size: 13px; }
+#pcr-worksheet .pcr-reference-sequence { color: #59635f; font-size: 13px; }
+#pcr-worksheet .pcr-ordered-sequence { color: var(--pcr-accent); font-size: 15px; }
+#pcr-worksheet #selection-title { font-size: 16px; margin: 22px 0 14px; }
+#pcr-worksheet .pcr-window-controls { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+#pcr-worksheet .pcr-window-controls button { border-color: var(--pcr-rule); padding: 8px; font-size: 12px; }
+#pcr-worksheet .pcr-window-controls output { font: 13px/1.6 Consolas, monospace; }
+#pcr-worksheet label[for=sequence-window-slider] { margin: 12px 0 0; font-weight: 400; }
+#pcr-worksheet .pcr-sequence-direction { margin: 4px 0 10px; }
+#pcr-worksheet #activity-03 .pcr-sequence-row { margin-bottom: 6px; }
+#pcr-worksheet #activity-03 .pcr-base { min-height: 56px; padding: 2px 0; border-bottom: 1px solid #d9dedb; font-size: 19px; touch-action: pan-y; }
+#pcr-worksheet #activity-03 .pcr-base span:last-child { border: 0; }
+#pcr-worksheet #activity-03 .pcr-base-coordinate { color: #626b66; font: 10px/18px Consolas, monospace; letter-spacing: 0; }
+#pcr-worksheet #activity-03 .pcr-base[data-deletion=true] { border-bottom: 2px dashed #626b66; }
+#pcr-worksheet #activity-03 .pcr-base[aria-pressed=true] { background: #e4eeeb; color: var(--pcr-accent); border-bottom: 3px solid var(--pcr-accent); }
+#pcr-worksheet #activity-03 .pcr-base:focus-visible { position: relative; z-index: 1; outline-offset: -3px; }
+#pcr-worksheet #activity-03 #selection-direction { font-size: 13px; }
+#pcr-worksheet #activity-03 details { padding: 12px 0; border: 0; border-top: 1px solid var(--pcr-rule); margin: 15px 0; font-size: 13px; }
+#pcr-worksheet .pcr-product-values { display: grid; grid-template-columns: 25px minmax(0, 1fr); gap: 10px 8px; }
+#pcr-worksheet .pcr-product-values dt { font-weight: 700; }
+#pcr-worksheet .pcr-product-values dd { margin: 0; overflow-wrap: anywhere; }
+#pcr-worksheet .pcr-placement-explanation { border-top: 1px solid var(--pcr-rule); padding: 5px 0; margin-top: 20px; font-size: 14px; }
+#pcr-worksheet .pcr-placement-explanation p:empty { display: none; }
+#pcr-worksheet .pcr-current-design .pcr-placement-explanation { font-size: 13px; }
+#pcr-worksheet .pcr-product-comparison { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding: 20px 0; border-top: 1px solid var(--pcr-rule); }
+#pcr-worksheet .pcr-product-comparison:empty { display: none; }
+#pcr-worksheet .pcr-product-source { min-width: 0; }
+#pcr-worksheet .pcr-product-source svg text { font-size: 15px; }
+#pcr-worksheet .pcr-design-records { border-top: 1px solid #8b9791; margin-top: 28px; }
+#pcr-worksheet #saved-designs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+#pcr-worksheet #saved-designs .pcr-saved { font-size: 12px; }
+#pcr-worksheet #saved-designs .pcr-saved h3 { font-size: 16px; margin: 5px 0; }
+#pcr-worksheet #saved-designs .pcr-saved p { margin: 10px 0; }
+#pcr-worksheet #activity-03 #design-reason { max-width: 650px; margin-bottom: 15px; }
+@media (max-width: 1150px) and (min-width: 901px), (max-width: 680px) {
+  #pcr-worksheet .pcr-workbench-layout { grid-template-columns: 1fr; }
+  #pcr-worksheet .pcr-current-design { border-left: 0; border-top: 1px solid var(--pcr-rule); padding: 20px 0 0; }
+}
+@media (max-width: 520px) {
+  #pcr-worksheet #sequence-map text { font-size: 22px; }
+  #pcr-worksheet #sequence-map .pcr-initial-label { font-size: 17px; }
+  #pcr-worksheet .pcr-product-comparison, #pcr-worksheet #saved-designs { grid-template-columns: 1fr; gap: 18px; }
+  #pcr-worksheet .pcr-product-source svg { max-width: 360px; }
+}
+@media print {
+  #pcr-worksheet .pcr-workbench-layout { display: block; }
+  #pcr-worksheet .pcr-current-design { border: 0; padding: 0; }
+  #pcr-worksheet #sequence-details, #pcr-worksheet #selection-help, #pcr-worksheet #coordinate-details, #pcr-worksheet #manual-sequences { display: none !important; }
+  #pcr-worksheet .pcr-primer-summary { break-inside: avoid; }
+  #pcr-worksheet #saved-designs { display: block; }
+  #pcr-worksheet[data-print-blank=true] #current-design, #pcr-worksheet[data-print-blank=true] #map-prediction, #pcr-worksheet[data-print-blank=true] #map-caption { display: none !important; }
+  #pcr-worksheet[data-print-blank=true] #saved-designs { display: none !important; }
 }

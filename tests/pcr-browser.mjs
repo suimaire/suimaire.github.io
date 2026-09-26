@@ -25,13 +25,14 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     await page.screenshot({ path: resolve(output, `${name}-${width}-opening.png`) });
     await page.locator('#first-placement').fill('처음 예측: 결실 양옆을 확인한다.');
     await exerciseIntro(page, width, name, check, output);
+    await page.locator('#coordinate-details > summary').click();
     await page.locator('#range-start').fill('41'); await page.locator('#range-end').fill('60'); await page.locator('#apply-range').click();
     check(await page.locator('#primer-f').inputValue() === P1[0], 'numeric forward range');
     await page.locator('#range-primer').selectOption('R'); await page.locator('#range-direction').selectOption('left');
     await page.locator('#range-start').fill('281'); await page.locator('#range-end').fill('300'); await page.locator('#apply-range').click();
     check(await page.locator('#primer-r').inputValue() === P1[1], 'numeric reverse range');
-    await page.locator('#sequence-details > summary').click(); await page.waitForSelector('.pcr-base');
-    check(await page.locator('.pcr-base').count() === 420, 'all aligned bases');
+    await page.locator('[data-select-primer=F]').click();
+    check(await page.locator('.pcr-base').count() === (width === 390 ? 30 : 60), 'bounded sequence window');
     const cell1 = page.locator('[data-base="41"]'), cell2 = page.locator('[data-base="60"]');
     if (width === 390) { await cell1.tap(); await cell2.tap(); }
     else { await cell1.click(); await cell2.click(); }
@@ -40,10 +41,13 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     check(await page.locator('#range-end').inputValue() === '42', 'keyboard selection');
     check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'sequence no overflow');
     await page.locator('#sequence-details').scrollIntoViewIfNeeded(); await page.screenshot({ path: resolve(output, `${name}-${width}-sequence.png`) });
-    await page.locator('#sequence-details > summary').click();
+    await page.locator('#range-start').fill('41'); await page.locator('#range-end').fill('60'); await page.locator('#apply-range').click();
+    await page.locator('#design-reflection > summary').click();
+    await page.locator('#manual-sequences > summary').click();
     await page.locator('#design-prediction').fill('AとBでは長さが異なると予想する。');
     await page.locator('#design-reason').fill('결실 양옆에 배치했다.'); await page.locator('#design-unresolved').fill('실제 유전체 특이성');
     await page.locator('#analyze-design').click();
+    await page.locator('#analysis-results summary').click();
     check((await page.locator('#analysis-results').innerText()).includes('A 41~300: 260 bp'), 'P1 A');
     check((await page.locator('#analysis-results').innerText()).includes('B 41~220: 180 bp'), 'P1 B');
     check((await page.locator('#gel-results').innerText()).includes('A+C'), 'mixture gel');
@@ -128,6 +132,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
   await oldPage.locator('#import-record').setInputFiles({ name: 'legacy.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(legacy)) });
   await oldPage.waitForFunction(() => document.querySelector('#save-status').textContent.includes('자동 저장했습니다'));
   check(await oldPage.locator('#primer-r').inputValue() === P1[1], 'legacy JSON import keeps draft');
+  await oldPage.locator('#manual-sequences > summary').click();
   await oldPage.locator('#analyze-design').click();
   check((await oldPage.locator('#analysis-results').innerText()).includes('260 bp'), 'legacy imported design calculates');
   await oldContext.close();

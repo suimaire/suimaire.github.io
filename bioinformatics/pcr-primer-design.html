@@ -120,7 +120,7 @@ page_views: false
       <div class="pcr-cycle-comparison">
         <h3>다음 주기의 주형이 되면?</h3>
         <div class="pcr-step-buttons" role="group" aria-label="초기 PCR 주기 비교"><button type="button" data-comparison-cycle="1" aria-pressed="true">1주기</button><button type="button" data-comparison-cycle="2" aria-pressed="false">2주기</button><button type="button" data-comparison-cycle="3" aria-pressed="false">3주기</button></div>
-        <svg id="cycle-products-svg" viewBox="0 0 600 200" role="img" aria-label="초기 주기의 긴 산물과 정확한 길이 산물 비교"></svg>
+        <svg id="cycle-products-svg" viewBox="0 0 600 270" role="img" aria-label="초기 주기의 긴 산물과 정확한 길이 산물 비교"></svg>
         <p id="cycle-products-description" aria-live="polite">1주기: 새 가닥은 한쪽 끝만 프라이머로 정해진 긴 산물입니다.</p>
         <p class="pcr-small">긴 이중가닥 주형에서 시작한 교육용 모형입니다. 대표적인 가닥만 보여 주며 실제 반응의 모든 분자와 비율을 나타내지 않습니다. 실제 PCR 효율은 항상 100%가 아닙니다.</p>
       </div>
@@ -133,7 +133,7 @@ page_views: false
     </section>
     <section id="activity-02" class="pcr-activity">
       <p class="pcr-section-label">02 / 10분</p><h2>두 프라이머의 3′ 말단은 어디를 향할까?</h2>
-      <ol class="pcr-direction-principles"><li>DNA polymerase는 primer의 <strong>3′ OH</strong>에서 연장을 시작합니다. 새 DNA는 <strong>5′→3′</strong> 방향으로 합성됩니다.</li><li>두 primer의 <strong>3′ 말단이 표적 내부</strong>를 향해야 양쪽 경계를 정할 수 있습니다.</li><li>논문과 주문서에는 F와 R 서열을 <strong>모두 5′→3′</strong> 방향으로 씁니다.</li></ol>
+      <ol class="pcr-direction-principles"><li>DNA polymerase는 primer의 <strong>3′ OH</strong>에서 연장을 시작합니다. 새 DNA는 <strong>5′→3′</strong> 방향으로 합성됩니다.</li><li>두 primer의 <strong>3′ 말단은 서로를 향해야 합니다.</strong> 그래야 각 primer에서 시작한 DNA 합성이 두 결합 부위 사이의 표적 영역을 향해 진행됩니다.</li><li>논문과 주문서에는 F와 R 서열을 <strong>모두 5′→3′</strong> 방향으로 씁니다.</li></ol>
       <div class="pcr-tools" role="group" aria-label="프라이머 배치 비교"><button type="button" data-arrangement="inward" aria-pressed="true">정상 배치: F → / ← R</button><button type="button" data-arrangement="parallel" aria-pressed="false">잘못된 예: F → / R →</button><button type="button" id="flip-strands" aria-pressed="false">가닥 뒤집어 보기</button></div>
       <figure><svg id="direction-svg" viewBox="0 0 600 280" role="img" aria-label="두 프라이머의 3′ 말단은 표적 내부를 향한다">
         <text x="45" y="22">Reference strand</text><text x="10" y="60">5′</text><path d="M45 55H555" class="pcr-strand"/><text x="565" y="60">3′</text>
@@ -166,31 +166,76 @@ page_views: false
     </section>
     <section id="activity-03" class="pcr-activity">
       <p class="pcr-section-label">03 / 20분</p><h2>직접 프라이머를 배치하기</h2>
-      <p>화면 좌표는 1부터 세며 양 끝을 포함합니다. A의 결실 구간은 121~200입니다. 서열은 모두 상단 5′→3′ 기준입니다.</p>
-      <figure><svg id="sequence-map" viewBox="0 0 720 140" role="img" aria-label="A 1~420 서열 지도와 121~200 결실 구간"><text x="20" y="25">A 1</text><text x="635" y="25">420</text><path d="M30 55H690" class="pcr-strand"/><rect x="219" y="40" width="126" height="30" class="pcr-outline"/><text x="215" y="97">121~200</text><g id="map-bindings"></g></svg><figcaption>F는 실선, R은 윤곽선으로 표시합니다. 화살표는 계산한 신장 방향입니다.</figcaption></figure>
-      <fieldset><legend>선택할 결합 구간</legend><div class="pcr-fields">
-        <div><label for="range-primer">프라이머 이름</label><select id="range-primer"><option value="F">F</option><option value="R">R</option></select></div>
-        <div><label for="range-direction">신장 방향</label><select id="range-direction"><option value="right">오른쪽 → / 하단 결합</option><option value="left">왼쪽 ← / 상단 결합</option></select></div>
-        <div><label for="range-start">시작 좌표</label><input id="range-start" type="number" min="1" max="420" step="1" inputmode="numeric"></div>
-        <div><label for="range-end">끝 좌표</label><input id="range-end" type="number" min="1" max="420" step="1" inputmode="numeric"></div>
-      </div><button type="button" id="apply-range">선택 구간을 주문 서열로 넣기</button></fieldset>
-      <p id="range-status" role="status">확대 보기에서 시작과 끝을 차례로 누르거나 마우스로 드래그하세요. 키보드는 화살표로 이동하고 Enter로 두 끝을 선택합니다. 드래그 방향은 신장 방향을 뜻하지 않습니다.</p>
-      <details id="sequence-details"><summary>A 염기별 확대 보기</summary><p class="pcr-small">각 칸의 위는 상단, 아래는 상보 하단입니다. 줄을 바꾸어도 같은 가닥이 이어집니다. 읽는 방향: 상단 5′→3′, 하단 3′→5′.</p><div id="sequence-grid" aria-label="A 양 가닥의 염기별 구간 선택"></div></details>
-      <details><summary>A, B, C 전체 인공 서열 보기</summary><div id="template-sequences">서열 자료를 불러오는 중입니다. 계산 도구 없이 진행할 때는 활동 00의 결실 모형을 사용하세요.</div></details>
-      <div class="pcr-fields">
-        <div><label for="primer-f">F 주문 서열 / 5′→3′</label><textarea id="primer-f" class="pcr-sequence" rows="2" maxlength="1000" spellcheck="false" autocapitalize="characters"></textarea></div>
-        <div><label for="primer-r">R 주문 서열 / 5′→3′</label><textarea id="primer-r" class="pcr-sequence" rows="2" maxlength="1000" spellcheck="false" autocapitalize="characters"></textarea></div>
+      <p class="pcr-workbench-subtitle">결합 위치를 움직이면 PCR 산물은 어떻게 달라질까?</p>
+      <p>A 기준 서열에서 Forward와 Reverse primer의 결합 위치를 선택하세요. 두 위치로부터 예상되는 PCR 산물이 즉시 계산됩니다.</p>
+      <div class="pcr-workbench-layout">
+        <div class="pcr-workspace">
+          <div class="pcr-map-heading"><h3>A 기준 서열</h3><button type="button" id="show-initial-prediction" aria-pressed="false">00의 초기 예측 보기</button></div>
+          <figure class="pcr-workbench-map">
+            <svg id="sequence-map" viewBox="0 0 600 225" role="img" aria-labelledby="map-title map-description">
+              <title id="map-title">A 전체 DNA와 현재 primer 배치</title><desc id="map-description">F와 R 결합 부위를 선택하세요.</desc>
+              <g id="map-reference"></g><g id="map-prediction"></g><g id="map-bindings"></g>
+            </svg>
+            <figcaption id="map-caption">좌표는 1부터 세며 양 끝을 포함합니다. 윤곽 구간은 B에서 결실된 영역입니다.</figcaption>
+          </figure>
+          <div class="pcr-step-buttons" role="group" aria-label="선택할 primer">
+            <button type="button" data-select-primer="F" aria-pressed="true">F 선택 →</button>
+            <button type="button" data-select-primer="R" aria-pressed="false">R 선택 ←</button>
+          </div>
+          <div id="sequence-details">
+            <h3 id="selection-title">Forward primer 선택</h3>
+            <div class="pcr-window-controls">
+              <button type="button" id="sequence-prev" aria-label="이전 서열 구간 보기">← 이전</button>
+              <output id="sequence-window">A 확대 구간</output>
+              <button type="button" id="sequence-next" aria-label="다음 서열 구간 보기">다음 →</button>
+            </div>
+            <label for="sequence-window-slider" class="pcr-small">확대 위치 이동</label><input id="sequence-window-slider" type="range" min="1" max="361" step="1" value="1" aria-describedby="sequence-window">
+            <p class="pcr-small pcr-sequence-direction">Reference strand / 5′ → 3′</p>
+            <div id="sequence-grid" role="group" aria-label="A reference 염기 선택" aria-describedby="selection-help range-status"></div>
+            <p id="range-status" role="status">시작 염기와 끝 염기를 차례로 선택하세요.</p>
+            <p id="selection-direction" class="pcr-sequence"></p>
+          </div>
+          <details id="selection-help"><summary>조작 방법</summary><p>F 또는 R을 고르고 시작과 끝 염기를 누르세요. 마우스 드래그도 가능합니다. 터치에서는 두 번 탭해 선택합니다. 키보드는 화살표로 이동하고 Enter 또는 Space로 시작과 끝을 정합니다. Shift+화살표로 선택을 늘릴 수 있습니다. Home/End는 확대 구간의 처음/끝으로 이동합니다. Escape는 선택 중인 구간을 취소합니다.</p><p>확대 위치를 움직여 떨어진 구간까지 선택할 수 있습니다. 선택 방향은 합성 방향이 아닙니다. F는 기본적으로 오른쪽, R은 왼쪽으로 합성하며 아래에서 방향도 바꿔 볼 수 있습니다.</p></details>
+          <details id="coordinate-details"><summary>좌표로 미세 조정 펼치기</summary>
+            <div class="pcr-fields">
+              <div><label for="range-primer">조정할 primer</label><select id="range-primer"><option value="F">F</option><option value="R">R</option></select></div>
+              <div><label for="range-direction">합성 방향</label><select id="range-direction"><option value="right">오른쪽 → / 하단 결합</option><option value="left">왼쪽 ← / 상단 결합</option></select></div>
+              <div><label for="range-start">시작 좌표</label><input id="range-start" type="number" step="1" inputmode="numeric"></div>
+              <div><label for="range-end">끝 좌표</label><input id="range-end" type="number" step="1" inputmode="numeric"></div>
+            </div><button type="button" id="apply-range">좌표 적용 / 선택 위치 보기</button>
+            <p class="pcr-small">입력한 위치와 방향은 그대로 유지됩니다. 범위를 벗어나거나 뒤집힌 좌표는 설명을 보고 직접 수정하세요.</p>
+          </details>
+          <details id="manual-sequences"><summary>주문 서열 직접 입력 / 이전 기록 확인</summary>
+            <label for="primer-f">F 주문 서열 / 5′→3′</label><textarea id="primer-f" class="pcr-sequence" rows="2" maxlength="1000" spellcheck="false" autocapitalize="characters"></textarea>
+            <label for="primer-r">R 주문 서열 / 5′→3′</label><textarea id="primer-r" class="pcr-sequence" rows="2" maxlength="1000" spellcheck="false" autocapitalize="characters"></textarea>
+            <p class="pcr-small">A/C/G/T, 최대 100 nt까지 계산합니다. 직접 입력하면 해당 primer의 선택 좌표 대신 실제 결합 위치를 찾습니다. FASTA, N, 5′ 꼬리, 불일치와 원형 DNA는 지원하지 않습니다.</p>
+            <button type="button" id="analyze-design">현재 서열 다시 계산</button>
+          </details>
+          <details><summary>A, B, C 전체 인공 서열 보기</summary><div id="template-sequences">서열 자료를 불러오는 중입니다. 계산 도구 없이 진행할 때는 활동 00의 결실 모형을 사용하세요.</div></details>
+        </div>
+        <aside id="current-design" class="pcr-current-design" aria-labelledby="current-design-title">
+          <h3 id="current-design-title">현재 설계</h3>
+          <div id="primer-summary-f" class="pcr-primer-summary"></div><div id="primer-summary-r" class="pcr-primer-summary"></div>
+          <h3>예상 산물</h3><div id="analysis-results" class="pcr-computed"><p>F와 R 결합 부위를 선택하세요.</p></div>
+          <p id="analysis-status" role="status"></p>
+          <div id="placement-explanation" class="pcr-placement-explanation pcr-computed"><p id="placement-message"></p><p id="deletion-message"></p><p id="binding-message"></p></div>
+          <p class="pcr-small">내부 계산 범위: 제공된 교육용 A/B/C 서열에서 완전 일치 결합만 확인합니다.</p>
+          <p class="pcr-small">Tm과 primer 상보성은 활동 04에서 검토합니다.</p>
+        </aside>
       </div>
-      <p class="pcr-small">A/C/G/T만 지원합니다. 공백과 대소문자를 정리하며 각 프라이머는 최대 100 nt입니다. FASTA 헤더, N, 5′ 꼬리, 부분 결합, 불일치, 원형 DNA는 지원하지 않습니다.</p>
-      <label for="design-prediction">계산 전 예상 결과</label><textarea id="design-prediction" data-answer rows="3"></textarea>
-      <button type="button" id="analyze-design">현재 서열로 산물 계산</button><p id="analysis-status" role="status"></p>
-      <div id="analysis-results" class="pcr-computed"><p>직접 배치한 뒤 계산을 누르면 결합 위치와 예상 산물이 표시됩니다.</p></div>
-      <p class="pcr-notice">제공된 짧은 선형 DNA에서 완전 일치 결합만 검사합니다. 모든 F/R, F/F, R/R 조합을 탐색합니다. 미검출은 실제 증폭 불가능을 뜻하지 않으며, 여기서 유일한 산물도 실제 유전체 특이성을 뜻하지 않습니다.</p>
-      <label for="design-reason">이번 설계의 선택 근거 또는 수정 이유</label><textarea id="design-reason" data-answer rows="3"></textarea>
-      <label for="design-unresolved">아직 확인하지 못한 점</label><textarea id="design-unresolved" data-answer rows="3"></textarea>
-      <button type="button" id="save-design">설계 1 저장</button><p id="design-status" role="status"></p><div id="saved-designs" class="pcr-computed"></div>
-      <label for="design-deletion">두 시료의 길이 차이가 산물에 나타나도록 하려면 두 프라이머 사이에 어떤 구간이 포함되어야 하는가?</label><textarea id="design-deletion" data-answer rows="3"></textarea>
-      <label for="design-change">결합 위치를 바꾸었을 때 예상 산물이 달라진 이유를 설명하라.</label><textarea id="design-change" data-answer rows="3"></textarea>
+      <div id="product-comparison" class="pcr-product-comparison pcr-computed" aria-label="A/B/C 예상 산물 구조 비교"></div>
+      <p class="pcr-small">완전 일치 모형은 F/R, F/F, R/R의 모든 조합을 탐색합니다. 선택 위치의 amplicon과 다른 위치의 산물도 구별해 표시합니다. 실제 증폭 효율이나 유전체 특이성을 예측하지 않습니다.</p>
+      <div class="pcr-design-records">
+        <h3>저장한 설계</h3><div id="saved-designs" class="pcr-computed"></div>
+        <label for="design-reason">이전 설계에서 무엇을 바꾸었는가?</label><textarea id="design-reason" data-answer rows="2" placeholder="첫 설계라면 이 위치를 선택한 이유를 적으세요."></textarea>
+        <button type="button" id="save-design">현재 설계 저장</button><p id="design-status" role="status"></p>
+        <details id="design-reflection"><summary>추가 설명 / 이전 작성 기록</summary>
+          <label for="design-prediction">계산 전 예상 결과</label><textarea id="design-prediction" data-answer rows="2"></textarea>
+          <label for="design-unresolved">아직 확인하지 못한 점</label><textarea id="design-unresolved" data-answer rows="2"></textarea>
+          <label for="design-deletion">두 시료의 길이 차이가 산물에 나타나도록 하려면 두 프라이머 사이에 어떤 구간이 포함되어야 하는가?</label><textarea id="design-deletion" data-answer rows="3"></textarea>
+          <label for="design-change">결합 위치를 바꾸었을 때 예상 산물이 달라진 이유를 설명하라.</label><textarea id="design-change" data-answer rows="3"></textarea>
+        </details>
+      </div>
       <details class="pcr-explanation"><summary>배치 해설 열기</summary><p>두 형태에서 모두 결합할 수 있는 결실 양옆에 프라이머를 배치하면 결실 차이가 산물 길이에 반영될 수 있습니다. 길이는 양쪽 프라이머 결합 구간을 포함합니다. 겹치는 결합 구간은 이 모형의 지원 범위 밖입니다.</p></details>
     </section>
     <section id="activity-04" class="pcr-activity">

@@ -1,7 +1,9 @@
-import { analyzeAll, complement, normalizeSequence, primerStats, primerFromRange, combineProducts, gelPosition } from './pcr-core.mjs';
+import { analyzeAll, normalizeSequence, primerStats, combineProducts, gelPosition } from './pcr-core.mjs';
 import { STORAGE_KEY, DATA_VERSION, MAX_IMPORT_BYTES, emptyRecord, parseRecord, INTRO_CHOICE_KEYS } from './pcr-records.mjs';
 
 import { initializeIntro } from './pcr-intro.mjs';
+import { initializeWorkbench } from './pcr-workbench.mjs';
+import { cloneBindings, inspectDesign } from './pcr-design.mjs';
 
 const root = document.querySelector('#pcr-worksheet');
 if (root) initialize().catch(error => {
@@ -12,7 +14,7 @@ async function initialize() {
   const fields = [...root.querySelectorAll('[data-answer]')];
   const keys = [...fields.map(f => f.id), ...INTRO_CHOICE_KEYS];
   for (const field of fields) if (field.tagName !== 'SELECT') field.maxLength = 12000;
-  let state = emptyRecord(), fixture, currentResult = null, storageCorrupt = false, anchor = null, columns = 40, printBlank = false;
+  let state = emptyRecord(), fixture, currentResult = null, storageCorrupt = false, printBlank = false;
   const defaults = Object.fromEntries(fields.map(f => [f.id, f.value]));
   const textNode = (tag, text, className) => {
     const el = document.createElement(tag); el.textContent = text;
@@ -41,101 +43,35 @@ async function initialize() {
     status('save-status', `이전 기록을 읽을 수 없습니다: ${error.message} 기존 저장값을 덮어쓰지 않습니다. 현재 작업은 기록 내보내기로 보관하세요.`, true);
   }
   const intro = initializeIntro(root, () => state, save);
+  const workbench = initializeWorkbench(root, () => state, () => fixture, save, model => {
+    currentResult = model.result ? { forward: state.draft.forward.replace(/\s/g, '').toUpperCase(), reverse: state.draft.reverse.replace(/\s/g, '').toUpperCase(), result: model.result } : null;
+    if (model.result) renderGel(model.result);
+    else $('gel-results').replaceChildren(textNode('p', '활동 03에서 두 primer의 유효한 결합 부위를 선택하세요.'));
+    renderTm();
+  });
   function reflectState() {
     for (const f of fields) f.value = state.answers[f.id] ?? defaults[f.id];
     $('primer-f').value = state.draft.forward; $('primer-r').value = state.draft.reverse;
-    intro.render(); invalidate(); renderDesigns(); renderFinal();
+    intro.render(); workbench.resetSelection(); invalidate(); renderDesigns(); renderFinal();
   }
   root.addEventListener('input', event => {
     const f = event.target;
     if (f.matches('[data-answer]')) { state.answers[f.id] = f.value; save(); renderFinal(); }
     if (f.id === 'primer-f' || f.id === 'primer-r') {
-      state.draft = { forward: $('primer-f').value, reverse: $('primer-r').value }; save(); invalidate();
+      state.draft = { ...state.draft, forward: $('primer-f').value, reverse: $('primer-r').value, bindings: cloneBindings(state.draft.bindings) };
+      state.draft.bindings[f.id === 'primer-f' ? 'F' : 'R'] = null; workbench.cancelSelection(); invalidate(); save();
     }
   });
-  function setDraft(forward, reverse) {
-    state.draft = { forward, reverse }; $('primer-f').value = forward; $('primer-r').value = reverse; save(); invalidate();
+  function setDraft(forward, reverse, bindings) {
+    state.draft = { forward, reverse, ...(bindings ? { bindings: cloneBindings(bindings) } : {}) };
+    $('primer-f').value = forward; $('primer-r').value = reverse; workbench.resetSelection(); invalidate(); save();
   }
   function invalidate() {
     currentResult = null;
-    $('analysis-results').replaceChildren(textNode('p', '현재 입력의 계산 결과가 없습니다. 산물 계산을 눌러 확인하세요.'));
-    $('gel-results').replaceChildren(textNode('p', '활동 03에서 현재 서열로 산물을 계산하세요.'));
-    $('map-bindings').replaceChildren();
-    status('analysis-status', '서열을 수정한 경우 다시 계산하세요. 저장된 설계는 그대로 보존됩니다.');
+    if (fixture) workbench.refresh();
+    else $('gel-results').replaceChildren(textNode('p', '활동 03에서 현재 설계를 확인하세요.'));
     renderTm();
   }
-  function selectedRange(start, end) {
-    $('range-start').value = Math.min(start, end); $('range-end').value = Math.max(start, end);
-    for (const cell of root.querySelectorAll('.pcr-base')) cell.setAttribute('aria-pressed', String(+cell.dataset.base >= Math.min(start, end) && +cell.dataset.base <= Math.max(start, end)));
-    status('range-status', `${Math.min(start, end)}~${Math.max(start, end)}번 선택. 신장 방향을 확인한 뒤 주문 서열로 넣으세요.`);
-  }
-  function selectEndpoint(index) {
-    if (anchor === null) { anchor = index; selectedRange(index, index); status('range-status', `${index}번에서 선택 시작. 끝 좌표를 누르세요.`); }
-    else { selectedRange(anchor, index); anchor = null; }
-  }
-  function renderSequence() {
-    if (!fixture) return;
-    const grid = $('sequence-grid'), width = grid.clientWidth;
-    if (!width) return;
-    columns = Math.max(8, Math.min(40, Math.floor(width / 24)));
-    const sequence = fixture.templates.A.sequence, lower = complement(sequence);
-    const focused = document.activeElement?.dataset.base;
-    grid.replaceChildren();
-    for (let offset = 0; offset < sequence.length; offset += columns) {
-      const row = textNode('div', '', 'pcr-sequence-row'), coords = textNode('div', '', 'pcr-row-coordinates');
-      coords.append(textNode('span', `${offset + 1}`), textNode('span', `${Math.min(offset + columns, sequence.length)}`));
-      const bases = textNode('div', '', 'pcr-bases'); bases.style.setProperty('--pcr-columns', columns);
-      for (let i = offset; i < Math.min(offset + columns, sequence.length); i++) {
-        const cell = textNode('button', '', 'pcr-base'); cell.type = 'button'; cell.dataset.base = i + 1;
-        cell.tabIndex = i + 1 === +(focused || 1) ? 0 : -1;
-        cell.setAttribute('aria-label', `A ${i + 1}번 상단 ${sequence[i]} 하단 ${lower[i]}`);
-        cell.setAttribute('aria-pressed', String(i + 1 >= +$('range-start').value && i + 1 <= +$('range-end').value));
-        cell.append(textNode('span', sequence[i]), textNode('span', lower[i])); bases.append(cell);
-      }
-      row.append(coords, bases); grid.append(row);
-    }
-    if (focused) grid.querySelector(`[data-base="${focused}"]`)?.focus({ preventScroll: true });
-  }
-  let dragStart = null, suppressClick = false;
-  $('sequence-grid').addEventListener('pointerdown', event => {
-    const cell = event.target.closest('[data-base]');
-    if (cell && event.pointerType === 'mouse') dragStart = +cell.dataset.base;
-  });
-  root.addEventListener('pointerup', event => {
-    const cell = event.target.closest('[data-base]');
-    if (dragStart !== null && cell && dragStart !== +cell.dataset.base) { selectedRange(dragStart, +cell.dataset.base); anchor = null; suppressClick = true; }
-    dragStart = null;
-  });
-  root.addEventListener('pointercancel', () => { dragStart = null; });
-  $('sequence-grid').addEventListener('click', event => {
-    if (suppressClick) { suppressClick = false; return; }
-    const cell = event.target.closest('[data-base]'); if (cell) selectEndpoint(+cell.dataset.base);
-  });
-  $('sequence-grid').addEventListener('keydown', event => {
-    const cell = event.target.closest('[data-base]'); if (!cell) return;
-    const move = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -columns, ArrowDown: columns }[event.key];
-    if (move !== undefined || event.key === 'Home' || event.key === 'End') {
-      event.preventDefault();
-      const index = event.key === 'Home' ? 1 : event.key === 'End' ? 420 : Math.max(1, Math.min(420, +cell.dataset.base + move));
-      const next = $('sequence-grid').querySelector(`[data-base="${index}"]`);
-      cell.tabIndex = -1; next.tabIndex = 0; next.focus();
-    }
-  });
-  $('sequence-details').addEventListener('toggle', renderSequence);
-  let sequenceWidth = 0;
-  new ResizeObserver(entries => {
-    const width = Math.floor(entries[0].contentRect.width);
-    if (width !== sequenceWidth) { sequenceWidth = width; renderSequence(); }
-  }).observe($('sequence-grid'));
-  on('apply-range', () => {
-    try {
-      ready(); const start = Number($('range-start').value), end = Number($('range-end').value);
-      const p = primerFromRange(fixture.templates.A.sequence, start, end, $('range-direction').value);
-      const label = $('range-primer').value;
-      setDraft(label === 'F' ? p : state.draft.forward, label === 'R' ? p : state.draft.reverse);
-      selectedRange(start, end); status('range-status', `${label} 주문 서열 5′-${p}-3′를 넣었습니다. 산물 계산을 눌러 실제 결합 방향을 확인하세요.`);
-    } catch (error) { status('range-status', error.message, true); }
-  });
   function table(headers, rows, caption) {
     const el = textNode('table', ''), head = document.createElement('thead'), body = document.createElement('tbody'), hr = document.createElement('tr');
     if (caption) el.append(textNode('caption', caption));
@@ -146,29 +82,9 @@ async function initialize() {
   }
   const productLabel = p => `${p.source} ${p.start + 1}~${p.end}: ${p.length} bp`;
   const summarize = products => products.length ? products.map(productLabel).join('\n') : '이 완전 일치 모형에서 산물 미검출';
-  function statsTable(forward, reverse) {
-    return table(['프라이머', '길이', 'GC 비율', '3′ 쪽 5 nt', 'Tm'], [forward, reverse].map((p, i) => {
-      const s = primerStats(p); return [i ? 'R' : 'F', `${s.length} nt`, `${s.gcPercent.toFixed(1)}%`, s.threePrime, '정밀 계산 전'];
-    }), '현재 입력의 기본 조성');
-  }
   function calculate() {
-    ready(); const forward = normalizeSequence(state.draft.forward), reverse = normalizeSequence(state.draft.reverse);
-    const result = analyzeAll(fixture.templates, forward, reverse);
-    currentResult = { forward, reverse, result };
-    const container = $('analysis-results'); container.replaceChildren(statsTable(forward, reverse));
-    for (const [source, data] of Object.entries(result)) {
-      container.append(textNode('h3', `인공 DNA ${source}`), textNode('p', summarize(data.products), 'pcr-record-text'));
-      if (data.overlappingPairs) container.append(textNode('p', `겹치는 결합 쌍 ${data.overlappingPairs}개는 지원 범위 밖이므로 산물에서 제외했습니다.`));
-      const details = document.createElement('details'); details.append(textNode('summary', `${source}의 모든 결합 위치와 산물 서열`));
-      if (data.hits.length) details.append(table(['이름', '결합 구간', '주형 가닥', '신장'], data.hits.map(h => [h.primer, `${h.start + 1}~${h.end}`, h.strand === 'lower' ? '하단' : '상단', h.direction === 'right' ? '→ 오른쪽' : '← 왼쪽'])));
-      else details.append(textNode('p', '완전 일치 결합 위치 미검출'));
-      for (const p of data.products) {
-        details.append(textNode('p', `${productLabel(p)} / 가능한 쌍: ${p.bindings.map(b => `${b.right.primer}→ ←${b.left.primer}`).join(', ')}`), textNode('p', `5′-${p.sequence}-3′`, 'pcr-sequence'));
-      }
-      container.append(details);
-    }
-    drawMap(result.A.hits); renderGel(result); renderTm();
-    status('analysis-status', '현재 F와 R의 모든 완전 일치 결합을 계산했습니다. 입력 이름으로 방향을 강제하지 않습니다.');
+    ready(); workbench.refresh();
+    if (!currentResult) throw new Error($('analysis-status').textContent || '먼저 F와 R을 선택하세요.');
     return currentResult;
   }
   on('analyze-design', calculate);
@@ -176,14 +92,6 @@ async function initialize() {
     const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
     for (const [key, val] of Object.entries(attrs)) node.setAttribute(key, val);
     if (text !== undefined) node.textContent = text; return node;
-  }
-  function drawMap(hits) {
-    const layer = $('map-bindings'); layer.replaceChildren();
-    for (const h of hits) {
-      const x = 30 + h.start / 420 * 660, width = (h.end - h.start) / 420 * 660, y = h.primer === 'F' ? 108 : 126;
-      layer.append(svgNode('rect', { x, y, width, height: 5, fill: h.primer === 'F' ? '#0d5751' : 'white', stroke: '#0d5751' }));
-      layer.append(svgNode('text', { x, y: y - 3, 'font-size': 12 }, `${h.primer}${h.direction === 'right' ? '→' : '←'}`));
-    }
   }
   function renderGel(result) {
     const lanes = { A: result.A.products, B: result.B.products, C: result.C.products, 'A+C': combineProducts(result.A.products, result.C.products), 'B+C': combineProducts(result.B.products, result.C.products) };
@@ -210,7 +118,7 @@ async function initialize() {
     $('candidate-results').replaceChildren(table(['후보', ...sources], rows, '완전 일치 모형의 예상 산물'));
     for (const [id, pair] of Object.entries(fixture.candidatePairs)) {
       const b = textNode('button', `${id}을 편집 입력으로 가져오기`); b.type = 'button';
-      b.addEventListener('click', () => { setDraft(pair.forward, pair.reverse); status('design-status', `${id}을 편집 입력에 넣었습니다. 저장 설계는 변경하지 않았습니다.`); $('primer-f').focus(); });
+      b.addEventListener('click', () => { setDraft(pair.forward, pair.reverse); status('design-status', `${id}을 편집 입력에 넣었습니다. 저장 설계는 변경하지 않았습니다.`); workbench.focus(); });
       $('candidate-results').append(b);
     }
   }
@@ -219,23 +127,31 @@ async function initialize() {
     if (state.designs.length >= 3) return;
     const computed = currentResult || calculate();
     state.designs.push({ id: state.designs.length + 1, createdAt: new Date().toISOString(), forward: computed.forward, reverse: computed.reverse,
-      prediction: $('design-prediction').value, reason: $('design-reason').value, unresolved: $('design-unresolved').value });
+      prediction: $('design-prediction').value, reason: $('design-reason').value, unresolved: $('design-unresolved').value, ...(state.draft.bindings ? { bindings: cloneBindings(state.draft.bindings) } : {}) });
     save(); renderDesigns(); renderFinal(); status('design-status', `설계 ${state.designs.length}을 별도로 보존했습니다. 이후 입력 변경은 이 설계를 덮어쓰지 않습니다.`);
   });
   function designSummary(design, withButton = false) {
     const block = textNode('div', '', 'pcr-saved');
     block.append(textNode('h3', `설계 ${design.id}`), textNode('p', `F 5′-${design.forward}-3′\nR 5′-${design.reverse}-3′`, 'pcr-sequence'));
     if (fixture) {
-      try { const result = analyzeAll(fixture.templates, design.forward, design.reverse); block.append(textNode('p', `완전 일치 모형의 예상 산물\n${Object.values(result).map(r => summarize(r.products)).join('\n')}`)); }
+      try {
+        const result = analyzeAll(fixture.templates, design.forward, design.reverse);
+        const description = withButton ? Object.entries(result).map(([source, r]) => `${source} ${r.products.length ? `${[...new Set(r.products.map(p => p.length))].join(', ')} bp` : '예상 산물 없음'}`).join('\n') : Object.values(result).map(r => summarize(r.products)).join('\n');
+        block.append(textNode('p', `완전 일치 모형의 예상 산물\n${description}`));
+      }
       catch (error) { block.append(textNode('p', `계산 범위 오류: ${error.message}`)); }
     }
-    for (const [label, key] of [['계산 전 예상', 'prediction'], ['선택 또는 수정 이유', 'reason'], ['미확인', 'unresolved']]) block.append(textNode('p', `${label}: ${design[key] || '기록 없음'}`));
-    if (withButton) { const b = textNode('button', `설계 ${design.id}을 편집 입력으로 복사`); b.type = 'button'; b.addEventListener('click', () => { setDraft(design.forward, design.reverse); $('primer-f').focus(); }); block.append(b); }
+    if (withButton && fixture) {
+      const info = inspectDesign(design, fixture).primers;
+      block.append(textNode('p', ['F', 'R'].map(name => `${name} ${info[name].binding ? `${info[name].binding.start}–${info[name].binding.end}` : '서열 기반'}`).join(' / '), 'pcr-small'));
+    }
+    for (const [label, key] of [['계산 전 예상', 'prediction'], ['선택 또는 수정 이유', 'reason'], ['미확인', 'unresolved']]) if (!withButton || design[key]) block.append(textNode('p', `${label}: ${design[key] || '기록 없음'}`));
+    if (withButton) { const b = textNode('button', `설계 ${design.id} 불러오기`); b.type = 'button'; b.addEventListener('click', () => { setDraft(design.forward, design.reverse, design.bindings); workbench.focus(); }); block.append(b); }
     return block;
   }
   function renderDesigns() {
     $('saved-designs').replaceChildren(...state.designs.map(d => designSummary(d, true)));
-    $('save-design').textContent = state.designs.length === 3 ? '설계 1~3 보존됨' : `설계 ${state.designs.length + 1} 저장`;
+    $('save-design').textContent = state.designs.length === 3 ? '설계 1~3 보존됨' : `현재 설계 저장 / ${state.designs.length + 1}번`;
     $('save-design').disabled = state.designs.length === 3;
   }
   function renderFinal() {
@@ -271,8 +187,7 @@ async function initialize() {
     if (!window.confirm('이 학습지의 답안과 설계 1~3을 모두 초기화할까요? 다른 학습지의 기록은 유지합니다.')) return;
     try { localStorage.removeItem(STORAGE_KEY); } catch { /* In-memory reset still works with blocked storage. */ }
     state = emptyRecord(); storageCorrupt = false; reflectState();
-    $('candidate-results').replaceChildren(); $('direction-feedback').textContent = ''; $('range-start').value = ''; $('range-end').value = ''; anchor = null;
-    renderSequence(); save();
+    $('candidate-results').replaceChildren(); $('direction-feedback').textContent = ''; workbench.resetSelection(); save();
   });
   function preparePrint() {
     root.dataset.printBlank = String(printBlank);
@@ -314,6 +229,6 @@ async function initialize() {
     const templateContainer = $('template-sequences'); templateContainer.replaceChildren();
     for (const [id, t] of Object.entries(fixture.templates)) templateContainer.append(textNode('h3', `${id} / ${t.length} nt / 상단 5′→3′`), textNode('p', t.sequence, 'pcr-sequence'));
     $('candidate-sequences').append(table(['후보', 'F 주문 서열 5′→3′', 'R 주문 서열 5′→3′'], Object.entries(fixture.candidatePairs).map(([id, p]) => [id, p.forward, p.reverse]), '고정 교육 후보'));
-    renderSequence(); renderDesigns(); renderFinal(); root.dataset.ready = 'true';
+    workbench.refresh(); renderDesigns(); renderFinal(); root.dataset.ready = 'true';
   } catch (error) { fixture = null; status('analysis-status', `교육 데이터 로딩 실패: ${error.message} 답안 기록, JSON과 인쇄는 계속 사용할 수 있습니다.`, true); }
 }
