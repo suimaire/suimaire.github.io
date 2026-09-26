@@ -63,8 +63,8 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     await page.locator('#save-design').click();
     await page.locator('#primer-f').fill('TAGGAGGCTGCAAGCCACGC'); await page.locator('#primer-r').fill(P1[1]);
     await page.locator('#save-design').click(); check(await page.locator('#save-design').isDisabled(), 'three preserved designs');
-    await page.locator('#external-mode').selectOption({ label: '새 후보 설계' });
-    await page.locator('#external-plan').fill('미실시: 교사가 지정한 RefSeq와 검색 범위를 확인한다.');
+    await page.locator('#ext-route-new').click(); await page.locator('#ext-to-plan').click();
+    await page.locator('#ext-plan-notes').fill('미실시: 교사가 지정한 RefSeq와 검색 범위를 확인한다.');
     await page.locator('#rna-extension > summary').click();
     check((await page.locator('#rna-extension').innerText()).includes('RT(-)'), 'RNA control explanation unchanged');
     await page.locator('#rna-plan').fill('역전사 여부와 gDNA 잔존을 구분할 대조군을 계획한다.');

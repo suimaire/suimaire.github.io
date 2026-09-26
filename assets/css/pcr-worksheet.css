@@ -430,3 +430,48 @@
   #pcr-worksheet[data-print-blank=true] #current-design, #pcr-worksheet[data-print-blank=true] #map-prediction, #pcr-worksheet[data-print-blank=true] #map-caption { display: none !important; }
   #pcr-worksheet[data-print-blank=true] #saved-designs { display: none !important; }
 }
+/* Activity 06: compact route rows, then a shared research note. */
+#pcr-worksheet #ext-routes { border-top: 1px solid var(--pcr-rule); margin: 26px 0; }
+#pcr-worksheet #ext-routes button { display: grid; grid-template-columns: 28px 1fr 54px; gap: 12px; align-items: start; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--pcr-rule); border-radius: 0; padding: 18px 10px; color: #2f3634; }
+#pcr-worksheet #ext-routes button[aria-pressed=true] { border-left: 3px solid var(--pcr-accent); padding-left: 7px; }
+#pcr-worksheet #ext-routes strong { font-size: 17px; }
+#pcr-worksheet #ext-routes small { display: block; margin-top: 7px; font-size: 13px; color: var(--pcr-muted); }
+#pcr-worksheet #ext-routes [data-route-selected] { font-size: 12px; color: var(--pcr-accent); }
+#pcr-worksheet .ext-route-input { margin: 24px 0; }
+#pcr-worksheet .ext-primer-line { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 16px; border-top: 1px solid var(--pcr-rule); padding: 15px 0; }
+#pcr-worksheet .ext-primer-line p { margin: 8px 0 0; }
+#pcr-worksheet #ext-workflow details { border: 0; border-top: 1px solid var(--pcr-rule); border-bottom: 1px solid var(--pcr-rule); padding: 15px 0; }
+#pcr-worksheet #ext-workflow summary { min-height: 44px; padding: 7px 0; }
+#pcr-worksheet #ext-workflow label { margin-top: 16px; }
+#pcr-worksheet #ext-workflow input, #pcr-worksheet #ext-workflow select, #pcr-worksheet #ext-workflow textarea { min-width: 0; max-width: 100%; }
+#pcr-worksheet #ext-workflow .pcr-sequence { font-family: Consolas, 'Liberation Mono', monospace; }
+#pcr-worksheet .ext-field-help:not(:empty) { display: block; padding: 5px 0; }
+#pcr-worksheet #ext-workflow [aria-invalid=true] { border-style: dashed; border-color: #2f3634; }
+#pcr-worksheet #ext-workflow h4 { font-size: 17px; margin: 25px 0 8px; }
+#pcr-worksheet .ext-candidate { padding: 0 0 24px; border-bottom: 1px solid var(--pcr-rule); }
+#pcr-worksheet #ext-add-candidate { margin-top: 20px; }
+#pcr-worksheet #ext-open { display: inline-block; padding: 12px 16px; min-height: 44px; border: 1px solid var(--pcr-accent); }
+#pcr-worksheet #ext-status-block, #pcr-worksheet #ext-reflections { padding: 8px 0 18px; border-top: 1px solid var(--pcr-rule); }
+#pcr-worksheet #ext-status-text { color: var(--pcr-accent); font-weight: 700; }
+#pcr-worksheet .ext-concept-row { margin: 20px 0; }
+#pcr-worksheet .ext-concept-row p { font-size: 14px; margin: 8px 0; }
+#pcr-worksheet .ext-pair { display: flex; align-items: center; gap: 10px; margin-top: 10px; color: var(--pcr-accent); font: 16px/1.8 Consolas, monospace; }
+#pcr-worksheet .ext-dna { flex: 1; min-width: 30px; border-top: 2px solid #687470; }
+#pcr-worksheet #ext-claim-text, #pcr-worksheet #ext-search-context { overflow-wrap: anywhere; }
+#pcr-worksheet #ext-copy-fallback { white-space: pre-wrap; overflow-wrap: anywhere; }
+#pcr-worksheet #ext-print { display: none; }
+@media (max-width: 520px) {
+  #pcr-worksheet #ext-routes button { grid-template-columns: 23px 1fr; gap: 7px; }
+  #pcr-worksheet #ext-routes [data-route-selected] { grid-column: 2; min-height: 18px; }
+  #pcr-worksheet #ext-comparison-table th, #pcr-worksheet #ext-comparison-table td { font-size: 12px; padding: 10px 5px; }
+}
+@media print {
+  #pcr-worksheet #activity-06 { break-before: page; break-after: page; }
+  #pcr-worksheet #ext-workflow { display: none !important; }
+  #pcr-worksheet #ext-print { display: block; }
+  #pcr-worksheet .ext-print-entry { break-inside: avoid; }
+  #pcr-worksheet #ext-print h4 { margin: 12px 0 0; font-size: 10pt; break-after: avoid; }
+  #pcr-worksheet #ext-print p { margin: 4px 0 12px; min-height: 24px; }
+  #pcr-worksheet #ext-print table { break-inside: avoid; }
+  #pcr-worksheet[data-print-blank=true] #ext-print .ext-print-entry p { border-bottom: 1px solid #aaa; }
+}

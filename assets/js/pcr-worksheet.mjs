@@ -1,4 +1,4 @@
-import { analyzeAll, normalizeSequence } from './pcr-core.mjs';
+import { analyzeAll } from './pcr-core.mjs';
 import { STORAGE_KEY, DATA_VERSION, MAX_IMPORT_BYTES, emptyRecord, parseRecord, INTRO_CHOICE_KEYS } from './pcr-records.mjs';
 
 import { initializeIntro } from './pcr-intro.mjs';
@@ -6,6 +6,8 @@ import { initializeWorkbench } from './pcr-workbench.mjs';
 import { initializeReview } from './pcr-review-view.mjs';
 import { mountEvidence, initializeEvidence } from './pcr-evidence-view.mjs';
 import { cloneBindings, inspectDesign } from './pcr-design.mjs';
+import { initializeExternal } from './pcr-external-view.mjs';
+import { SEARCH_STATUS, comparisonRecorded } from './pcr-external.mjs';
 
 const root = document.querySelector('#pcr-worksheet');
 if (root) initialize().catch(error => {
@@ -48,15 +50,17 @@ async function initialize() {
   const intro = initializeIntro(root, () => state, save);
   const review = initializeReview(root, () => state, () => fixture, save);
   const evidence = initializeEvidence(root, () => state, () => fixture);
+  const external = initializeExternal(root, () => state, () => fixture, save, renderFinal);
   const workbench = initializeWorkbench(root, () => state, () => fixture, save, model => {
     currentResult = model.result ? { forward: state.draft.forward.replace(/\s/g, '').toUpperCase(), reverse: state.draft.reverse.replace(/\s/g, '').toUpperCase(), result: model.result } : null;
     evidence.renderPrediction();
+    external.renderSource();
     review.render();
   });
   function reflectState() {
     for (const f of fields) f.value = state.answers[f.id] ?? defaults[f.id];
     $('primer-f').value = state.draft.forward; $('primer-r').value = state.draft.reverse;
-    intro.render(); workbench.resetSelection(); invalidate(); renderDesigns(); renderFinal(); evidence.render();
+    intro.render(); workbench.resetSelection(); invalidate(); renderDesigns(); renderFinal(); evidence.render(); external.render();
   }
   root.addEventListener('input', event => {
     const f = event.target;
@@ -67,7 +71,7 @@ async function initialize() {
     }
   });
   root.addEventListener('change', event => {
-    if (event.target.id === 'review-design') evidence.renderPrediction();
+    if (event.target.id === 'review-design') { evidence.renderPrediction(); external.renderSource(); }
   });
   root.addEventListener('click', event => {
     const caseButton = event.target.closest('[data-evidence-case]');
@@ -89,6 +93,7 @@ async function initialize() {
     if (fixture) workbench.refresh();
     else evidence.renderPrediction();
     review.render();
+    external.renderSource();
   }
   const productLabel = p => `${p.source} ${p.start + 1}~${p.end}: ${p.length} bp`;
   const summarize = products => products.length ? products.map(productLabel).join('\n') : '이 완전 일치 모형에서 산물 미검출';
@@ -133,14 +138,8 @@ async function initialize() {
     const target = $('final-comparison');
     target.replaceChildren(textNode('h3', '처음 예측'), textNode('p', `배치: ${state.answers['first-placement'] || '기록 없음'}\n음성 해석: ${state.answers['first-negative'] || '기록 없음'}`, 'pcr-record-text'));
     target.append(...state.designs.map(d => designSummary(d)));
-    target.append(textNode('h3', '관찰과 판단의 출처'), textNode('p', `내부 계산을 본 뒤의 판단: ${state.answers['candidate-judgment'] || '기록 없음'}\n수업용 가상 자료 해석: ${Object.entries(state.answers).filter(([key, value]) => /^evidence-case-\d-interpretation$/.test(key) && value).map(([key, value]) => `상황 ${key.split('-')[2]}: ${value}`).join('\n') || state.answers['evidence-cases'] || '기록 없음'}\n학생이 기록한 외부 검색: ${state.answers['external-status'] || '미실시'}\n외부 후보 비교: ${state.answers['external-comparison'] || '기록 없음'}`, 'pcr-record-text'));
+    target.append(textNode('h3', '관찰과 판단의 출처'), textNode('p', `내부 계산을 본 뒤의 판단: ${state.answers['candidate-judgment'] || '기록 없음'}\n수업용 가상 자료 해석: ${Object.entries(state.answers).filter(([key, value]) => /^evidence-case-\d-interpretation$/.test(key) && value).map(([key, value]) => `상황 ${key.split('-')[2]}: ${value}`).join('\n') || state.answers['evidence-cases'] || '기록 없음'}\n학생이 기록한 외부 검색: ${state.externalSearch.status === 'unperformed' ? '외부 검토 미실시' : SEARCH_STATUS[state.externalSearch.status]}\n외부 후보 비교: ${state.externalSearch.status !== 'unperformed' && comparisonRecorded(state.externalSearch) ? state.externalSearch.selectionReason || '두 후보 기록 / 선택 근거 미기록' : '후보 비교를 기록하지 않음'}`, 'pcr-record-text'));
   }
-  async function copy(text) {
-    try { await navigator.clipboard.writeText(text); status('copy-status', '출처와 함께 클립보드에 복사했습니다.'); }
-    catch { $('copy-status').replaceChildren(textNode('span', '클립보드를 사용할 수 없습니다. 아래 텍스트를 선택해 복사하세요.'), textNode('pre', text, 'pcr-sequence')); }
-  }
-  on('copy-synthetic', () => { const f = normalizeSequence(state.draft.forward), r = normalizeSequence(state.draft.reverse); return copy(`학습용 인공 서열 설계. 자연 유전자 또는 NCBI 검증 결과가 아님.\nF 5′→3′: ${f}\nR 5′→3′: ${r}`); });
-  on('copy-external', () => copy(`학생이 외부 결과에서 기록한 값. 학습지 자체 검증 아님.\n실시 여부: ${$('external-status').value}\naccession.version: ${$('external-accession').value}\nF 5′→3′: ${$('external-f').value}\nR 5′→3′: ${$('external-r').value}`));
   on('export-record', () => {
     state.updatedAt = new Date().toISOString();
     const url = URL.createObjectURL(new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }));
@@ -173,6 +172,7 @@ async function initialize() {
     }
     intro.preparePrint(printBlank, textNode);
     evidence.preparePrint();
+    external.preparePrint(printBlank);
   }
   window.addEventListener('beforeprint', preparePrint);
   window.addEventListener('afterprint', () => { printBlank = false; delete root.dataset.printBlank; root.querySelectorAll('.pcr-print-value').forEach(el => el.remove()); evidence.finishPrint(); });

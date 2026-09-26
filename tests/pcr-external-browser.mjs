@@ -1,0 +1,182 @@
+import assert from 'node:assert/strict';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { chromium, webkit } from './.pcr-tools/node_modules/playwright/index.mjs';
+import { emptyRecord, STORAGE_KEY } from '../assets/js/pcr-records.mjs';
+const fixture = JSON.parse(await readFile(new URL('../assets/data/pcr-primer-fixture.json', import.meta.url)));
+const url = process.env.PCR_TEST_URL || 'http://127.0.0.1:4173/bioinformatics/pcr-primer-design/';
+const output = resolve('verification.local/pcr-primer-design/phase5'); await mkdir(output, { recursive: true });
+let checks = 0; const results = [], screenshots = [], accessibility = [];
+const check = (value, label) => { assert.ok(value, label); checks++; };
+for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
+  const browser = await engine.launch({ headless: true });
+  for (const width of [1440, 768, 390]) {
+    const baseline = checks, context = await browser.newContext({ viewport: { width, height: 1100 }, hasTouch: width === 390 });
+    const page = await context.newPage(), errors = []; page.on('pageerror', e => errors.push(e.message));
+    await page.goto(url); await page.waitForSelector('#pcr-worksheet[data-ready=true]');
+    const open = async id => { if (!await page.locator(id).evaluate(el => el.open)) await page.locator(`${id} > summary`).click(); };
+    const saved = async () => JSON.parse(await page.evaluate(key => localStorage.getItem(key), STORAGE_KEY));
+    const text = id => page.locator(id).innerText();
+    const fill = async (path, value) => { await page.locator(`[data-external="${path}"]`).fill(value); };
+    const select = async (path, value) => page.locator(`[data-external="${path}"]`).selectOption(value);
+    const shot = async (name, selector, clipEnd) => {
+      if (engineName !== 'chromium' || (width !== 1440 && !/mobile|tablet/.test(name))) return;
+      if (clipEnd) {
+        await page.locator(selector).scrollIntoViewIfNeeded(); const a = await page.locator(selector).boundingBox(), b = await page.locator(clipEnd).boundingBox();
+        const offset = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
+        await page.screenshot({ path: resolve(output, name), fullPage: true, clip: { x:a.x+offset.x,y:a.y+offset.y,width:a.width,height:b.y+b.height-a.y }, animations:'disabled' });
+      } else await page.locator(selector).screenshot({ path: resolve(output, name), animations:'disabled' });
+      screenshots.push({ name, path: resolve(output,name), width });
+    };
+    const audit = async route => {
+      await page.addScriptTag({path:resolve('tests/.pcr-tools/node_modules/axe-core/axe.min.js')});
+      const result = await page.evaluate(async () => {
+        const r = await axe.run('#activity-06',{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}});
+        return {violations:r.violations.map(x=>({id:x.id,nodes:x.nodes.map(n=>n.target)})),incomplete:r.incomplete.map(x=>x.id)};
+      });
+      check(result.violations.length===0,JSON.stringify(result)); check(result.incomplete.length===0,JSON.stringify(result));
+      accessibility.push({engineName,width,route,...result});
+      check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth), 'no page horizontal overflow');
+    };
+    check((await text('#ext-no-primer')).includes('유효한 primer pair'), 'empty design guidance');
+    check(await page.locator('#ext-after-search').isHidden(), 'no result form at entry');
+    check(!await page.locator('#ext-plan').evaluate(el=>el.open), 'plan is initially folded');
+    check((await text('#final-comparison')).includes('외부 검토 미실시'), '07 reads explicit unperformed state');
+    await page.locator('#ext-route-mine').focus(); await page.keyboard.press('ArrowRight');
+    check(await page.locator('#ext-route-paper').getAttribute('aria-pressed')==='true', 'arrow selects route');
+    check(await page.locator('#ext-route-paper').evaluate(el=>el===document.activeElement), 'arrow keeps visible focus');
+    check(await page.locator('#ext-route-paper').evaluate(el=>getComputedStyle(el).outlineStyle)!=='none', 'visible keyboard outline');
+    await page.keyboard.press('Home'); await page.keyboard.press('Enter');
+    for (const [name,start,end] of [['F',41,60],['R',281,300]]) {
+      await page.locator(`[data-select-primer=${name}]`).click(); await open('#coordinate-details');
+      await page.locator('#range-start').fill(String(start)); await page.locator('#range-end').fill(String(end)); await page.locator('#apply-range').click();
+    }
+    check(await text('#ext-my-forward')===fixture.candidatePairs.P1.forward, '03 forward read');
+    check(await text('#ext-my-reverse')===fixture.candidatePairs.P1.reverse, '03 reverse read');
+    await page.locator('#save-design').click(); await page.locator('#review-design').selectOption('1');
+    await open('#manual-sequences'); await page.locator('#primer-f').fill('AC?');
+    check(await text('#ext-my-forward')===fixture.candidatePairs.P1.forward, '04 selected snapshot takes precedence over invalid draft');
+    await shot('06-overview.png','#ext-introduction','#ext-routes'); await shot('06-my-primer-route.png','#ext-route-input-mine');
+    const protectedState = await saved();
+    await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copied=text;}}}));
+    for (const key of ['forward','reverse','pair']) {
+      await page.locator(`#ext-route-input-mine [data-copy=${key}]`).click();
+      const value = await page.evaluate(()=>window.copied);
+      check(key==='pair' ? value.includes(fixture.candidatePairs.P1.forward)&&value.includes(fixture.candidatePairs.P1.reverse) : value===fixture.candidatePairs.P1[key], `${key} exact copied value`);
+      check(await text('#ext-copy-status')==='복사됨', 'inline copy feedback');
+    }
+    await page.evaluate(()=>{navigator.clipboard.writeText=async()=>{throw new Error('blocked');};});
+    await page.locator('#ext-route-input-mine [data-copy=pair]').click(); check((await text('#ext-copy-fallback')).includes(fixture.candidatePairs.P1.forward), 'clipboard failure keeps selectable text');
+    await audit('mine');
+    await page.locator('#ext-route-paper').click();
+    for (const [key,value] of Object.entries({source:'수업 검토 예시 / 문헌 메모',species:'Homo sapiens',purpose:'보고된 pair 재검토',forward:'ACGTACGTACGTACGTACGT',reverse:'TGCATGCATGCATGCATGCA'})) await fill(`paper.${key}`,value);
+    check((await saved()).externalSearch.paper.target==='', 'paper target optional');
+    await shot('06-paper-primer-route.png','#ext-route-input-paper'); await audit('paper');
+    await fill('paper.target','NM_recorded_example.1');
+    await page.evaluate(()=>{navigator.clipboard.writeText=async text=>{window.copied=text;};});
+    await page.locator('#ext-route-input-paper [data-copy=target]').click(); check(await page.evaluate(()=>window.copied)==='NM_recorded_example.1','target copy');
+    await page.locator('#ext-route-new').click(); await select('design.type','fasta');
+    await fill('design.target','>classroom_target\nACGTACGTACGTACGT'); await fill('design.organism','Homo sapiens'); await select('design.purpose','발현 분석');
+    await fill('design.min','120'); await fill('design.max','90'); check(await page.locator('#ext-design-max').getAttribute('aria-invalid')==='true','invalid size range explained');
+    await fill('design.max','250'); await shot('06-new-design-route.png','#ext-route-input-new'); await audit('new');
+    await page.locator('#ext-to-plan').click();
+    for (const [key,value] of Object.entries({purpose:'같은 조건에서 두 후보의 비표적 산물 보고 비교',organism:'Homo sapiens',target:'교사가 지정한 target accession',database:'RefSeq RNA',notes:'전사체 범위를 먼저 살핀다. 다른 검색 범위는 별도로 검토한다.'})) await fill(`plan.${key}`,value);
+    await page.locator('[data-copy=plan]').click(); check((await page.evaluate(()=>window.copied)).includes('RefSeq RNA'),'plan copy');
+    await shot('06-search-plan.png','#ext-plan');
+    const href = await page.locator('#ext-open').getAttribute('href'); check(href==='https://www.ncbi.nlm.nih.gov/tools/primer-blast/','official URL');
+    check(await page.locator('#ext-open').getAttribute('rel')==='noopener noreferrer','external security');
+    // Exercise the click while intercepting navigation: no external form or search is submitted.
+    await context.route('https://www.ncbi.nlm.nih.gov/**',route=>route.fulfill({body:'Official destination intercepted by local test.'}));
+    const popupPromise=page.waitForEvent('popup'); await page.locator('#ext-open').click(); const popup=await popupPromise; await popup.close();
+    check((await saved()).externalSearch.status==='unperformed','link click never records execution');
+    await open('#ext-concept'); await shot('06-specificity-concept.png','#ext-concept');
+    await page.reload(); await page.waitForSelector('#pcr-worksheet[data-ready=true]');
+    check((await saved()).externalSearch.plan.database==='RefSeq RNA','plan reload');
+    check(await page.locator('#ext-design-target').inputValue()==='>classroom_target\nACGTACGTACGTACGT','FASTA reload');
+    await shot('06-no-search.png','#ext-status-block');
+    await page.locator('#ext-performed').click(); check((await saved()).externalSearch.status==='performed','manual execution');
+    check(await page.locator('#ext-conditions-date').inputValue()==='', 'date is not inferred from click');
+    for (const [key,value] of Object.entries({date:'2026-09-27',organism:'Homo sapiens',database:'RefSeq RNA',target:'교사가 지정한 target accession',forward:'',reverse:'',product:'120–250 bp',specificity:'検索時の mismatch 조건을 기록 / 수업용 입력 예시',other:'외부 결과를 대신 생성하지 않은 UI 검증용 예시'})) await fill(`conditions.${key}`,value);
+    await open('#ext-results');
+    const candidate = async (i,values) => { for(const [key,value] of Object.entries(values)) if(key==='unintended') await select(`candidates.${i}.${key}`,value); else await fill(`candidates.${i}.${key}`,value); };
+    await candidate(0,{forward:'ACGTACGTACGTACGTACGT',reverse:'TGCATGCATGCATGCATGCA',product:'180?',tmF:'60.2',tmR:'60.8',unintended:'none',other:'target 내부 / 수업용 기록 예시'});
+    check(await page.locator('#ext-candidates-0-product').getAttribute('aria-invalid')==='true','invalid reported product feedback');
+    await select('selectedCandidate','A'); await page.locator('#ext-complete').click(); check((await saved()).externalSearch.status==='performed','invalid draft cannot complete');
+    await page.reload(); await page.waitForSelector('#pcr-worksheet[data-ready=true]'); await open('#ext-results');
+    check(await page.locator('#ext-candidates-0-product').inputValue()==='180?','unfinished invalid draft survives reload');
+    await fill('candidates.0.product','180');
+    check(await text('#ext-comparison-note')==='후보 비교를 기록하지 않음','one candidate no comparison');
+    await shot('06-result-record.png','#ext-results');
+    await page.locator('#ext-add-candidate').click(); check((await saved()).externalSearch.selectedCandidate==='A','adding candidate never auto-selects winner');
+    await candidate(1,{forward:'ACGTACGTACGTACGTACGA',reverse:'TGCATGCATGCATGCATGCT',product:'210',tmF:'61.0',tmR:'62.4',unintended:'reported',observations:'비표적 transcript 예시 / accession은 실제 결과에서 기록',other:'다른 위치의 pair'});
+    await shot('06-unintended-target.png','#ext-candidate-1');
+    await select('selectedCandidate','B'); check((await text('#ext-claim-text')).includes('보고되었다고'),'claim follows B reported result');
+    await select('candidates.1.unintended','unclear'); check((await text('#ext-claim-text')).includes('해석하지 못했다고'),'unclear claim'); await select('candidates.1.unintended','reported');
+    await select('selectedCandidate','A');
+    await fill('selectionReason','A와 B의 product size와 보고된 비표적 산물을 비교했다. 이 선택은 기록한 검색 범위에 한정한다.');
+    await fill('claimReflection','기록한 날짜, 생물종, database와 설정 범위에서만 말할 수 있다.');
+    await fill('wetLabReflection','실제 증폭 효율과 band의 정체는 실험으로 더 살펴야 한다.');
+    await page.locator('#ext-complete').click(); check((await saved()).externalSearch.status==='recorded','explicit complete with valid required record');
+    await fill('conditions.other','UI 검증용 예시 / 실제 외부 검색 결과 아님');
+    check((await saved()).externalSearch.status==='performed','editing evidence reopens record completion');
+    await page.locator('#ext-complete').click();
+    check((await text('#ext-claim-text')).includes('2026-09-27에 기록한 Homo sapiens / RefSeq RNA'),'bounded claim');
+    check((await text('#ext-comparison-table')).includes('1.4 °C'),'difference only from reported numbers');
+    await shot('06-claim-scope.png','#ext-claim'); await shot('06-candidate-comparison.png','#ext-comparison'); await audit('results');
+    if(width===390) { await page.locator('#ext-route-paper').tap(); await page.locator('#ext-introduction h2').tap(); await shot('06-mobile.png','#ext-introduction','#ext-route-input-paper'); }
+    if(width===768) await shot('06-tablet.png','#ext-comparison');
+    const after = await saved();
+    for(const key of ['draft','designs','review','evidence','introView','initialPrimerPrediction']) check(JSON.stringify(after[key])===JSON.stringify(protectedState[key]),`${key} untouched by 06`);
+    for(const el of await page.locator('#ext-routes button').all()) { const b=await el.boundingBox(); check(b.height>=44&&b.width>=44,'touch target'); }
+    const labels=await page.locator('#activity-06 [data-external]').evaluateAll(els=>els.every(el=>document.querySelector(`label[for="${el.id}"]`)&&document.getElementById(el.getAttribute('aria-describedby')))); check(labels,'labels and help connected');
+    await page.emulateMedia({reducedMotion:'reduce'}); check(await page.locator('#ext-route-new').evaluate(el=>getComputedStyle(el).animationName)==='none','reduced motion no new animation');
+    await open('#record-menu'); const downloadPromise=page.waitForEvent('download'); await page.locator('#export-record').click(); const download=await downloadPromise; const recordPath=resolve(output,`roundtrip-${engineName}-${width}.json`); await download.saveAs(recordPath);
+    const exported=JSON.parse(await readFile(recordPath,'utf8')); await fill('wetLabReflection','temporary edit');
+    await open('#record-menu'); page.once('dialog',d=>d.accept()); await page.locator('#import-record').setInputFiles(recordPath);
+    await page.waitForFunction(()=>document.querySelector('#ext-wetLabReflection').value!=='temporary edit');
+    check(JSON.stringify((await saved()).externalSearch)===JSON.stringify(exported.externalSearch),'export/import all 06 state exact');
+    await open('#record-menu'); await page.locator('#import-record').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify({...exported,externalSearch:{...exported.externalSearch,status:'verified'}}))});
+    await page.waitForFunction(()=>document.querySelector('#save-status').textContent.includes('불러오기 실패')); check(JSON.stringify((await saved()).externalSearch)===JSON.stringify(exported.externalSearch),'invalid import atomic');
+    await page.evaluate(()=>{window.print=()=>window.dispatchEvent(new Event('beforeprint'));});
+    await open('#print-menu'); await page.locator('#print-filled').click(); await page.emulateMedia({media:'print'});
+    const printed=await text('#ext-print'); for(const v of ['2026-09-27','RefSeq RNA','Candidate A','Candidate B','60.2','비표적 transcript','실제 증폭 효율']) check(printed.includes(v),`filled print ${v}`);
+    check(await page.locator('#ext-workflow').isHidden(),'interactive controls hidden in print');
+    if(engineName==='chromium'&&width===1440) await page.pdf({path:resolve(output,'phase5-filled.pdf'),format:'A4',printBackground:false});
+    await page.emulateMedia({media:'screen'}); await page.evaluate(()=>window.dispatchEvent(new Event('afterprint')));
+    await page.locator('#print-blank').click(); await page.emulateMedia({media:'print'}); const blank=await text('#ext-print');
+    for(const v of ['2026-09-27','RefSeq RNA','ACGTACGT','비표적 transcript','실제 증폭 효율']) check(!blank.includes(v),`blank excludes ${v}`);
+    if(engineName==='chromium'&&width===1440) await page.pdf({path:resolve(output,'phase5-blank.pdf'),format:'A4',printBackground:false});
+    await page.emulateMedia({media:'screen'}); await page.evaluate(()=>window.dispatchEvent(new Event('afterprint')));
+    check((await saved()).externalSearch.wetLabReflection===exported.externalSearch.wetLabReflection,'blank print preserves record');
+    await page.locator('#ext-unperformed').click(); check(await page.locator('#ext-after-search').isHidden(),'manual unperformed hides recorded evidence');
+    check((await text('#final-comparison')).includes('외부 검토 미실시'),'07 reads reverted status');
+    await open('#print-menu'); await page.locator('#print-filled').click(); await page.emulateMedia({media:'print'});
+    check((await text('#ext-print')).includes('외부 검색 미실시'),'unperformed print'); check(!(await text('#ext-print')).includes('60.2'),'unperformed result drafts not printed as evidence');
+    if(engineName==='chromium'&&width===1440) await page.pdf({path:resolve(output,'phase5-unperformed.pdf'),format:'A4',printBackground:false});
+    check(errors.length===0,errors.join('\n')); results.push({engineName,width,assertions:checks-baseline}); console.log(`PASS Phase 5 ${engineName} ${width}px (${checks-baseline} assertions)`); await context.close();
+  }
+  const old=emptyRecord(); delete old.externalSearch;
+  old.answers={'external-status':'실시 후 학생이 기록','external-f':'<img src=x onerror="window.injected=true">','external-plan':'이전 검색 계획','external-comparison':'이전 선택 근거','evidence-cases':'05 legacy'};
+  const context=await browser.newContext(); await context.addInitScript(({key,record})=>{if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify(record));},{key:STORAGE_KEY,record:old});
+  const page=await context.newPage(); await page.goto(url); await page.waitForSelector('#pcr-worksheet[data-ready=true]');
+  await page.locator('#ext-legacy > summary').click(); check(await page.locator('#external-plan').inputValue()===old.answers['external-plan'],'old localStorage legacy preserved');
+  check((await page.locator('#ext-status-text').innerText()).includes('미실시'),'legacy not inferred new execution');
+  await page.locator('#record-menu > summary').click(); page.once('dialog',d=>d.accept()); await page.locator('#import-record').setInputFiles({name:'old-v1.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(old))});
+  await page.waitForFunction(()=>document.querySelector('#save-status').textContent.includes('자동 저장'));
+  check(await page.locator('#external-f').inputValue()===old.answers['external-f'],'legacy old JSON exact'); check(!await page.evaluate(()=>window.injected),'legacy safe text');
+  await page.evaluate(()=>{window.print=()=>window.dispatchEvent(new Event('beforeprint'));}); await page.locator('#print-menu > summary').click(); await page.locator('#print-filled').click(); await page.emulateMedia({media:'print'});
+  check((await page.locator('#ext-print').innerText()).includes('이전 검색 계획'),'legacy print retained'); await context.close();
+  const failure=await browser.newContext(), offline=await failure.newPage(); await offline.route('**/pcr-primer-fixture.json',route=>route.abort()); await offline.goto(url);
+  await offline.waitForFunction(()=>document.querySelector('#analysis-status').textContent.includes('로딩 실패')); await offline.locator('#ext-route-paper').click(); await offline.locator('#ext-paper-source').fill('fixture unavailable');
+  check(JSON.parse(await offline.evaluate(key=>localStorage.getItem(key),STORAGE_KEY)).externalSearch.paper.source==='fixture unavailable','fixture failure leaves external note usable'); await failure.close();
+  const nojs=await browser.newContext({javaScriptEnabled:false}), staticPage=await nojs.newPage(); await staticPage.goto(url); check((await staticPage.locator('#activity-06 noscript').innerText()).includes('미실시'),'no-JS guidance'); await nojs.close(); await browser.close();
+}
+await writeFile(resolve(output,'verification.json'),JSON.stringify({url,generatedAt:new Date().toISOString(),checks,results,screenshots,accessibility},null,2));
+const browser=await chromium.launch({headless:true});
+for(const [filename,list,cellWidth] of [['phase5-contact-sheet.png',screenshots.filter(e=>e.width===1440),940],['phase5-contact-sheet-mobile.png',screenshots.filter(e=>e.width!==1440),720]]) {
+  const page=await browser.newPage({viewport:{width:cellWidth*2+72,height:1100}});
+  const panels=await Promise.all(list.map(async e=>`<figure><figcaption>${e.name}</figcaption><img src="data:image/png;base64,${(await readFile(e.path)).toString('base64')}"></figure>`));
+  await page.setContent(`<html><head><style>body{margin:24px;background:#fff;color:#2f3634;font:20px sans-serif}main{display:grid;grid-template-columns:repeat(2,${cellWidth}px);gap:24px}figure{margin:0;border-top:1px solid #dedfdd;padding-top:12px}figcaption{margin-bottom:14px}img{display:block;max-width:100%;height:auto}</style></head><body><main>${panels.join('')}</main></body></html>`);
+  await page.locator('img').evaluateAll(els=>Promise.all(els.map(el=>el.decode()))); await page.screenshot({path:resolve(output,filename),fullPage:true}); await page.close();
+}
+await browser.close(); console.log(`PASS Phase 5 ${checks} assertions. PNGs and contact sheets: ${output}`);
