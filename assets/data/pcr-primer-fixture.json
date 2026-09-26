@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "id": "hafs-pcr-synthetic-20260926-v1",
+  "description": "학습용 인공 DNA 서열. 자연 생물의 유전자나 실험 검증 프라이머가 아님.",
+  "coordinateSystem": "1-based inclusive for display",
+  "templates": {
+    "A": {
+      "sequence": "GGGCGAGCATTAATCTGGAGATTGCAGTTCGCCACGGCACAGTCGATGCTACGTTGACCAAGAACCGTAACTGACATCGTGAACCTGCTACGAGGAATTATAGCGCTATGACCGGCGTAATAGGAGGCTGCAAGCCACGCCGTTATTTATGGAATAATACGTTATGTCCTATCTTCCCGGCCAGTGCATCGTACTATCTCACCCTGTCCAGATCTAAGGACAGGTTCGATGTAGCGACGGTTGCGCCATTGTGCCTAGGCCAGCTCAACAAGGGAGTTATTCGTACGATCGTAGCCTGAACAACAAACTGGCAGTCAGCTAAGGTCGATCCCAGCTGGTGTAAGGCTTCTTGTCCCGATCCCGACGTGATTGAGTACAGATAAAGACCACAGGGACGTGTGTGTACACGTAACCCCTTGA",
+      "length": 420
+    },
+    "B": {
+      "sequence": "GGGCGAGCATTAATCTGGAGATTGCAGTTCGCCACGGCACAGTCGATGCTACGTTGACCAAGAACCGTAACTGACATCGTGAACCTGCTACGAGGAATTATAGCGCTATGACCGGCGTAAACCCTGTCCAGATCTAAGGACAGGTTCGATGTAGCGACGGTTGCGCCATTGTGCCTAGGCCAGCTCAACAAGGGAGTTATTCGTACGATCGTAGCCTGAACAACAAACTGGCAGTCAGCTAAGGTCGATCCCAGCTGGTGTAAGGCTTCTTGTCCCGATCCCGACGTGATTGAGTACAGATAAAGACCACAGGGACGTGTGTGTACACGTAACCCCTTGA",
+      "length": 340,
+      "derivedFrom": "A",
+      "deletion": {
+        "start": 121,
+        "end": 200
+      }
+    },
+    "C": {
+      "sequence": "TATATCCGAGGAGTCGGTCCCGGCCGTTGGAGGCCCGACTGGCTTTGAGTCTTTGGGTCCCTTAACCGACGGGCGATGCTTTGGATAATGTCGAAGCATGCTGACATCGTGAACCTGCTAGAAAGGAAACTTGGGCGAGGACTAGTGTTACTCGGTTGATACACTTGCTTGGCGCCAGCCCCTCGCCATTTCGGCCATTCGGACCTGACTTCTCTACCACCTCGCGACTAACTGATAGTATGCGTCTGTTCCTTGCGTGGAGCAACCTGTTGACTTTACCGGTCCTTGGTGTTGGGGCCCGCAGTCAGCTAAGGTCGATCCTAACTGACAGGAGGATGCCTATTCGGAGAGTATGGGAGGTATCGGTTTATGATTGCATGTCAACCCTTACTTTGGCCTATCTCGGGCCAGTTAACGCAG",
+      "length": 420,
+      "role": "background"
+    }
+  },
+  "candidatePairs": {
+    "P1": {
+      "forward": "AGTCGATGCTACGTTGACCA",
+      "reverse": "TTCAGGCTACGATCGTACGA"
+    },
+    "P2": {
+      "forward": "CTGACATCGTGAACCTGCTA",
+      "reverse": "GATCGACCTTAGCTGACTGC"
+    },
+    "P3": {
+      "forward": "TAGGAGGCTGCAAGCCACGC",
+      "reverse": "TTCAGGCTACGATCGTACGA"
+    }
+  },
+  "expectedExactMatchProducts": {
+    "P1": {
+      "A": [
+        [
+          41,
+          300,
+          260
+        ]
+      ],
+      "B": [
+        [
+          41,
+          220,
+          180
+        ]
+      ],
+      "C": []
+    },
+    "P2": {
+      "A": [
+        [
+          71,
+          330,
+          260
+        ]
+      ],
+      "B": [
+        [
+          71,
+          250,
+          180
+        ]
+      ],
+      "C": [
+        [
+          101,
+          320,
+          220
+        ]
+      ]
+    },
+    "P3": {
+      "A": [
+        [
+          121,
+          300,
+          180
+        ]
+      ],
+      "B": [],
+      "C": []
+    }
+  },
+  "limitations": [
+    "제공된 세 인공 서열에서 완전 일치 결합만 검사한다.",
+    "실제 PCR 성공률, 증폭 효율, 실제 유전체 특이성을 예측하지 않는다.",
+    "좌표와 길이는 5′ 꼬리가 없는 완전 일치 프라이머를 전제로 한다."
+  ]
+}
