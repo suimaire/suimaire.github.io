@@ -72,7 +72,7 @@ export function initializeIntro(root, getState, save) {
       marker.setAttribute('aria-label', `A의 ${shortName}: ${description}`);
       bMarker.hidden = b === null;
       bMarker.style.left = `${b ?? 50}%`;
-      bMarker.setAttribute('aria-label', `B의 ${shortName}: A에서 고른 같은 primer의 대응 위치`);
+      bMarker.setAttribute('aria-label', `B의 ${shortName}: A에서 고른 같은 primer가 인식하는 보존된 결합 부위`);
       for (const [id, left, width, hidden] of [
         [`prediction-${name}-binding`, start, ROUGH_HALF_WIDTH * 2, value === null],
         [`prediction-b-${name}-binding`, b - ROUGH_HALF_WIDTH / B_SCALE, ROUGH_HALF_WIDTH * 2 / B_SCALE, b === null]
@@ -81,7 +81,7 @@ export function initializeIntro(root, getState, save) {
         band.hidden = hidden; band.style.left = `${left ?? 0}%`; band.style.width = `${width}%`;
         band.dataset.overlap = String(overlap);
       }
-      bDescriptions.push(`${shortName}: ${value === null ? '아직 표시하지 않음' : overlap ? '결실과 겹쳐 같은 연속 결합 부위를 표시할 수 없음' : 'A와 같은 primer의 대응 위치'}`);
+      bDescriptions.push(`${shortName}: ${value === null ? '아직 위치를 정하지 않았습니다' : overlap ? '결실과 겹쳐 같은 연속 결합 부위를 표시할 수 없습니다' : 'B에 남아 있는 결합 부위에 같은 primer가 결합합니다'}`);
       slider.value = value ?? 50;
       slider.setAttribute('aria-valuetext', description);
       $(`prediction-${name}-value`).textContent = description;
@@ -102,7 +102,9 @@ export function initializeIntro(root, getState, save) {
     };
     $('prediction-feedback').textContent = messages[model.state];
     $('prediction-feedback').dataset.state = ['incomplete', 'valid'].includes(model.state) ? model.state : 'warning';
-    $('prediction-b-caption').textContent = bDescriptions.join(' / ');
+    $('prediction-b-caption').textContent = model.shared
+      ? 'A와 B에 동일한 F/R primer를 사용합니다. B에서도 결실 바깥의 보존된 결합 부위에 같은 primer가 결합합니다.'
+      : `${bDescriptions.join('. ')}.`;
     $('prediction-track').setAttribute('aria-label', `A 기준의 대략적 예측 위치. Forward: ${roughRegion(model.forward.value)}. Reverse: ${roughRegion(model.reverse.value)}. 아래 조절 막대로 같은 primer pair의 위치를 바꿀 수 있습니다.`);
     $('prediction-b-track').setAttribute('aria-label', `B에 자동 대응한 같은 primer pair. ${bDescriptions.join('. ')}.`);
     $('legacy-first-negative').hidden = !getState().answers['first-negative'];

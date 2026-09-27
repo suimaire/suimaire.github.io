@@ -641,3 +641,36 @@
   #pcr-worksheet .rna-strategies span { display: inline; margin-left: 12px; }
   #pcr-worksheet .rna-exon { padding: 10px 4px; font-size: 13px; }
 }
+
+/* Korean prose wraps at word boundaries; oversized tokens still have an escape. */
+#pcr-worksheet :where(p, li, dt, dd, label, legend, figcaption, caption, summary, th, td, button, output, a, .pcr-small, .pcr-record-text),
+#pcr-worksheet :where(h1, h2, h3, h4, h5, h6) {
+  word-break: keep-all;
+  line-break: strict;
+  overflow-wrap: anywhere;
+}
+@supports (text-wrap: pretty) {
+  #pcr-worksheet :where(p, li, dt, dd, label, legend, figcaption, caption, summary, th, td, .pcr-small, .pcr-record-text) { text-wrap: pretty; }
+}
+@supports (text-wrap: balance) {
+  #pcr-worksheet :where(h1, h2, h3, h4, h5, h6) { text-wrap: balance; }
+}
+/* Sequence/identifier values and editing fields keep their normal wrapping. */
+#pcr-worksheet :is(input, textarea, select, code, kbd, samp, .pcr-sequence, .final-sequence,
+  .pcr-base-example, .pcr-bases, .pcr-base, .pcr-row-coordinates, .pcr-primer-coordinate,
+  .pcr-window-controls output, .pcr-review-products, .ext-pair) {
+  word-break: normal;
+  line-break: auto;
+  overflow-wrap: anywhere;
+  text-wrap: wrap;
+}
+#pcr-worksheet :is(input, textarea, select) { min-width: 0; max-width: 100%; }
+#pcr-worksheet a { overflow-wrap: anywhere; }
+/* Alignment columns must stay intact inside their existing horizontal scroller. */
+#pcr-worksheet :is(pre, .pcr-structure, pre code) {
+  word-break: normal;
+  line-break: auto;
+  overflow-wrap: normal;
+  white-space: pre;
+  text-wrap: nowrap;
+}

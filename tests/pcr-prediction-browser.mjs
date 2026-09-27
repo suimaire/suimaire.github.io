@@ -57,7 +57,7 @@ try {
         await page.goto(url); await ready(); await page.evaluate(() => document.fonts.ready);
         for (const id of ['forward', 'reverse', 'b-forward', 'b-reverse']) check(await page.locator(`#prediction-${id}-marker`).isHidden(), 'no inferred placement before input');
         if (width === 1440) await shot('00-before-placement.png', '#activity-00');
-        check((await page.locator('#prediction-c-row').innerText()).includes('결합 여부 판단 보류'), 'C undecided before input');
+        check((await page.locator('#prediction-c-row').innerText()).includes('결합 여부를 판단하지 않습니다'), 'C undecided before input');
         const track = page.locator('#prediction-track');
         const box = await track.boundingBox();
         await track[width === 390 ? 'tap' : 'click']({ position: { x: box.width * .15, y: 20 } });
