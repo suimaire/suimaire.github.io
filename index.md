@@ -163,7 +163,6 @@ og_image_alt: HAFS BIOLOGY LAB
           <h3><a href="{{ '/bioinformatics/pcr-primer-design/' | relative_url }}">PCR과 프라이머 디자인</a></h3>
           <p class="portal-resource__meta">
             <span class="portal-resource__kind">웹 학습지</span>
-            <span class="portal-resource__status">약 80분</span>
           </p>
           <p class="portal-resource__desc">
             프라이머의 결합 위치와 방향을 바꾸며 PCR 산물을 예측하고, 설계한 프라이머의 적합성을 검토합니다.

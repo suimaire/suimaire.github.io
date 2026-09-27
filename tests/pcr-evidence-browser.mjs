@@ -44,9 +44,9 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
     await page.locator('#review-design').selectOption('draft');
     check(!(await text('#gel-results')).includes('260 bp') && (await text('#gel-results')).includes('180 bp'), '05 follows actual alternate draft');
     await page.locator('#review-design').selectOption('1');
-    await page.locator('#review-length-reason').fill('04 기록을 보존한다.');
+    await page.locator('#review-unresolved').fill('04 기록을 보존한다.');
     const before = await saved();
-    const protectedState = JSON.stringify([before.draft, before.designs, before.review, before.answers['review-length-reason']]);
+    const protectedState = JSON.stringify([before.draft, before.designs, before.review, before.answers['review-unresolved']]);
 
     for (const c of EVIDENCE_CASES) {
       if (c.additional) await open('#evidence-additional');
@@ -96,7 +96,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
       check(audit.violations.length === 0, `axe ${engineName}/${width}/${c.id}: ${audit.violations.map(v => v.id + ': ' + v.nodes.map(n => n.target).join(', ')).join('; ')}`);
     }
     const after = await saved();
-    check(JSON.stringify([after.draft, after.designs, after.review, after.answers['review-length-reason']]) === protectedState, '05 preserves 03/04 state and answers');
+    check(JSON.stringify([after.draft, after.designs, after.review, after.answers['review-unresolved']]) === protectedState, '05 preserves 03/04 state and answers');
     await page.locator('#evidence-case-3').click();
     await page.locator('#evidence-identity').fill('Band의 크기는 길이에 관한 증거다. 길이가 같아도 sequence는 다를 수 있으므로 정체를 확정할 수 없다.');
     await page.locator('#evidence-controls').fill('대조군은 시료 결과를 해석할 조건을 확인하게 한다. Positive control과 NTC의 관찰을 함께 보아야 한다.');

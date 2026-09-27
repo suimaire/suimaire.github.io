@@ -43,7 +43,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
       check((await page.locator('#review-length-values tbody tr').nth(0).locator('td').nth(i).innerText()) === `${stats.length} nt`, 'length uses sequence');
       check((await page.locator('#review-length-values tbody tr').nth(1).locator('td').nth(i).innerText()) === `${Math.round(stats.gcPercent)}%`, 'GC uses sequence');
     }
-    await page.locator('#review-length-choice').selectOption('no'); await page.locator('#review-length-reason').fill('조성이 같아도 결합 위치와 상보 구간은 다를 수 있다.');
+    await page.locator('#review-length-choice').selectOption('no'); check(await page.locator('#review-length-reason').isHidden(), 'redundant prompt retained only for legacy records');
     await screenshot('04-my-design.png'); await screenshot('04-length-gc.png', '#review-panel-length-gc');
     await page.locator('#save-design').click();
     const snapshot = (await saved()).designs, originalDraft = (await saved()).draft;
@@ -109,7 +109,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
     check(await page.locator('#review-p3-explanation').evaluate(el => !el.open), 'P3 answer stays collapsed');
     await page.locator('#candidate-judgment').fill('C에서 추가 산물이 예측되어 비교 범위를 넓혀야 함을 알았다.');
     await screenshot('04-with-background-c.png', '#review-panel-off-target');
-    await page.locator('#candidate-negative').fill('결합 부위가 결실되었는지 먼저 구분해야 한다.');
+    check(await page.locator('#candidate-negative').isHidden(), 'redundant prompt retained only for legacy records');
     await open('#review-p3-explanation');
     check((await text('#review-p3-binding')).includes('121~140') && (await text('#review-p3-binding')).includes('결합: 0개'), 'P3 actual binding and deletion');
     await screenshot('04-p3-binding-failure.png', '#review-panel-off-target');

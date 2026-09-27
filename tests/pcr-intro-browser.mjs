@@ -46,7 +46,7 @@ export async function exerciseIntro(page, width, engine, check, output) {
   await page.locator('input[name=cycle-boundary-choice][value=polymerase]').check();
   check((await page.locator('#cycle-choice-feedback').innerText()).includes('다시'), 'incorrect boundary feedback');
   await page.locator('input[name=cycle-boundary-choice][value=primer-pair]').check();
-  await page.locator('#cycle-selector').fill('두 primer가 합성 시작점을 정한다.');
+  check(await page.locator('#cycle-selector').isHidden(), 'redundant prompt retained only for legacy records');
   await page.locator('#activity-01').screenshot({ animations: 'disabled', path: resolve(output, `${engine}-${width}-intro01.png`) });
 
   await page.locator('[data-arrangement=parallel]').click();
@@ -66,7 +66,7 @@ export async function exerciseIntro(page, width, engine, check, output) {
   await page.locator('#direction-reverse').fill('TACGGACT'); await page.locator('#check-direction').click();
   check((await page.locator('#direction-feedback').innerText()).includes('일치합니다'), 'order sequence check');
   await page.locator('input[name=direction-end-choice][value="3"]').check();
-  await page.locator('#direction-reason').fill('중합효소가 3′ OH에서 연장하기 때문이다.');
+  check(await page.locator('#direction-reason').isHidden(), 'redundant prompt retained only for legacy records');
   await page.locator('#activity-02').screenshot({ animations: 'disabled', path: resolve(output, `${engine}-${width}-intro02.png`) });
   check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'intro interactions do not overflow viewport');
   await page.reload(); await page.waitForSelector('#pcr-worksheet[data-ready=true]');

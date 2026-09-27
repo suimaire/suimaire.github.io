@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "hafs-pcr-synthetic-20260926-v1",
+  "updatedAt": "2026-09-26T19:20:41.806Z",
+  "answers": {
+    "review-length-reason": "04 기록을 보존한다.",
+    "evidence-case-1-observation": "Sample: 예상 크기 부근에 band 하나가 보임 (약 260 bp)",
+    "evidence-case-1-interpretation": "크기와 대조군 관찰을 함께 고려하여 가능한 설명을 비교한다.",
+    "evidence-case-1-uncertainty": "Gel만으로 산물의 sequence identity나 원인을 하나로 확정할 수 없다.",
+    "evidence-case-2-observation": "NTC: 100 bp 기준보다 아래쪽에 짧은 band 하나가 보임",
+    "evidence-case-2-interpretation": "NTC에서 band가 보인다. 오염이나 primer 유래 산물 등 여러 설명을 비교해야 한다.",
+    "evidence-case-2-uncertainty": "작은 크기만으로 primer-dimer라고 단정할 수 없다. 시약과 작업 과정을 확인하고 대조 반응을 반복한다.",
+    "evidence-case-3-observation": "Positive control: band가 보이지 않음",
+    "evidence-case-3-interpretation": "Positive control에서도 band가 보이지 않아 Sample 음성을 해석하는 데 제한이 있다.",
+    "evidence-case-3-uncertainty": "Gel만으로 산물의 sequence identity나 원인을 하나로 확정할 수 없다.",
+    "evidence-case-4-observation": "Sample: 예상 위치 부근 외에도 band가 보여 총 세 개임 (약 420, 260, 140 bp)",
+    "evidence-case-4-interpretation": "크기와 대조군 관찰을 함께 고려하여 가능한 설명을 비교한다.",
+    "evidence-case-4-uncertainty": "Gel만으로 산물의 sequence identity나 원인을 하나로 확정할 수 없다.",
+    "evidence-identity": "Band의 크기는 길이에 관한 증거다. 길이가 같아도 sequence는 다를 수 있으므로 정체를 확정할 수 없다.",
+    "evidence-controls": "대조군은 시료 결과를 해석할 조건을 확인하게 한다. Positive control과 NTC의 관찰을 함께 보아야 한다."
+  },
+  "draft": {
+    "forward": "TAGGAGGCTGCAAGCCACGC",
+    "reverse": "TTCAGGCTACGATCGTACGA",
+    "bindings": {
+      "F": {
+        "start": "121",
+        "end": "140",
+        "direction": "right"
+      },
+      "R": {
+        "start": "281",
+        "end": "300",
+        "direction": "left"
+      }
+    }
+  },
+  "designs": [
+    {
+      "id": 1,
+      "createdAt": "2026-09-26T19:20:38.773Z",
+      "forward": "AGTCGATGCTACGTTGACCA",
+      "reverse": "TTCAGGCTACGATCGTACGA",
+      "prediction": "",
+      "reason": "",
+      "unresolved": "",
+      "bindings": {
+        "F": {
+          "start": "41",
+          "end": "60",
+          "direction": "right"
+        },
+        "R": {
+          "start": "281",
+          "end": "300",
+          "direction": "left"
+        }
+      }
+    }
+  ],
+  "cycle": 0,
+  "workbench": {
+    "mode": "F",
+    "windowStart": 116,
+    "showPrediction": false
+  },
+  "review": {
+    "lens": "length-gc",
+    "designId": 1,
+    "stage": 0
+  },
+  "evidence": {
+    "activeCase": "case-3",
+    "selectedLanes": {
+      "case-1": "sample",
+      "case-2": "ntc",
+      "case-3": "positive",
+      "case-4": "sample"
+    }
+  },
+  "initialPrimerPrediction": {
+    "reference": "A",
+    "units": "relative-percent",
+    "forward": null,
+    "reverse": null
+  },
+  "introView": {
+    "stage": "mixture",
+    "comparisonCycle": 1,
+    "flipped": false,
+    "arrangement": "inward",
+    "complementConfirmed": false,
+    "reverseShown": false
+  }
+}

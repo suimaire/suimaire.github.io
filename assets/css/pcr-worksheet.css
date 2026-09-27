@@ -531,3 +531,66 @@
   #pcr-worksheet:not([data-final-ready]) #activity-07 textarea { display: block !important; }
 }
 #pcr-worksheet .final-map-deletion-label { position: absolute; top: 28px; left: 28.6%; white-space: nowrap; }
+
+/* Phase 7: reading rhythm and compact editing; existing print rules stay intact. */
+@media screen {
+  #pcr-worksheet .pcr-sidebar nav a { display: flex; align-items: baseline; gap: 10px; line-height: 1.65; break-inside: avoid; }
+  #pcr-worksheet .pcr-toc-number { flex: 0 0 20px; font: 13px/1.65 Consolas, monospace; }
+  #pcr-worksheet .pcr-activity > p:not(.pcr-section-label), #pcr-worksheet #ext-introduction > p { max-width: 70ch; }
+  #pcr-worksheet .pcr-transition { border-top: 1px solid var(--pcr-rule); margin-top: 32px; padding-top: 16px; font-size: 15px; }
+  #pcr-worksheet .pcr-transition p { margin: 0 0 8px; max-width: 70ch; }
+  #pcr-worksheet .pcr-transition a { display: inline-flex; align-items: center; min-height: 44px; }
+  #pcr-worksheet .pcr-activity-takeaway { font-size: 15px; margin-top: 28px; }
+  #pcr-worksheet .pcr-activity-takeaway strong { display: block; font-size: 13px; color: var(--pcr-accent); margin-bottom: 6px; }
+  #pcr-worksheet details:not(.pcr-menu):not(#worksheet-toc):not(.pcr-extension-activity) { border: 0; border-block: 1px solid var(--pcr-rule); padding: 14px 0; background: transparent; }
+  #pcr-worksheet details:not(.pcr-menu):not(#worksheet-toc):not(.pcr-extension-activity) > summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 16px; min-height: 44px; list-style: none; font-size: 14px; }
+  #pcr-worksheet details:not(.pcr-menu):not(#worksheet-toc):not(.pcr-extension-activity) > summary::-webkit-details-marker { display: none; }
+  #pcr-worksheet details:not(.pcr-menu):not(#worksheet-toc):not(.pcr-extension-activity) > summary::after { content: '펼치기 +'; color: var(--pcr-accent); font-size: 12px; font-weight: 400; white-space: nowrap; }
+  #pcr-worksheet details[open]:not(.pcr-menu):not(#worksheet-toc):not(.pcr-extension-activity) > summary::after { content: '접기 −'; }
+  #pcr-worksheet textarea[rows='1'] { min-height: 48px; height: 52px; }
+  #pcr-worksheet #review-my-design h4 { margin: 8px 0; }
+  #pcr-worksheet .pcr-review-pair { gap: 24px; }
+  #pcr-worksheet .pcr-review-end { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; letter-spacing: .06em; }
+  #pcr-worksheet .pcr-alignment-scroll { border-left: 2px solid var(--pcr-accent); padding: 10px 12px; margin: 14px 0; }
+  #pcr-worksheet .pcr-review-alignment { font-size: 16px; }
+  #pcr-worksheet #map-prediction-legend { display: none; }
+  #pcr-worksheet .pcr-current-design > #analysis-results { font-size: 16px; }
+  #pcr-worksheet .pcr-evidence-answers { border-top: 1px solid var(--pcr-rule); margin-top: 24px; padding-top: 8px; }
+  #pcr-worksheet #ext-workflow > div, #pcr-worksheet #ext-after-search > section { margin-block: 28px; }
+  #pcr-worksheet #ext-workflow .pcr-fields { gap: 4px 28px; }
+  #pcr-worksheet #ext-claim { border-top: 2px solid var(--pcr-accent); padding-top: 16px; }
+  #pcr-worksheet #ext-claim-text { font-size: 17px; }
+  #pcr-worksheet .final-block { padding: 8px 0 18px; margin-top: 22px; }
+  #pcr-worksheet .final-block > details { margin: 12px 0; }
+  #pcr-worksheet #final-editor .final-history > li { padding-block: 8px; }
+  #pcr-worksheet #final-editor .final-history h4, #pcr-worksheet #final-editor .final-history p { margin: 6px 0; }
+  #pcr-worksheet #final-external-summary { border-left: 2px solid var(--pcr-accent); padding-left: 18px; }
+  #pcr-worksheet #final-external-summary h4 { font-size: 15px; margin: 14px 0 6px; }
+  #pcr-worksheet #final-external-summary .final-entries { display: flex; flex-wrap: wrap; gap: 12px 28px; }
+  #pcr-worksheet #final-external-summary .final-entry { border: 0; }
+  #pcr-worksheet #final-primer-content > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+  #pcr-worksheet #final-primer-content > div > p { grid-column: 1 / -1; }
+  #pcr-worksheet #final-products-content .final-entries { display: flex; flex-wrap: wrap; gap: 16px 32px; }
+  #pcr-worksheet #final-notebook > .final-note-section { margin-top: 24px; padding-block: 20px; }
+  #pcr-worksheet #final-notebook > .final-note-section > h4 { color: var(--pcr-accent); font-size: 20px; }
+  #pcr-worksheet #final-notebook h5, #pcr-worksheet #final-notebook h6 { font-size: 16px; margin: 20px 0 8px; }
+  #pcr-worksheet .final-map { font-size: 13px; }
+  #pcr-worksheet .pcr-scope-list { padding-left: 20px; max-width: 70ch; }
+}
+@media screen and (max-width: 1150px) {
+  #pcr-worksheet .pcr-workbench-layout { grid-template-columns: minmax(0, 1fr); }
+  #pcr-worksheet .pcr-current-design { border-left: 0; border-top: 1px solid var(--pcr-rule); padding: 20px 0 0; }
+}
+@media screen and (max-width: 800px) {
+  #pcr-worksheet .final-comparison { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  #pcr-worksheet .final-comparison > section + section { border-left: 0; padding-left: 0; border-top: 1px solid var(--pcr-rule); }
+}
+@media screen and (max-width: 520px) {
+  #pcr-worksheet #sequence-map text { font-size: 24px; }
+  #pcr-worksheet #sequence-map .pcr-initial-label { display: none; }
+  #pcr-worksheet #map-prediction-legend { display: block; }
+  #pcr-worksheet #activity-03 .pcr-base-coordinate { font-size: 12px; }
+  #pcr-worksheet #final-primer-content > div { grid-template-columns: minmax(0, 1fr); }
+  #pcr-worksheet #final-external-summary { padding-left: 12px; }
+  #pcr-worksheet .pcr-gel-lane-name { font-size: 13px; }
+}

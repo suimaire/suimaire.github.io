@@ -190,6 +190,9 @@ export function initializeWorkbench(root, getState, getFixture, save, onComputed
       label(prediction, Math.max(70, Math.min(530, px)), name === 'F' ? 42 : 57, `00 예상 ${name}`, 'middle', 'pcr-initial-label');
     }
     $('show-initial-prediction').setAttribute('aria-pressed', String(view().showPrediction));
+    const predictions = Object.entries(PRIMER_KEYS).filter(([, key]) => getState().initialPrimerPrediction[key] !== null);
+    $('map-prediction-legend').hidden = !view().showPrediction || !predictions.length;
+    $('map-prediction-legend').textContent = '점선 / 00의 대략적 예측: ' + predictions.map(([name, key]) => `${name} ${getState().initialPrimerPrediction[key]}% 위치`).join(' / ');
     const description = `A ${length} bp. 결실 ${deletion.start}–${deletion.end}. F ${boundsText(model.primers.F.binding)}, R ${boundsText(model.primers.R.binding)}. ${model.selectedProduct ? `예상 amplicon ${model.selectedProduct.start + 1}–${model.selectedProduct.end}, ${model.selectedProduct.length} bp.` : model.placement || model.errors.join(' ')}`;
     $('map-description').textContent = description;
     $('map-caption').textContent = view().showPrediction ? (Object.values(PRIMER_KEYS).some(key => getState().initialPrimerPrediction[key] !== null) ? '점선: 00의 대략적 예측 / 청록 화살표: 현재 선택. 좌표는 양 끝을 포함합니다.' : '00에서 저장한 초기 위치 예측이 없습니다. 현재 선택은 그대로 유지됩니다.') : '윤곽 구간: B에서 결실된 영역 / 화살표: 합성 방향. 좌표는 양 끝을 포함합니다.';

@@ -58,7 +58,7 @@ export function initializeExternal(root, getState, getFixture, save, onChange) {
     $('ext-search-context').textContent = `아래 결과를 기록한 경로: ${ROUTES[s.searchRoute] || '미기록'}${s.sourcePrimer.origin ? ` / ${s.sourcePrimer.origin}` : ''}. 준비 화면을 바꿔도 이 검색 기록은 유지됩니다.`;
     $('ext-candidate-1').hidden = s.candidates.length < 2; $('ext-add-candidate').hidden = s.candidates.length === 2;
     $('ext-selectedCandidate').querySelector('option[value=B]').disabled = s.candidates.length < 2;
-    $('ext-claim-text').textContent = claimScope(s) || (s.status === 'unperformed' ? '외부 검색 미실시' : '검색 날짜, organism, database, 후보와 unintended target 상태를 기록하면 검색 범위를 담은 문장이 나타납니다.');
+    $('ext-claim-text').textContent = claimScope(s) || (s.status === 'unperformed' ? '외부 검색 미실시' : '검색 날짜, organism, 데이터베이스, 후보와 unintended target 상태를 기록하면 검색 범위를 담은 문장이 나타납니다.');
     $('ext-legacy').hidden = !Object.entries(getState().answers).some(([key, value]) => key.startsWith('external-') && value);
     comparison();
     fields.forEach(feedback);
@@ -121,7 +121,7 @@ export function initializeExternal(root, getState, getFixture, save, onChange) {
     if (!blank && s.route === 'paper') for (const [key, label] of Object.entries(sourceLabels)) add(label, s.paper[key]);
     if (!blank && s.route === 'new') for (const [key, label] of Object.entries({ type: '입력 종류', target: 'Target', organism: 'Organism', purpose: 'PCR 목적', min: 'Product min bp', max: 'Product max bp' })) add(label, s.design[key]);
     if (!blank && s.route === 'mine') { const p = source(); add('내 primer / 현재 준비', p ? `${p.origin}\nF ${p.forward}\nR ${p.reverse}` : '유효한 primer pair 없음'); }
-    for (const [key, label] of Object.entries({ purpose: '검색 목적', organism: 'Target organism 계획', target: 'Intended target 계획', database: '검색 database 계획', notes: '검색 범위 선택 이유' })) add(label, s.plan[key]);
+    for (const [key, label] of Object.entries({ purpose: '검색 목적', organism: 'Target organism 계획', target: 'Intended target 계획', database: '검색 데이터베이스 계획', notes: '검색 범위 선택 이유' })) add(label, s.plan[key]);
     if (blank || s.status !== 'unperformed') {
       target.append(node('h3', '실제 검색 조건'));
       for (const f of fields.filter(f => f.dataset.external.startsWith('conditions.'))) add(root.querySelector(`label[for="${f.id}"]`).textContent, f.value);
@@ -134,7 +134,7 @@ export function initializeExternal(root, getState, getFixture, save, onChange) {
     } else target.append(node('p', '외부 검색 미실시. 보관된 결과 초안은 현재 검색의 증거로 출력하지 않습니다.'));
     target.append(node('p', CLAIM_LIMIT, 'pcr-small'));
     add('Unintended target이 보고되지 않았다는 결과를 어떤 범위까지 주장할 수 있는가?', s.claimReflection);
-    add('실제 PCR에서는 database search 결과만으로 무엇을 아직 알 수 없는가?', s.wetLabReflection);
+    add('실제 PCR에서는 데이터베이스 검색 결과만으로 무엇을 아직 알 수 없는가?', s.wetLabReflection);
     if (!blank) {
       const old = Object.entries(getState().answers).filter(([key, value]) => key.startsWith('external-') && value);
       if (old.length) { target.append(node('h3', '이전 활동 06 기록')); for (const [key, value] of old) add(root.querySelector(`label[for="${key}"]`).textContent, value); }

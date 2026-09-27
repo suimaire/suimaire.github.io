@@ -5,7 +5,7 @@ import { chromium, webkit } from './.pcr-tools/node_modules/playwright/index.mjs
 import { emptyRecord, STORAGE_KEY } from '../assets/js/pcr-records.mjs';
 const fixture = JSON.parse(await readFile(new URL('../assets/data/pcr-primer-fixture.json', import.meta.url)));
 const url = process.env.PCR_TEST_URL || 'http://127.0.0.1:4173/bioinformatics/pcr-primer-design/';
-const output = resolve('verification.local/pcr-primer-design/phase6'); await mkdir(output, { recursive: true });
+const output = resolve(process.env.PCR_VERIFICATION_ROOT ? `${process.env.PCR_VERIFICATION_ROOT}/phase6` : 'verification.local/pcr-primer-design/phase6'); await mkdir(output, { recursive: true });
 let checks = 0; const results = [], screenshots = [], accessibility = [];
 const check = (value, label) => { assert.ok(value, label); checks++; };
 for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
@@ -81,11 +81,12 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
     const finalPair=await text('#final-primer');
     for(const value of ['41–60','281–300','20 nt','GC 50%','260 bp','180 bp','예상 산물 없음',fixture.candidatePairs.P1.forward,fixture.candidatePairs.P1.reverse]) check(finalPair.includes(value),`final pair ${value}`);
     await page.locator('#review-design').selectOption('1');
-    await page.locator('#review-length-reason').fill('길이와 GC만으로 전역적인 specificity를 판단할 수 없다.');
+    check(await page.locator('#review-length-reason').isHidden(), 'redundant prompt retained only for legacy records');
     await page.locator('#review-tab-end').click(); await page.locator('#review-end-observation').fill('Forward의 3′ 마지막 염기는 A이며 말단의 상보성도 함께 살펴야 한다.');
     await page.locator('#review-unresolved').fill('반응 조건에서의 증폭과 실제 산물의 sequence identity를 확인해야 한다.');
     await page.locator('#evidence-identity').fill('같은 크기의 다른 sequence도 같은 위치의 band로 보일 수 있다.');
     await page.locator('#evidence-controls').fill('Positive control로 반응의 작동을, NTC로 template 없는 반응에서의 산물을 살펴야 한다.');
+    await open('#final-review > details'); await open('#final-experimental > details');
     check((await text('#final-review')).includes('Forward 60 °C / Reverse 60 °C / 차이 0 °C'),'consistent 04 Tm');
     check((await text('#final-review')).includes('반응 조건에서의 증폭'),'04 reflection');
     check((await text('#final-experimental')).includes('수업용 가상 자료이며 이 primer pair의 실제 실험 결과가 아닙니다.'),'05 disclaimer');
@@ -104,6 +105,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
     await extfill('wetLabReflection','실제 PCR 조건에서 증폭 여부와 band 정체를 별도로 확인해야 한다.');
     await page.locator('#ext-complete').click();
     check((await saved()).externalSearch.status==='recorded','06 completed via UI');
+    await open('#final-external > details');
     for(const value of ['외부 검색 결과 기록 완료','2026-09-27','Candidate A','Unintended accession 예시','Claim scope','학생이 기록한 외부 검색 결과']) check((await text('#final-external')).includes(value),`external summary ${value}`);
     const beforeFinalWriting=await saved();
     const finalInputs={researchQuestion:'80 bp 결실이 있는 B와 원래 서열 A를 이 primer pair의 산물 길이로 구별할 수 있는가?',finalRationale:'설계 1에서는 A 260 bp와 B 180 bp를 예상했다. C에서는 완전 일치 산물이 없었다. GC와 간이 Tm을 검토했지만 실제 반응 조건과 더 넓은 검색 범위는 별도로 확인해야 한다.',revisionReflection:'대략 결실 양옆에 놓던 예측에서 실제 결합 서열의 방향과 좌표를 확인하는 설계로 바꾸었다. 결실과 겹치는 Forward도 비교한 뒤 설계 1을 선택했다.','controls.positive':'표적 서열을 포함하며 해당 조건에서 증폭이 확인된 template를 사용한다.','controls.negative':'Template 대신 물을 넣은 NTC를 함께 반응시킨다.','controls.additional':'필요하면 추출 대조군과 시료 내부 대조를 추가한다.','controls.interpretationLimit':'Positive control이 증폭되지 않으면 Sample 음성을 target 부재로 해석할 수 없다. NTC에 band가 있으면 오염 또는 primer 유래 산물 등을 더 확인해야 한다.',otherLimitations:'시료 추출 상태와 반응 억제 가능성을 아직 살피지 못했다.',finalAssessment:'제공된 서열 안에서는 A/B를 길이로 구별할 후보로 평가할 수 있다. 외부 기록은 입력한 범위에 한정되며 실제 증폭 성공과 산물의 identity는 아직 확인하지 않았다.'};
@@ -115,7 +117,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
     await page.locator('#final-notebook-toggle').focus(); await page.keyboard.press('Enter');
     check(await page.locator('#final-notebook-toggle').getAttribute('aria-expanded')==='true','notebook aria expanded');
     check(await page.locator('#final-notebook input, #final-notebook textarea').count()===0,'read-only notebook');
-    for(let n=1;n<=12;n++) check((await text('#final-notebook')).includes(`${n}. `),`notebook section ${n}`);
+    for(let n=1;n<=10;n++) check((await text('#final-notebook')).includes(`${n}. `),`notebook section ${n}`);
     await audit('complete-expanded');
     await shoot('07-overview.png','#activity-07 > .pcr-section-label','#final-overview');
     await shoot('07-design-history.png','#final-history'); await shoot('07-initial-vs-final.png','#final-overview');

@@ -140,7 +140,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
   await oldPage.locator('#record-menu > summary').click();
   oldPage.once('dialog', dialog => dialog.accept());
   await oldPage.locator('#import-record').setInputFiles({ name: 'legacy.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(legacy)) });
-  await oldPage.waitForFunction(() => document.querySelector('#save-status').textContent.includes('자동 저장했습니다'));
+  await oldPage.waitForFunction(() => document.querySelector('#save-status').textContent.includes('자동 저장'));
   check(await oldPage.locator('#primer-r').inputValue() === P1[1], 'legacy JSON import keeps draft');
   await oldPage.locator('#manual-sequences > summary').click();
   await oldPage.locator('#analyze-design').click();

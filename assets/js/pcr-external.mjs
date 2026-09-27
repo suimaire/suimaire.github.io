@@ -3,7 +3,7 @@ import { reviewDesign } from './pcr-review.mjs';
 export const ROUTES = { mine: '내가 설계한 primer 검토', paper: '논문의 primer 다시 검토', new: '새로운 primer 후보 설계' };
 export const SEARCH_STATUS = { unperformed: '미실시', performed: '외부 검색 실행', recorded: '결과 기록 완료' };
 export const UNINTENDED = { '': '기록 전', none: '보고되지 않음', reported: '보고됨', unclear: '결과를 해석하지 못함' };
-export const CLAIM_LIMIT = '이 기록만으로 검색하지 않은 organism, 다른 database, 다른 annotation, 다른 search setting, 실제 wet-lab PCR 조건에 대해서까지 비표적 증폭이 없다고 결론 내릴 수는 없습니다.';
+export const CLAIM_LIMIT = '이 기록만으로 검색하지 않은 organism, 다른 데이터베이스, 다른 annotation, 다른 search setting, 실제 wet-lab PCR 조건에 대해서까지 비표적 증폭이 없다고 결론 내릴 수는 없습니다.';
 export const emptyCandidate = () => ({ forward: '', reverse: '', product: '', tmF: '', tmR: '', unintended: '', observations: '', other: '' });
 export const emptyExternalSearch = () => ({
   route: 'mine', status: 'unperformed', searchRoute: '',

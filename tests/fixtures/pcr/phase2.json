@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "hafs-pcr-synthetic-20260926-v1",
+  "updatedAt": "2026-09-26T19:19:07.075Z",
+  "answers": {
+    "direction-complement": "TCAGGCAT",
+    "direction-reverse": "TACGGACT",
+    "design-reason": "두 primer를 결실 오른쪽으로 옮김"
+  },
+  "draft": {
+    "forward": "AGTCGATGCTACGTTGACCA",
+    "reverse": "TTCAGGCTACGATCGTACGA",
+    "bindings": {
+      "F": {
+        "start": "41",
+        "end": "60",
+        "direction": "right"
+      },
+      "R": {
+        "start": "281",
+        "end": "300",
+        "direction": "left"
+      }
+    }
+  },
+  "designs": [
+    {
+      "id": 1,
+      "createdAt": "2026-09-26T19:19:03.310Z",
+      "forward": "AGTCGATGCTACGTTGACCA",
+      "reverse": "TTCAGGCTACGATCGTACGA",
+      "prediction": "",
+      "reason": "결실 양옆에서 시작한 첫 설계",
+      "unresolved": "",
+      "bindings": {
+        "F": {
+          "start": "41",
+          "end": "60",
+          "direction": "right"
+        },
+        "R": {
+          "start": "281",
+          "end": "300",
+          "direction": "left"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "createdAt": "2026-09-26T19:19:04.343Z",
+      "forward": "ACCGGCGTAATAGGAGGCTG",
+      "reverse": "TTCAGGCTACGATCGTACGA",
+      "prediction": "",
+      "reason": "Forward를 결실 경계 위로 옮김",
+      "unresolved": "",
+      "bindings": {
+        "F": {
+          "start": "111",
+          "end": "130",
+          "direction": "right"
+        },
+        "R": {
+          "start": "281",
+          "end": "300",
+          "direction": "left"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "createdAt": "2026-09-26T19:19:06.909Z",
+      "forward": "GTAGCGACGGTTGCGCCATT",
+      "reverse": "TTCAGGCTACGATCGTACGA",
+      "prediction": "",
+      "reason": "두 primer를 결실 오른쪽으로 옮김",
+      "unresolved": "",
+      "bindings": {
+        "F": {
+          "start": "231",
+          "end": "250",
+          "direction": "right"
+        },
+        "R": {
+          "start": "281",
+          "end": "300",
+          "direction": "left"
+        }
+      }
+    }
+  ],
+  "cycle": 0,
+  "workbench": {
+    "mode": "R",
+    "windowStart": 276,
+    "showPrediction": true
+  },
+  "initialPrimerPrediction": {
+    "reference": "A",
+    "units": "relative-percent",
+    "forward": 15,
+    "reverse": 80
+  },
+  "introView": {
+    "stage": "mixture",
+    "comparisonCycle": 3,
+    "flipped": false,
+    "arrangement": "inward",
+    "complementConfirmed": true,
+    "reverseShown": true
+  }
+}

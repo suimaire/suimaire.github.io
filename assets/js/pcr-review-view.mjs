@@ -118,7 +118,7 @@ export function initializeReview(root, getState, getFixture, save) {
     const pair = node('div', '', 'pcr-review-pair');
     for (const name of ['F', 'R']) {
       const stats = model.primers[name].stats, section = node('div');
-      section.append(node('h4', `${labels[name]} primer / ${name}`), sequenceLine(stats.sequence), node('p', `${stats.length} nt / GC ${Math.round(stats.gcPercent)}%`, 'pcr-small')); pair.append(section);
+      section.append(node('h4', `${labels[name]} primer / ${name}`), sequenceLine(stats.sequence)); pair.append(section);
       const end = endFeatures(stats.sequence), endRow = node('div', '', 'pcr-end-row'); endRow.dataset.primer = name;
       endRow.append(node('h4', `${labels[name]} / ${name}`), sequenceLine(stats.sequence, true), node('p', `3′ end: ${end.sequence} / 마지막 염기: ${end.lastBase}`, 'pcr-sequence'), node('p', `표시한 ${end.sequence.length} nt의 GC ${end.gcCount}개 / 연속 동일 염기: ${end.runs.length ? end.runs.map(run => `${run.sequence} (${run.length} nt)`).join(', ') : '없음'}`, 'pcr-small'));
       $('review-end-values').append(endRow);

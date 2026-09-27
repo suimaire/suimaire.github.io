@@ -40,7 +40,7 @@ export function validateFinalReview(value, answers, bindingFields) {
   } else if (value.primerSnapshot !== null || value.selectedAt !== '') fail();
   return out;
 }
-export const sourceLabel = source => source === 'draft' ? '선택 당시의 current draft' : source ? `설계 ${source.slice(-1)}` : '선택 없음';
+export const sourceLabel = source => source === 'draft' ? '선택 당시의 현재 초안' : source ? `설계 ${source.slice(-1)}` : '선택 없음';
 export const roughPosition = value => value === null || value === undefined ? '기록 없음' : value < 29 ? '결실 구간 왼쪽 / 대략적 위치' : value <= 48 ? '결실 구간 안쪽 / 대략적 위치' : '결실 구간 오른쪽 / 대략적 위치';
 export function inspectFinal(design, fixture) {
   if (!fixture || !design) return null;
@@ -48,7 +48,7 @@ export function inspectFinal(design, fixture) {
   return model.result && !model.errors.length && model.selectedProduct ? model : null;
 }
 export function finalCandidates(state, fixture) {
-  return [...state.designs.map(d => ({ source: `design-${d.id}`, label: `설계 ${d.id}`, design: d })), { source: 'draft', label: '현재 draft', design: state.draft }]
+  return [...state.designs.map(d => ({ source: `design-${d.id}`, label: `설계 ${d.id}`, design: d })), { source: 'draft', label: '현재 초안', design: state.draft }]
     .filter(c => inspectFinal(c.design, fixture));
 }
 export function selectFinalDesign(state, source, fixture) {
@@ -91,7 +91,7 @@ export function externalSummary(s, pair) {
 export const limitationRows = state => [
   ['실제 PCR에서 증폭', '미수행 / 이 학습지에서 실제 PCR을 수행하지 않았습니다.'],
   ['실제 gel의 단일 product', '미수행 / 05는 수업용 가상 자료입니다.'],
-  ['Amplicon의 실제 sequence identity', '미확인'],
+  ['Amplicon의 실제 서열 정체', '미확인'],
   ['실제 반응 조건의 primer-dimer / hairpin', '미검증 / 04의 단순 서열 상보성 계산은 실제 검증이 아닙니다.'],
-  ['외부 database specificity 검토', `${externalStatus(state.externalSearch)} / 학생의 기록 상태이며 최종 pair의 특이성 판정이 아닙니다.`]
+  ['외부 데이터베이스 특이성 검토', `${externalStatus(state.externalSearch)} / 학생의 기록 상태이며 최종 pair의 특이성 판정이 아닙니다.`]
 ];

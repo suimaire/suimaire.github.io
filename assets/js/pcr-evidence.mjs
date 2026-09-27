@@ -18,10 +18,10 @@ const defineCase = (number, purpose, bands, observations, questions, explanation
   }])), questions, explanation
 });
 export const EVIDENCE_CASES = [
-  defineCase(1, '산물 길이에 대한 증거와 sequence identity를 구별한다.',
+  defineCase(1, '산물 길이에 대한 증거와 서열 정체를 구별한다.',
     { sample: [260], positive: [260], ntc: [] },
     { sample: '예상 크기 부근에 band 하나가 보임 (약 260 bp)', positive: '예상 크기 부근에 band 하나가 보임 (약 260 bp)', ntc: 'band가 보이지 않음' },
-    ['이 결과는 이 사례의 계산된 예상과 일치하는가?', 'Sample에 band가 하나이고 예상 크기와 비슷하다는 사실만으로 그 DNA가 목표 sequence라고 확정할 수 있는가?'],
+    ['이 결과는 이 사례의 계산된 예상과 일치하는가?', 'Sample에 band가 하나이고 예상 크기와 비슷하다는 사실만으로 그 DNA가 목표 서열이라고 확정할 수 있는가?'],
     '예상 크기와의 일치는 target product라는 해석을 지지하는 증거가 될 수 있습니다. 그러나 같은 크기의 다른 산물이나 비특이적 산물 가능성을 gel의 크기 정보만으로 완전히 배제할 수는 없습니다. Band size와 molecular identity는 같은 정보가 아닙니다.'),
   defineCase(2, 'NTC 관찰과 가능한 원인, 추가 확인을 구분한다.',
     { sample: [260], positive: [260], ntc: [70] },
@@ -36,8 +36,8 @@ export const EVIDENCE_CASES = [
   defineCase(4, '하나의 desired product 예상과 여러 관찰 산물의 차이를 해석한다.',
     { sample: [420, 260, 140], positive: [260], ntc: [] },
     { sample: '예상 위치 부근 외에도 band가 보여 총 세 개임 (약 420, 260, 140 bp)', positive: '예상 크기 부근에 band 하나가 보임 (약 260 bp)', ntc: 'band가 보이지 않음' },
-    ['하나의 desired product를 예상했는데 여러 band가 보입니다. 어떤 종류의 문제를 시사할 수 있는가?', '각 band의 sequence identity에 관해 현재 gel만으로 무엇을 말할 수 있는가?'],
-    '여러 band는 비특이적 amplification 가능성을 고려하게 합니다. 계산에서 하나의 desired product를 예상했더라도 관찰에서는 여러 DNA product가 나타날 수 있습니다. 각 band의 sequence identity는 gel만 보고 확정할 수 없습니다.')
+    ['하나의 desired product를 예상했는데 여러 band가 보입니다. 어떤 종류의 문제를 시사할 수 있는가?', '각 band의 서열 정체에 관해 현재 gel만으로 무엇을 말할 수 있는가?'],
+    '여러 band는 비특이적 amplification 가능성을 고려하게 합니다. 계산에서 하나의 desired product를 예상했더라도 관찰에서는 여러 DNA product가 나타날 수 있습니다. 각 band의 서열 정체는 gel만 보고 확정할 수 없습니다.')
 ];
 export const emptyEvidence = () => ({ activeCase: 'case-1', selectedLanes: Object.fromEntries(EVIDENCE_CASES.map(c => [c.id, null])) });
 // Reuse the core's log scale with an explicit 50–500 bp teaching window.

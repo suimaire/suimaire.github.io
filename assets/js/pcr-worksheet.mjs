@@ -39,7 +39,7 @@ async function initialize() {
     state.updatedAt = new Date().toISOString();
     renderFinal();
     if (storageCorrupt) return;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); status('save-status', '이 브라우저에 자동 저장했습니다. 중요한 기록은 JSON으로 내보내세요.'); }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); status('save-status', '이 브라우저에 자동 저장됨'); }
     catch { status('save-status', '브라우저 저장이 차단되었거나 공간이 부족합니다. 현재 기록은 자동 저장되지 않습니다. 기록 내보내기로 보관하세요.', true); }
   }
   try {
@@ -64,6 +64,9 @@ async function initialize() {
   });
   function reflectState() {
     for (const f of fields) f.value = state.answers[f.id] ?? defaults[f.id];
+    for (const group of root.querySelectorAll('[data-legacy-answers]')) {
+      group.hidden = ![...group.querySelectorAll('[data-answer]')].some(f => state.answers[f.id]);
+    }
     $('primer-f').value = state.draft.forward; $('primer-r').value = state.draft.reverse;
     intro.render(); workbench.resetSelection(); invalidate(); renderDesigns(); renderFinal(); evidence.render(); external.render();
     finalReviewView.restore();
@@ -166,8 +169,17 @@ async function initialize() {
     state = emptyRecord(); storageCorrupt = false; reflectState();
     $('direction-feedback').textContent = ''; workbench.resetSelection(); save();
   });
+  const printDetails = new Map();
   function preparePrint() {
     root.dataset.printBlank = String(printBlank);
+    // Newly folded legacy answers must remain available in the existing written print.
+    for (const group of root.querySelectorAll('[data-legacy-answers]:not([hidden])')) {
+      let parent = group;
+      while (parent && parent !== root) {
+        if (parent.tagName === 'DETAILS') { if (!printDetails.has(parent)) printDetails.set(parent, parent.open); parent.open = true; }
+        parent = parent.parentElement;
+      }
+    }
     root.querySelectorAll('.pcr-print-value').forEach(el => el.remove());
     for (const field of root.querySelectorAll('textarea, input:not([type=file]):not([type=radio]):not([type=range]), select')) {
       const value = field.id === 'review-length-choice' ? (field.value ? field.selectedOptions[0].textContent : '') : field.value;
@@ -179,7 +191,11 @@ async function initialize() {
     finalReviewView.preparePrint(printBlank);
   }
   window.addEventListener('beforeprint', preparePrint);
-  window.addEventListener('afterprint', () => { printBlank = false; delete root.dataset.printBlank; root.querySelectorAll('.pcr-print-value').forEach(el => el.remove()); evidence.finishPrint(); finalReviewView.finishPrint(); });
+  window.addEventListener('afterprint', () => {
+    printBlank = false; delete root.dataset.printBlank; root.querySelectorAll('.pcr-print-value').forEach(el => el.remove());
+    for (const [details, open] of printDetails) details.open = open; printDetails.clear();
+    evidence.finishPrint(); finalReviewView.finishPrint();
+  });
   for (const [id, blank] of [['print-filled', false], ['print-blank', true]]) on(id, () => { printBlank = blank; preparePrint(); window.print(); });
   const menus = [...root.querySelectorAll('.pcr-menu')];
   for (const menu of menus) {
@@ -188,16 +204,22 @@ async function initialize() {
   }
   document.addEventListener('click', event => menus.forEach(menu => { if (!menu.contains(event.target)) menu.open = false; }));
   const tocLinks = [...root.querySelectorAll('.pcr-sidebar nav a')];
+  const tocSections = tocLinks.map(link => root.querySelector(link.hash));
   function markCurrentActivity() {
-    const current = [...tocLinks].reverse().find(link => root.querySelector(link.hash).getBoundingClientRect().top <= 180) || tocLinks[0];
+    let index = 0;
+    for (let i = 0; i < tocSections.length; i++) if (tocSections[i].getBoundingClientRect().top <= 180) index = i;
+    const current = tocLinks[index];
     for (const link of tocLinks) { if (link === current) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); }
   }
   let scrollScheduled = false;
-  window.addEventListener('scroll', () => {
+  function scheduleCurrentActivity() {
     if (scrollScheduled) return;
     scrollScheduled = true;
     requestAnimationFrame(() => { markCurrentActivity(); scrollScheduled = false; });
-  }, { passive: true });
+  }
+  window.addEventListener('scroll', scheduleCurrentActivity, { passive: true });
+  window.addEventListener('hashchange', scheduleCurrentActivity);
+  window.addEventListener('pageshow', scheduleCurrentActivity);
   markCurrentActivity();
   const wide = matchMedia('(min-width: 901px)'); $('worksheet-toc').open = wide.matches;
   wide.addEventListener('change', () => { $('worksheet-toc').open = wide.matches; });
@@ -210,5 +232,10 @@ async function initialize() {
     const templateContainer = $('template-sequences'); templateContainer.replaceChildren();
     for (const [id, t] of Object.entries(fixture.templates)) templateContainer.append(textNode('h3', `${id} / ${t.length} nt / 상단 5′→3′`), textNode('p', t.sequence, 'pcr-sequence'));
     workbench.refresh(); renderDesigns(); renderFinal(); root.dataset.ready = 'true';
+    // The restored page grows while records and fonts load. Resolve its initial anchor last.
+    await document.fonts.ready;
+    const hashTarget = tocSections.find(section => `#${section.id}` === location.hash);
+    if (hashTarget) hashTarget.scrollIntoView();
+    scheduleCurrentActivity();
   } catch (error) { fixture = null; review.render(); evidence.renderPrediction(); status('analysis-status', `교육 데이터 로딩 실패: ${error.message} 답안 기록, JSON과 인쇄는 계속 사용할 수 있습니다.`, true); }
 }

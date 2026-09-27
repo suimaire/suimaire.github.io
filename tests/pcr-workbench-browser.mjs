@@ -98,7 +98,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
     await screenshot(width === 390 ? '03-mobile.png' : width === 768 ? '03-tablet.png' : '03-complete-design.png');
     check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'no viewport overflow');
     const left = await page.locator('.pcr-workspace').boundingBox(), right = await page.locator('#current-design').boundingBox();
-    check(width === 390 ? right.y > left.y + left.height - 1 : right.x > left.x + left.width, 'responsive workbench layout');
+    check(width <= 1150 ? right.y > left.y + left.height - 1 : right.x > left.x + left.width, 'responsive workbench layout');
     check(await page.locator('.pcr-base').evaluateAll(elements => elements.every(el => el.getBoundingClientRect().width >= 43.5 && el.getBoundingClientRect().height >= 44)), 'touch sized sequence targets');
     await page.locator('#design-reason').fill('결실 양옆에서 시작한 첫 설계'); await page.locator('#save-design').click();
     const originalDesign = (await saved()).designs[0];
