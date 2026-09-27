@@ -50,42 +50,60 @@ page_views: false
   <main id="pcr-main">
     <section id="activity-00" class="pcr-activity">
       <p class="pcr-section-label">00</p><h2>두 시료를 어떻게 구별할 것인가?</h2>
-      <p>A는 420 bp(염기쌍) 기준 서열이고, B는 A의 121~200 구간 80 bp가 결실된 DNA입니다. C는 함께 존재할 수 있는 배경 DNA입니다. </p>
-      <p class="pcr-prompt">80 bp 차이가 PCR 산물 길이 차이로 나타나게 하려면, 두 primer 사이에 어떤 영역이 들어가야 할까요?</p>
-      <div class="pcr-tools pcr-prediction-tools" role="group" aria-label="구조도에 표시할 프라이머">
-        <button type="button" data-prediction-primer="forward" aria-pressed="true">Forward primer (F) 위치 표시</button>
-        <button type="button" data-prediction-primer="reverse" aria-pressed="false">Reverse primer (R) 위치 표시</button>
+      <p>A는 420 bp(염기쌍) 기준 서열이고, B는 A의 121~200 구간 80 bp가 결실된 DNA입니다. <strong>같은 Forward/Reverse primer pair를 A와 B에 사용합니다.</strong></p>
+      <p class="pcr-prompt">두 primer가 A와 B 모두에 결합하여 PCR 산물 길이가 정확히 80 bp 차이 나게 하려면, 두 결합 부위는 어디에 있어야 할까요?</p>
+      <p class="pcr-small">정답 위치는 하나가 아닙니다. 두 primer 모두 A와 B에 결합하면서, 121~200 결실 구간 전체가 두 primer 결합 부위 사이에 포함되도록 배치해 보세요.</p>
+      <p id="prediction-instructions" class="pcr-small">A 기준의 개략적 결합 위치를 예측합니다. F 또는 R을 선택한 뒤 A 선을 누르거나 아래 슬라이더를 움직이세요. B의 대응 위치는 같은 primer pair로 자동 표시되며, 따로 선택하지 않습니다.</p>
+      <div class="pcr-tools pcr-prediction-tools" role="group" aria-label="A 기준으로 위치를 정할 프라이머 선택">
+        <button type="button" data-prediction-primer="forward" aria-pressed="true">F 위치 정하기 (A 기준)</button>
+        <button type="button" data-prediction-primer="reverse" aria-pressed="false">R 위치 정하기 (A 기준)</button>
       </div>
       <figure class="pcr-sample-map">
+        <p class="pcr-small pcr-map-legend"><strong>A와 B에는 같은 primer pair를 사용합니다.</strong> 옅은 영역은 두 primer 사이의 구간입니다.</p>
         <div class="pcr-sample-row"><strong>A</strong><div>
           <div class="pcr-map-ends"><span>1</span><span>420 bp</span></div>
           <div id="prediction-track" class="pcr-dna-track" role="group" aria-label="A 구조도. 아래 조절 막대로도 프라이머 위치를 정할 수 있습니다.">
+            <span id="prediction-a-span" class="pcr-predicted-span" aria-hidden="true" hidden></span>
             <span class="pcr-deletion-region">121~200</span>
+            <span id="prediction-forward-binding" class="pcr-binding-region" aria-hidden="true" hidden></span>
+            <span id="prediction-reverse-binding" class="pcr-binding-region" aria-hidden="true" hidden></span>
             <span id="prediction-forward-marker" class="pcr-position-marker" hidden>F →</span>
             <span id="prediction-reverse-marker" class="pcr-position-marker" hidden>← R</span>
           </div>
-          <p class="pcr-small pcr-region-caption">상자: B에서 결실된 80 bp 구간</p>
+          <p class="pcr-small pcr-region-caption">상자는 B에서 결실된 121~200 구간입니다. 위치는 A를 기준으로 선택합니다.</p>
         </div></div>
         <div class="pcr-sample-row"><strong>B</strong><div>
           <div class="pcr-map-ends pcr-short-sample"><span>1</span><span>340 bp</span></div>
-          <div class="pcr-dna-track pcr-short-sample"><span class="pcr-deletion-junction">╳</span></div>
-          <p class="pcr-small pcr-region-caption">결실 구간의 양옆이 연결됨</p>
+          <div id="prediction-b-track" class="pcr-dna-track pcr-short-sample" role="group" aria-label="B 구조도. A에서 선택한 같은 primer pair의 대응 위치가 자동 표시됩니다.">
+            <span id="prediction-b-span" class="pcr-predicted-span" aria-hidden="true" hidden></span>
+            <span class="pcr-deletion-junction" aria-label="결실 접합부">╳</span>
+            <span id="prediction-b-forward-binding" class="pcr-binding-region" aria-hidden="true" hidden></span>
+            <span id="prediction-b-reverse-binding" class="pcr-binding-region" aria-hidden="true" hidden></span>
+            <span id="prediction-b-forward-marker" class="pcr-position-marker" hidden>F →</span>
+            <span id="prediction-b-reverse-marker" class="pcr-position-marker" hidden>← R</span>
+          </div>
+          <p class="pcr-small pcr-region-caption">╳는 결실 양옆이 이어진 곳입니다. <span id="prediction-b-caption">A에서 위치를 정하면 B에 남아 있는 결합 부위에도 같은 primer가 표시됩니다.</span></p>
         </div></div>
-        <div class="pcr-sample-row"><strong>C</strong><div>
+        <p class="pcr-small">결실 오른쪽 결합 부위의 bp 좌표는 B에서 A보다 80만큼 앞당겨집니다. 같은 숫자 좌표가 아니라, 같은 primer가 인식하는 결합 부위를 비교하는 것입니다.</p>
+        <p id="prediction-ab-concept" class="pcr-small">두 primer가 결실 양옆의 보존된 부위에 결합하면, A의 두 primer 사이에는 121~200의 80 bp가 포함됩니다. B에는 이 80 bp가 없으므로, 같은 primer pair로 얻은 B의 PCR 산물이 A보다 80 bp 짧아집니다.</p>
+        <div id="prediction-c-row" class="pcr-sample-row"><strong>C</strong><div>
           <div class="pcr-dna-track pcr-background-dna"></div>
-          <p class="pcr-small pcr-region-caption">배경 DNA / A와 별개의 서열</p>
+          <p class="pcr-small pcr-region-caption">C는 A와 다른 서열의 배경 DNA입니다. <strong>이 단계에서는 결합 여부를 판단하지 않습니다.</strong> Primer 표식이 없다는 것이 결합하지 않는다는 뜻은 아닙니다. 서열 특이성(specificity)은 뒤 활동에서 검토합니다.</p>
         </div></div>
-        <figcaption>개략적인 위치 예측입니다. A 선 위를 누르거나 아래 막대를 움직이세요. 정밀한 서열 설계는 활동 03에서 시작합니다.</figcaption>
+        <figcaption>A와 B의 DNA 길이는 같은 축척으로 그렸습니다. F/R의 짧은 띠는 개략적 결합 범위이며 실제 primer 길이가 아닙니다. 결실 경계에 걸치면 겹침 주의를 표시합니다. 정밀한 염기서열 설계는 활동 03부터 시작합니다.</figcaption>
       </figure>
+      <p id="prediction-feedback" class="pcr-prediction-feedback" role="status" aria-live="polite" aria-atomic="true">F와 R의 A 기준 위치를 정해 같은 primer pair의 A/B 배치를 비교해 보세요.</p>
       <div class="pcr-fields pcr-prediction-controls">
-        <div><label for="prediction-forward">Forward 대략적 위치</label><input id="prediction-forward" type="range" min="5" max="95" step="5" value="50" aria-describedby="prediction-forward-value"><output id="prediction-forward-value" for="prediction-forward">아직 표시하지 않음</output></div>
-        <div><label for="prediction-reverse">Reverse 대략적 위치</label><input id="prediction-reverse" type="range" min="5" max="95" step="5" value="50" aria-describedby="prediction-reverse-value"><output id="prediction-reverse-value" for="prediction-reverse">아직 표시하지 않음</output></div>
+        <div><label for="prediction-forward">Forward 대략적 위치 (A 기준)</label><input id="prediction-forward" type="range" min="5" max="95" step="5" value="50" aria-describedby="prediction-instructions prediction-forward-value prediction-feedback"><output id="prediction-forward-value" for="prediction-forward">아직 표시하지 않음</output></div>
+        <div><label for="prediction-reverse">Reverse 대략적 위치 (A 기준)</label><input id="prediction-reverse" type="range" min="5" max="95" step="5" value="50" aria-describedby="prediction-instructions prediction-reverse-value prediction-feedback"><output id="prediction-reverse-value" for="prediction-reverse">아직 표시하지 않음</output></div>
       </div>
-      <label for="first-placement">왜 이 위치에 놓았나요?</label><textarea id="first-placement" data-answer rows="3" class="pcr-answer-reason"></textarea>
-      <p class="pcr-small">위치와 설명은 초기 예측으로 저장됩니다.</p>
+      <label for="first-placement">같은 primer pair를 왜 이 위치에 놓았나요?</label>
+      <p id="first-placement-help" class="pcr-small">각 primer의 A/B 결합 가능성과 결실 구간의 위치를 근거로, 두 산물의 길이를 비교해 설명해 보세요. C에 대해서는 지금 판단할 수 있는 것과 뒤 활동에서 확인할 것을 구분해 적어 보세요.</p>
+      <textarea id="first-placement" data-answer rows="3" class="pcr-answer-reason" aria-describedby="first-placement-help"></textarea>
+      <p class="pcr-small">A 기준 위치와 설명을 같은 primer pair의 초기 예측으로 저장합니다. B 표시는 이 위치에서 자동으로 정해지며, C의 결합 여부는 아직 판단하지 않습니다.</p>
       <details id="legacy-first-negative" hidden><summary>이전 작성본의 음성 결과 예측</summary><label for="first-negative">한 시료에서 밴드가 보이지 않으면 해당 DNA가 없다고 결론 내릴 수 있는가?</label><textarea id="first-negative" data-answer rows="2"></textarea></details>
-      <details class="pcr-explanation"><summary>어떤 차이를 프라이머 사이에 담아야 할까?</summary><p>결실 구간을 사이에 두고 양옆의 보존된 위치에 두 프라이머가 결합하면, A와 B의 산물에 길이 차이가 나타날 수 있습니다. </p></details>
-      <div class="pcr-transition"><p>두 위치 사이에 넣을 차이를 예상했습니다. 이제 PCR이 이 영역을 복제하는 과정을 살펴봅니다.</p><a href="#activity-01">01 PCR 한 주기 살펴보기 →</a></div>
+      <details class="pcr-explanation"><summary>같은 primer pair로 어떤 차이를 비교할까?</summary><p>같은 F/R primer pair를 A와 B 두 시료에 함께 사용합니다. 두 primer 모두 양쪽 시료에 결합할 수 있고, 121~200 결실 구간 전체가 두 결합 부위 사이에 들어가면 B의 산물이 A보다 80 bp 짧아집니다. 이 조건을 만족하는 위치는 여러 곳일 수 있습니다.</p><p>Primer 자체가 결실 구간에 걸리면 B에는 같은 연속 결합 부위가 없어 같은 방식으로 증폭되지 않을 수 있습니다. 두 primer가 결실의 같은 쪽에 있으면 결실 전체가 산물에 포함되지 않아 80 bp 차이가 그대로 나타나지 않습니다. 서로를 향하는 F/R의 방향도 필요합니다.</p><p>이 도식은 결실 구조에 따른 개념적 예측입니다. 실제 결합 서열과 primer 품질은 활동 03~04에서 확인하며, C에 대한 특이성은 아직 판단하지 않습니다. 교육용 서열에서의 검토와 외부 데이터베이스 검증은 뒤 활동으로 이어집니다.</p></details>
+      <div class="pcr-transition"><p>같은 primer pair로 A와 B의 차이를 비교할 위치를 예상했습니다. 이제 PCR이 이 영역을 복제하는 과정을 살펴봅니다.</p><a href="#activity-01">01 PCR 한 주기 살펴보기 →</a></div>
     </section>
     <section id="activity-01" class="pcr-activity">
       <p class="pcr-section-label">01</p><h2>PCR 한 주기에서는 무엇이 달라질까?</h2>
