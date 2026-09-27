@@ -1,6 +1,28 @@
 import { complement, reverseComplement, normalizeSequence } from './pcr-core.mjs';
 import { PCR_STAGES } from './pcr-records.mjs';
 
+// Display-only geometry on the existing relative-percent scale. The short binding
+// bands span one slider step; they are NOT a selected nucleotide/primer length.
+const DELETION_LEFT = 120 / 420 * 100;
+const DELETION_RIGHT = 200 / 420 * 100;
+const B_SCALE = 340 / 420;
+const ROUGH_HALF_WIDTH = 2.5;
+export function predictSharedPair(prediction) {
+  const binding = value => {
+    if (value === null) return { value, overlap: false, b: null };
+    const start = value - ROUGH_HALF_WIDTH, end = value + ROUGH_HALF_WIDTH;
+    const overlap = end > DELETION_LEFT && start < DELETION_RIGHT;
+    return { value, start, end, overlap, b: overlap ? null : (value - (start >= DELETION_RIGHT ? DELETION_RIGHT - DELETION_LEFT : 0)) / B_SCALE };
+  };
+  const forward = binding(prediction.forward), reverse = binding(prediction.reverse);
+  const complete = forward.value !== null && reverse.value !== null;
+  const ordered = complete && forward.end < reverse.start;
+  const enclosesDeletion = ordered && forward.end <= DELETION_LEFT && reverse.start >= DELETION_RIGHT;
+  const shared = complete && !forward.overlap && !reverse.overlap;
+  const state = forward.overlap || reverse.overlap ? 'overlap' : !complete ? 'incomplete' : !ordered ? 'order' : !enclosesDeletion ? 'outside' : 'valid';
+  return { forward, reverse, ordered, shared, enclosesDeletion, state };
+}
+
 // These are conceptual drawings only. They do not run the sequence calculator.
 export function initializeIntro(root, getState, save) {
   const $ = id => root.querySelector(`#${id}`);
@@ -32,19 +54,57 @@ export function initializeIntro(root, getState, save) {
     label(svg, (five + three) / 2, ly, name, 'middle');
   }
   const choose = (selector, selected, key) => all(selector).forEach(button => button.setAttribute('aria-pressed', String(button.dataset[key] === String(selected))));
-  const roughRegion = value => value === null ? '아직 표시하지 않음' : value < 29 ? '결실 구간의 왼쪽' : value <= 48 ? '결실 구간 안쪽' : '결실 구간의 오른쪽';
+  const roughRegion = value => value === null ? '아직 표시하지 않음' : value < DELETION_LEFT ? '결실 구간의 왼쪽' : value <= DELETION_RIGHT ? '결실 구간 안쪽' : '결실 구간의 오른쪽';
   let activePrimer = 'forward';
   function renderPrediction() {
+    const model = predictSharedPair(getState().initialPrimerPrediction);
+    const bDescriptions = [];
     for (const name of ['forward', 'reverse']) {
-      const value = getState().initialPrimerPrediction[name];
+      const { value, start, overlap, b } = model[name];
+      const shortName = name === 'forward' ? 'F' : 'R';
       const marker = $(`prediction-${name}-marker`), slider = $(`prediction-${name}`);
+      const bMarker = $(`prediction-b-${name}-marker`);
       marker.hidden = value === null;
       marker.style.left = `${value ?? 50}%`;
+      marker.dataset.overlap = String(overlap);
+      marker.textContent = name === 'forward' ? `F${overlap ? ' !' : ''} →` : `← R${overlap ? ' !' : ''}`;
+      const description = `${roughRegion(value)}${overlap ? ' / 결실과 겹침 주의' : value !== null ? ' / B에도 대응 위치 표시' : ''}`;
+      marker.setAttribute('aria-label', `A의 ${shortName}: ${description}`);
+      bMarker.hidden = b === null;
+      bMarker.style.left = `${b ?? 50}%`;
+      bMarker.setAttribute('aria-label', `B의 ${shortName}: A에서 고른 같은 primer의 대응 위치`);
+      for (const [id, left, width, hidden] of [
+        [`prediction-${name}-binding`, start, ROUGH_HALF_WIDTH * 2, value === null],
+        [`prediction-b-${name}-binding`, b - ROUGH_HALF_WIDTH / B_SCALE, ROUGH_HALF_WIDTH * 2 / B_SCALE, b === null]
+      ]) {
+        const band = $(id);
+        band.hidden = hidden; band.style.left = `${left ?? 0}%`; band.style.width = `${width}%`;
+        band.dataset.overlap = String(overlap);
+      }
+      bDescriptions.push(`${shortName}: ${value === null ? '아직 표시하지 않음' : overlap ? '결실과 겹쳐 같은 연속 결합 부위를 표시할 수 없음' : 'A와 같은 primer의 대응 위치'}`);
       slider.value = value ?? 50;
-      slider.setAttribute('aria-valuetext', roughRegion(value));
-      $(`prediction-${name}-value`).textContent = roughRegion(value);
+      slider.setAttribute('aria-valuetext', description);
+      $(`prediction-${name}-value`).textContent = description;
     }
-    $('prediction-track').setAttribute('aria-label', `A의 대략적 예측 위치. Forward: ${roughRegion(getState().initialPrimerPrediction.forward)}. Reverse: ${roughRegion(getState().initialPrimerPrediction.reverse)}. 아래 조절 막대로 위치를 바꿀 수 있습니다.`);
+    for (const [sample, f, r, visible] of [
+      ['a', model.forward.value, model.reverse.value, model.ordered],
+      ['b', model.forward.b, model.reverse.b, model.ordered && model.shared]
+    ]) {
+      const span = $(`prediction-${sample}-span`);
+      span.hidden = !visible; span.style.left = `${f ?? 0}%`; span.style.width = `${visible ? r - f : 0}%`;
+    }
+    const messages = {
+      incomplete: 'F와 R의 A 기준 위치를 모두 정해 보세요. 보존된 위치를 고르면 같은 primer의 B 대응 위치도 함께 표시됩니다.',
+      overlap: '겹침 주의: 한 primer의 개략적 결합 범위가 121~200 결실 구간과 겹칩니다. B에서 같은 연속 부위에 결합하기 어려워 해당 표식을 표시하지 않았습니다. 두 primer 모두 A와 B에 결합할 수 있는 위치인지 확인하세요.',
+      order: '배치 확인: F가 왼쪽, R이 오른쪽에서 서로를 향하고 두 결합 부위가 떨어져 있어야 합니다. 결실 구간 전체가 두 primer 사이에 포함되는지도 확인하세요.',
+      outside: '결실 포함 확인: 두 primer는 A와 B의 대응 위치에 있지만, 121~200 결실 구간 전체가 두 결합 부위 사이에 들어가지 않습니다. 이 배치의 primer 사이 구간은 A와 B에서 같으므로 결실로 인한 80 bp 산물 차이를 볼 수 없습니다.',
+      valid: '개념 조건 충족: 같은 F/R이 A와 B의 보존된 대응 부위에 있고, 121~200 결실 구간 전체가 두 결합 부위 사이에 들어갑니다. 이 가정에서 B의 PCR 산물은 A보다 80 bp 짧습니다. 가능한 배치는 여러 곳이며, 실제 서열과 품질은 뒤 활동에서 확인합니다.'
+    };
+    $('prediction-feedback').textContent = messages[model.state];
+    $('prediction-feedback').dataset.state = ['incomplete', 'valid'].includes(model.state) ? model.state : 'warning';
+    $('prediction-b-caption').textContent = bDescriptions.join(' / ');
+    $('prediction-track').setAttribute('aria-label', `A 기준의 대략적 예측 위치. Forward: ${roughRegion(model.forward.value)}. Reverse: ${roughRegion(model.reverse.value)}. 아래 조절 막대로 같은 primer pair의 위치를 바꿀 수 있습니다.`);
+    $('prediction-b-track').setAttribute('aria-label', `B에 자동 대응한 같은 primer pair. ${bDescriptions.join('. ')}.`);
     $('legacy-first-negative').hidden = !getState().answers['first-negative'];
   }
   function place(name, value) {
