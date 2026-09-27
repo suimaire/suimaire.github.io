@@ -23,7 +23,7 @@
 #pcr-worksheet button, #pcr-worksheet .pcr-file { color: var(--pcr-accent); background: #fff; border: 1px solid var(--pcr-accent); border-radius: 2px; font: inherit; font-size: 14px; line-height: 1.5; min-height: 44px; padding: 10px 14px; cursor: pointer; }
 #pcr-worksheet button:hover { background: #f1f5f3; }
 #pcr-worksheet button:disabled { color: #59615e; border-color: #bbb; cursor: default; }
-#pcr-worksheet :focus-visible, .pcr-skip:focus-visible { outline: 3px solid #0d5751; outline-offset: 4px; }
+#pcr-worksheet :focus-visible, #pcr-worksheet input[type=radio]:focus, .pcr-skip:focus-visible { outline: 3px solid #0d5751; outline-offset: 4px; }
 #pcr-worksheet label { display: block; font-weight: 700; font-size: 16px; margin: 24px 0 8px; }
 #pcr-worksheet textarea, #pcr-worksheet input:not([type=file]), #pcr-worksheet select { display: block; width: 100%; padding: 11px; border: 1px solid #9aaba6; border-radius: 2px; background: #fff; color: #1a1d1c; font: inherit; font-size: 16px; line-height: 1.7; }
 #pcr-worksheet textarea { resize: vertical; min-height: 76px; }

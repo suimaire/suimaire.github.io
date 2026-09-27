@@ -205,8 +205,8 @@ export function initializeIntro(root, getState, save) {
       fieldset.querySelectorAll('input').forEach(input => { input.checked = input.value === selected; });
     }
     const a = getState().answers;
-    $('cycle-choice-feedback').textContent = !a['cycle-boundary-choice'] ? '' : a['cycle-boundary-choice'] === 'primer-pair' ? '맞습니다. primer pair의 결합 위치가 양 끝을 정합니다. 이유를 기록하세요.' : '각 요소의 역할을 다시 살펴보세요. 주형에 결합해 합성 시작점을 정하는 요소는 무엇일까요?';
-    $('direction-choice-feedback').textContent = !a['direction-end-choice'] ? '' : a['direction-end-choice'] === '3' ? '맞습니다. 3′ 말단이 내부를 향합니다. 합성 방향과 연결해 이유를 적어 보세요.' : 'DNA polymerase가 어느 말단의 OH에서 연장하는지 다시 살펴보세요.';
+    $('cycle-choice-feedback').textContent = !a['cycle-boundary-choice'] ? '' : a['cycle-boundary-choice'] === 'primer-pair' ? '맞습니다. primer pair의 결합 위치가 양 끝을 정합니다.' : '각 요소의 역할을 다시 살펴보세요. 주형에 결합해 합성 시작점을 정하는 요소는 무엇일까요?';
+    $('direction-choice-feedback').textContent = !a['direction-end-choice'] ? '' : a['direction-end-choice'] === '3' ? '맞습니다. 3′ 말단이 내부를 향하며 이 말단에서 새 DNA 합성이 진행됩니다.' : 'DNA polymerase가 어느 말단의 OH에서 연장하는지 다시 살펴보세요.';
   }
   all('[data-choice] input').forEach(input => input.addEventListener('change', () => { getState().answers[input.name] = input.value; renderChoices(); save(); }));
   return {

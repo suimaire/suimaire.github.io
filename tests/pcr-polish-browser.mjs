@@ -4,7 +4,7 @@ import {resolve} from 'node:path';
 import {chromium,webkit} from './.pcr-tools/node_modules/playwright/index.mjs';
 import {parseRecord,STORAGE_KEY} from '../assets/js/pcr-records.mjs';
 const url=process.env.PCR_TEST_URL || 'http://127.0.0.1:4173/bioinformatics/pcr-primer-design/';
-const output=resolve('verification.local/pcr-primer-design/phase7'); await mkdir(output,{recursive:true});
+const output=resolve(process.env.PCR_VERIFICATION_ROOT || 'verification.local/pcr-primer-design','phase7'); await mkdir(output,{recursive:true});
 const records=await Promise.all([1,2,3,4,5,6].map(async n=>JSON.parse(await readFile(`tests/fixtures/pcr/phase${n}.json`,'utf8'))));
 const titles=['두 시료를 어떻게 구별할 것인가?','PCR 한 주기에서는 무엇이 달라질까?','두 primer의 3′ 말단은 어디를 향할까?','직접 primer를 배치하기','숫자가 적절하면 좋은 primer인가?','예상과 실험 증거는 같은 것인가?','실제 데이터베이스에서는 어떻게 검토할까?','최종 설계 기록'];
 let checks=0; const screenshots=[],audits=[],metrics=[];

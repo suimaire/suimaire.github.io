@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { chromium, webkit } from './.pcr-tools/node_modules/playwright/index.mjs';
 import { parseRecord, STORAGE_KEY } from '../assets/js/pcr-records.mjs';
 const url = process.env.PCR_TEST_URL || 'http://127.0.0.1:4173/bioinformatics/pcr-primer-design/';
-const output = resolve('verification.local/pcr-primer-design/phase8');
+const output = resolve(process.env.PCR_VERIFICATION_ROOT || 'verification.local/pcr-primer-design', 'phase8');
 await mkdir(output, { recursive: true });
 const histories = await Promise.all([1, 2, 3, 4, 5, 6].map(async n => JSON.parse(await readFile(`tests/fixtures/pcr/phase${n}.json`, 'utf8'))));
 // Phase 7 preserved Phase 6's record format. Include a Phase 7 style legacy RNA answer.
