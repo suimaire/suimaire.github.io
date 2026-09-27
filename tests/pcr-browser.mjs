@@ -96,7 +96,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     await page.evaluate(() => { window.print = () => window.dispatchEvent(new Event('beforeprint')); });
     await page.locator('#rna-extension > summary').click();
     await page.locator('#print-menu > summary').click(); await page.locator('#print-filled').click(); await page.emulateMedia({ media: 'print' });
-    check((await page.locator('#final-evidence + .pcr-print-value').innerText()).endsWith('마지막 확인 문장'), 'full print answer');
+    check((await page.locator('#final-notebook').innerText()).includes(longAnswer), 'full print answer');
     check((await page.locator('#rna-plan + .pcr-print-value').innerText()).includes('gDNA 잔존'), 'RNA filled print');
     check(await page.locator('.pcr-explanation').first().isHidden(), 'print explanations excluded');
     check(await page.locator('#prediction-forward-marker').isVisible(), 'filled print retains initial markers');
@@ -104,7 +104,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     if (name === 'chromium' && width === 1440) await page.pdf({ path: resolve(output, 'filled-notebook.pdf'), format: 'A4', printBackground: true });
     await page.emulateMedia({ media: 'screen' }); await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
     await page.locator('#print-blank').click(); await page.emulateMedia({ media: 'print' });
-    check(await page.locator('#final-evidence + .pcr-print-value').innerText() === '', 'blank print empty');
+    check(!(await page.locator('#final-notebook').innerText()).includes('마지막 확인 문장'), 'blank print empty');
     check(await page.locator('#rna-plan + .pcr-print-value').innerText() === '', 'RNA blank print');
     check(await page.locator('#saved-designs').isHidden(), 'blank print saved answers excluded');
     check(await page.locator('#prediction-forward-marker').isHidden() && await page.locator('#prediction-reverse-marker').isHidden(), 'blank print excludes initial markers');

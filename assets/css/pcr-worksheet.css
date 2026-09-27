@@ -475,3 +475,59 @@
   #pcr-worksheet #ext-print table { break-inside: avoid; }
   #pcr-worksheet[data-print-blank=true] #ext-print .ext-print-entry p { border-bottom: 1px solid #aaa; }
 }
+
+/* Activity 07: a research notebook, with historical records and a frozen final pair. */
+#pcr-worksheet .final-flow { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 26px 0; padding: 12px 0; border-block: 1px solid var(--pcr-rule); font-size: 12px; color: var(--pcr-muted); }
+#pcr-worksheet .final-flow li:not(:last-child)::after { content: ' →'; margin-left: 12px; }
+#pcr-worksheet .final-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+#pcr-worksheet .final-comparison > section + section { border-left: 1px solid var(--pcr-rule); padding-left: 28px; }
+#pcr-worksheet .final-block { border-top: 1px solid var(--pcr-rule); padding: 12px 0 24px; margin-top: 28px; }
+#pcr-worksheet #activity-07 h3, #pcr-worksheet #activity-07 h4 { color: var(--pcr-accent); }
+#pcr-worksheet #activity-07 h4 { font-size: 15px; margin: 16px 0 8px; }
+#pcr-worksheet .final-entries { margin: 12px 0 18px; }
+#pcr-worksheet .final-entry { padding: 9px 0; border-bottom: 1px solid var(--pcr-rule); }
+#pcr-worksheet .final-entry dt { font-size: 13px; color: var(--pcr-muted); }
+#pcr-worksheet .final-entry dd { margin: 4px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+#pcr-worksheet .final-history { padding-left: 28px; }
+#pcr-worksheet .final-history > li { padding: 0 0 22px 10px; }
+#pcr-worksheet .final-history > li + li { border-top: 1px solid var(--pcr-rule); padding-top: 10px; }
+#pcr-worksheet .final-history .final-entries:first-of-type { display: flex; flex-wrap: wrap; gap: 14px; }
+#pcr-worksheet .final-history .final-entry { min-width: 0; }
+#pcr-worksheet .final-map { height: 132px; position: relative; margin: 16px 18px 12px; border-bottom: 1px solid var(--pcr-rule); font-size: 11px; }
+#pcr-worksheet .final-map::before { content: ''; position: absolute; top: 62px; left: 0; right: 0; border-top: 1px solid var(--pcr-muted); }
+#pcr-worksheet .final-map-label { position: absolute; top: 0; left: 0; }
+#pcr-worksheet .final-map-deletion { position: absolute; left: 28.6%; top: 50px; width: 19%; height: 24px; border: 1px solid var(--pcr-rule); background: white; }
+#pcr-worksheet .final-map-marker { position: absolute; transform: translateX(-50%); border-left: 1px dashed var(--pcr-muted); padding-left: 4px; white-space: nowrap; }
+#pcr-worksheet .final-map-F { top: 80px; }
+#pcr-worksheet .final-map-R { top: 106px; }
+#pcr-worksheet #final-design-options { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+#pcr-worksheet .final-design-option { display: flex; align-items: center; gap: 10px; min-height: 44px; margin: 0; cursor: pointer; }
+#pcr-worksheet .final-design-option input { width: 20px; height: 20px; flex: 0 0 auto; accent-color: var(--pcr-accent); }
+#pcr-worksheet .final-sequence { white-space: normal; overflow-wrap: anywhere; word-break: break-all; }
+#pcr-worksheet #final-notebook-toggle { margin: 26px 0; }
+#pcr-worksheet #final-notebook { border-top: 2px solid var(--pcr-accent); padding-top: 20px; }
+#pcr-worksheet #final-notebook > .final-note-section { border-top: 1px solid var(--pcr-rule); padding: 14px 0 22px; }
+#pcr-worksheet #final-notebook > .final-note-section > h4 { font-size: 18px; }
+#pcr-worksheet #final-notebook p { white-space: pre-wrap; overflow-wrap: anywhere; }
+#pcr-worksheet .final-writing-space { border-bottom: 1px solid var(--pcr-rule); }
+@media (max-width: 650px) {
+  #pcr-worksheet .final-comparison { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  #pcr-worksheet .final-comparison > section + section { border-left: 0; padding-left: 0; border-top: 1px solid var(--pcr-rule); padding-top: 18px; }
+  #pcr-worksheet #final-design-options { flex-direction: column; }
+}
+@media print {
+  #pcr-worksheet[data-final-ready=true] #final-editor { display: none !important; }
+  #pcr-worksheet[data-final-ready=true] #final-notebook[hidden], #pcr-worksheet[data-final-ready=true] #final-notebook { display: block !important; border-top: 0; padding-top: 0; }
+  #pcr-worksheet #final-notebook > .final-note-section { padding: 4px 0 12px; }
+  #pcr-worksheet #final-notebook h4, #pcr-worksheet #final-notebook dt { break-after: avoid; }
+  #pcr-worksheet #final-notebook .final-entry, #pcr-worksheet #final-notebook .final-sequence { break-inside: avoid; }
+  #pcr-worksheet #final-notebook p, #pcr-worksheet #final-notebook dd { orphans: 3; widows: 3; }
+  #pcr-worksheet #final-notebook .final-note-section { overflow: visible; }
+  #pcr-worksheet #final-notebook .final-map { display: none; }
+  #pcr-worksheet #final-notebook .final-history { display: block; }
+  #pcr-worksheet #final-notebook .final-history > li, #pcr-worksheet #final-notebook .final-response { break-inside: avoid; }
+  #pcr-worksheet #final-notebook .final-entries { margin: 6px 0 12px; }
+  #pcr-worksheet #final-notebook .final-entry { padding: 5px 0; }
+  #pcr-worksheet:not([data-final-ready]) #activity-07 textarea { display: block !important; }
+}
+#pcr-worksheet .final-map-deletion-label { position: absolute; top: 28px; left: 28.6%; white-space: nowrap; }

@@ -8,7 +8,7 @@ import { primerStats, reverseComplement } from '../assets/js/pcr-core.mjs';
 import { complementarity, REVIEW_LENSES } from '../assets/js/pcr-review.mjs';
 const fixture = JSON.parse(await readFile(new URL('../assets/data/pcr-primer-fixture.json', import.meta.url)));
 const url = process.env.PCR_TEST_URL || 'http://127.0.0.1:4173/bioinformatics/pcr-primer-design/';
-const output = resolve('verification.local/pcr-primer-design/phase3'); await mkdir(output, { recursive: true });
+const output = resolve(process.env.PCR_VERIFICATION_ROOT || 'verification.local/pcr-primer-design', 'phase3'); await mkdir(output, { recursive: true });
 let checks = 0; const results = [], evidence = [];
 const check = (value, label) => { assert.ok(value, label); checks++; };
 for (const [engineName, engine] of Object.entries({ chromium, webkit })) {

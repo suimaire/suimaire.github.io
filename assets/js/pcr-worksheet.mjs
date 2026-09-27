@@ -7,7 +7,8 @@ import { initializeReview } from './pcr-review-view.mjs';
 import { mountEvidence, initializeEvidence } from './pcr-evidence-view.mjs';
 import { cloneBindings, inspectDesign } from './pcr-design.mjs';
 import { initializeExternal } from './pcr-external-view.mjs';
-import { SEARCH_STATUS, comparisonRecorded } from './pcr-external.mjs';
+import { LEGACY_FINAL } from './pcr-final.mjs';
+import { initializeFinalReview } from './pcr-final-view.mjs';
 
 const root = document.querySelector('#pcr-worksheet');
 if (root) initialize().catch(error => {
@@ -17,9 +18,10 @@ async function initialize() {
   const $ = id => root.querySelector(`#${id}`);
   mountEvidence(root);
   const fields = [...root.querySelectorAll('[data-answer]')];
-  const keys = [...fields.map(f => f.id), ...INTRO_CHOICE_KEYS];
+  const keys = [...fields.map(f => f.id), ...INTRO_CHOICE_KEYS, ...Object.keys(LEGACY_FINAL)];
   for (const field of fields) if (field.tagName !== 'SELECT') field.maxLength = 12000;
   let state = emptyRecord(), fixture, currentResult = null, storageCorrupt = false, printBlank = false;
+  let finalReviewView;
   const defaults = Object.fromEntries(fields.map(f => [f.id, f.value]));
   const textNode = (tag, text, className) => {
     const el = document.createElement(tag); el.textContent = text;
@@ -35,6 +37,7 @@ async function initialize() {
   function ready() { if (!fixture) throw new Error('교육 데이터를 불러오지 못했습니다. 연결을 확인한 뒤 새로고침하세요. 작성 기록은 내보낼 수 있습니다.'); }
   function save() {
     state.updatedAt = new Date().toISOString();
+    renderFinal();
     if (storageCorrupt) return;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); status('save-status', '이 브라우저에 자동 저장했습니다. 중요한 기록은 JSON으로 내보내세요.'); }
     catch { status('save-status', '브라우저 저장이 차단되었거나 공간이 부족합니다. 현재 기록은 자동 저장되지 않습니다. 기록 내보내기로 보관하세요.', true); }
@@ -48,6 +51,7 @@ async function initialize() {
     status('save-status', `이전 기록을 읽을 수 없습니다: ${error.message} 기존 저장값을 덮어쓰지 않습니다. 현재 작업은 기록 내보내기로 보관하세요.`, true);
   }
   const intro = initializeIntro(root, () => state, save);
+  finalReviewView = initializeFinalReview(root, () => state, () => fixture, save);
   const review = initializeReview(root, () => state, () => fixture, save);
   const evidence = initializeEvidence(root, () => state, () => fixture);
   const external = initializeExternal(root, () => state, () => fixture, save, renderFinal);
@@ -56,11 +60,13 @@ async function initialize() {
     evidence.renderPrediction();
     external.renderSource();
     review.render();
+    renderFinal();
   });
   function reflectState() {
     for (const f of fields) f.value = state.answers[f.id] ?? defaults[f.id];
     $('primer-f').value = state.draft.forward; $('primer-r').value = state.draft.reverse;
     intro.render(); workbench.resetSelection(); invalidate(); renderDesigns(); renderFinal(); evidence.render(); external.render();
+    finalReviewView.restore();
   }
   root.addEventListener('input', event => {
     const f = event.target;
@@ -135,10 +141,7 @@ async function initialize() {
     $('save-design').disabled = state.designs.length === 3;
   }
   function renderFinal() {
-    const target = $('final-comparison');
-    target.replaceChildren(textNode('h3', '처음 예측'), textNode('p', `배치: ${state.answers['first-placement'] || '기록 없음'}\n음성 해석: ${state.answers['first-negative'] || '기록 없음'}`, 'pcr-record-text'));
-    target.append(...state.designs.map(d => designSummary(d)));
-    target.append(textNode('h3', '관찰과 판단의 출처'), textNode('p', `내부 계산을 본 뒤의 판단: ${state.answers['candidate-judgment'] || '기록 없음'}\n수업용 가상 자료 해석: ${Object.entries(state.answers).filter(([key, value]) => /^evidence-case-\d-interpretation$/.test(key) && value).map(([key, value]) => `상황 ${key.split('-')[2]}: ${value}`).join('\n') || state.answers['evidence-cases'] || '기록 없음'}\n학생이 기록한 외부 검색: ${state.externalSearch.status === 'unperformed' ? '외부 검토 미실시' : SEARCH_STATUS[state.externalSearch.status]}\n외부 후보 비교: ${state.externalSearch.status !== 'unperformed' && comparisonRecorded(state.externalSearch) ? state.externalSearch.selectionReason || '두 후보 기록 / 선택 근거 미기록' : '후보 비교를 기록하지 않음'}`, 'pcr-record-text'));
+    finalReviewView?.render();
   }
   on('export-record', () => {
     state.updatedAt = new Date().toISOString();
@@ -173,9 +176,10 @@ async function initialize() {
     intro.preparePrint(printBlank, textNode);
     evidence.preparePrint();
     external.preparePrint(printBlank);
+    finalReviewView.preparePrint(printBlank);
   }
   window.addEventListener('beforeprint', preparePrint);
-  window.addEventListener('afterprint', () => { printBlank = false; delete root.dataset.printBlank; root.querySelectorAll('.pcr-print-value').forEach(el => el.remove()); evidence.finishPrint(); });
+  window.addEventListener('afterprint', () => { printBlank = false; delete root.dataset.printBlank; root.querySelectorAll('.pcr-print-value').forEach(el => el.remove()); evidence.finishPrint(); finalReviewView.finishPrint(); });
   for (const [id, blank] of [['print-filled', false], ['print-blank', true]]) on(id, () => { printBlank = blank; preparePrint(); window.print(); });
   const menus = [...root.querySelectorAll('.pcr-menu')];
   for (const menu of menus) {

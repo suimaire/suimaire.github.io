@@ -756,17 +756,47 @@ page_views: false
     </section>
     <section id="activity-07" class="pcr-activity">
       <p class="pcr-section-label">07 / 5분</p><h2>최종 설계 기록</h2>
-      <p>처음의 설명, 설계 변화, 계산과 실험 증거를 비교하여 최종 실험 노트를 완성하세요.</p>
-      <div id="final-comparison" class="pcr-computed"></div>
-      <label for="final-question">연구 질문</label><textarea id="final-question" data-answer rows="2"></textarea>
-      <div class="pcr-fields"><div><label for="final-f">최종 F / 5′→3′</label><textarea id="final-f" data-answer class="pcr-sequence" rows="2"></textarea></div><div><label for="final-r">최종 R / 5′→3′</label><textarea id="final-r" data-answer class="pcr-sequence" rows="2"></textarea></div></div>
-      <label for="final-products">예상 산물과 그 출처 / 내부 계산 또는 외부 도구 기록</label><textarea id="final-products" data-answer rows="3"></textarea>
-      <label for="final-evidence">관찰 근거와 최종 선택 이유</label><textarea id="final-evidence" data-answer rows="4"></textarea>
-      <label for="final-controls">대조군 계획</label><textarea id="final-controls" data-answer rows="3"></textarea>
-      <label for="final-unknown">확인하지 못한 사항</label><textarea id="final-unknown" data-answer rows="3"></textarea>
-      <label for="final-revision">처음 설명에서 수정한 점</label><textarea id="final-revision" data-answer rows="4"></textarea>
-      <label for="final-limits">이 계산만으로 실제 실험 성공과 유전체 특이성을 보장할 수 없는 이유는 무엇인가?</label><textarea id="final-limits" data-answer rows="4"></textarea>
-      <details class="pcr-explanation"><summary>최종 검토 안내 열기</summary><p>계산의 범위, 외부 검색의 범위와 실제 실험 증거를 구별했는지 읽어 보세요. 점수를 매기는 화면이 아니라 다른 사람이 판단 과정을 이해할 수 있는 기록을 만드는 활동입니다.</p></details>
+      <p>처음 예측부터 외부 검토까지의 기록을 비교하고 최종 실험 계획을 정리합니다.</p>
+      <noscript><p>JavaScript를 켜면 이전 활동의 기록을 자동으로 조립합니다. 종이에서는 이전 활동을 참고하여 아래 연구 질문, 선택 근거, 대조군 계획과 한계 판단을 작성하세요.</p></noscript>
+      <div id="final-editor">
+        <ol class="final-flow" aria-label="연구 노트의 흐름"><li>처음 예측</li><li>실제 primer 설계</li><li>설계 검토</li><li>실험 증거 해석</li><li>외부 database 검토</li><li>최종 판단</li></ol>
+        <div id="final-overview">
+          <h3>처음 예측과 최종 설계</h3>
+          <p class="pcr-small">00의 대략적 위치에서 실제 결합 서열과 좌표로, 설계의 정밀도가 어떻게 달라졌는지 비교합니다.</p>
+          <div id="final-comparison" class="final-comparison"></div>
+        </div>
+        <section id="final-history" class="final-block"><h3>설계 변화</h3><p class="pcr-small">03에서 저장한 순서와 당시 기록을 그대로 읽습니다.</p><div id="final-history-content"></div><a href="#activity-03">03 설계 다시 보기</a></section>
+        <section id="final-selection" class="final-block">
+          <h3>최종 설계 선택</h3>
+          <fieldset aria-describedby="final-selection-note"><legend>최종 연구 노트에 사용할 primer pair</legend><div id="final-design-options"></div></fieldset>
+          <p id="final-selection-note">03에서 유효한 primer pair를 설계한 후 직접 선택하세요.</p>
+          <p id="final-snapshot-note" class="pcr-small"></p>
+          <button type="button" id="final-refresh-draft" hidden>변경된 현재 draft로 최종 선택 갱신</button>
+          <p id="final-selection-status" role="status" aria-live="polite"></p>
+        </section>
+        <section id="final-primer" class="final-block"><h3>최종 primer pair</h3><div id="final-primer-content"></div><h4>내부 완전 일치 모형의 예상 산물</h4><div id="final-products-content"></div><p class="pcr-small">제공된 A/B/C 서열 안의 계산입니다. 실제 증폭이나 유전체 전체의 특이성을 뜻하지 않습니다.</p></section>
+        <div class="final-block">
+          <h3>연구 질문과 선택 근거</h3>
+          <label for="final-question">이 primer pair를 이용해 무엇을 구별하거나 확인하려는가?</label><textarea id="final-question" data-final="researchQuestion" rows="3"></textarea>
+          <label for="final-evidence">어떤 관찰과 계산을 근거로 이 primer pair를 최종 선택했는가?</label><textarea id="final-evidence" data-final="finalRationale" rows="4" aria-describedby="final-rationale-help"></textarea>
+          <p id="final-rationale-help" class="pcr-small">A/B product 차이, binding 위치, GC, 간이 Tm, 3′ 말단, 상보성, 내부 specificity, 외부 검색 기록 등에서 실제 사용한 근거를 문장으로 설명하세요.</p>
+          <label for="final-revision">00에서의 처음 예측과 비교해 무엇을 바꾸었으며 왜 바꾸었는가?</label><textarea id="final-revision" data-final="revisionReflection" rows="4"></textarea>
+        </div>
+        <section id="final-review" class="final-block"><h3>설계 검토 / 활동 04</h3><div id="final-review-content"></div></section>
+        <section id="final-experimental" class="final-block"><h3>실험 증거 해석 / 활동 05</h3><div id="final-evidence-content"></div></section>
+        <section id="final-external" class="final-block"><h3>외부 database 검토 / 활동 06</h3><div id="final-external-content"></div><a href="#activity-06">06 외부 검색 기록 보기</a></section>
+        <section id="final-controls" class="final-block"><h3>대조군 계획</h3><p>실제 PCR을 한다면 어떤 대조군을 둘 것인가?</p>
+          <label for="final-control-positive">Positive control</label><textarea id="final-control-positive" data-final="controls.positive" rows="2"></textarea>
+          <label for="final-control-negative">NTC 또는 negative control</label><textarea id="final-control-negative" data-final="controls.negative" rows="2"></textarea>
+          <label for="final-control-additional">필요하다면 추가 control</label><textarea id="final-control-additional" data-final="controls.additional" rows="2"></textarea>
+          <label for="final-control-limit">각 대조군이 예상대로 나오지 않았을 때 어떤 결론을 내릴 수 없게 되는가?</label><textarea id="final-control-limit" data-final="controls.interpretationLimit" rows="3"></textarea>
+        </section>
+        <section id="final-limitations" class="final-block"><h3>아직 확인하지 못한 것</h3><p class="pcr-small">아래는 학습지에서 확인할 수 있는 수행 또는 기록 상태입니다. 설계의 적합성에 관한 학생의 판단과 구분합니다.</p><div id="final-limitations-content"></div><label for="final-unknown">기타 확인할 것</label><textarea id="final-unknown" data-final="otherLimitations" rows="2"></textarea></section>
+        <section id="final-assessment-block" class="final-block"><h3>현재 근거의 범위에서의 판단</h3><label for="final-assessment">현재 확보한 계산, 관찰, 외부 검색 기록의 범위에서 이 설계를 어떻게 평가할 수 있는가?</label><textarea id="final-assessment" data-final="finalAssessment" rows="4" aria-describedby="final-assessment-help"></textarea><p id="final-assessment-help" class="pcr-small">실제 PCR 성공, 실제 amplicon identity, 검색하지 않은 sequence에 대한 specificity는 별도의 검증이 필요합니다.</p></section>
+        <details id="final-legacy" hidden><summary>이전 07 기록</summary><p class="pcr-small">이전 버전의 원문을 보존했습니다. 연구 질문, 선택 근거, 수정 이유와 기타 미확인 사항은 새 작성란에도 옮겼습니다. 이전 F/R과 예상 산물은 현재 선택을 덮어쓰지 않습니다.</p><div id="final-legacy-content"></div></details>
+      </div>
+      <button type="button" id="final-notebook-toggle" aria-expanded="false" aria-controls="final-notebook">최종 연구 노트 보기</button>
+      <article id="final-notebook" aria-label="읽기 전용 최종 연구 노트" hidden></article>
     </section>
     <details id="rna-extension" class="pcr-activity pcr-extension-activity"><summary>선택 확장 / RNA 발현을 보려면? / 약 15분</summary>
       <p>RNA에서 역전사로 만든 cDNA와 gDNA는 주형의 구성이 다릅니다. 아래는 길이와 좌표를 생략한 개념도입니다.</p>

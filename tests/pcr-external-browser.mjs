@@ -5,7 +5,7 @@ import { chromium, webkit } from './.pcr-tools/node_modules/playwright/index.mjs
 import { emptyRecord, STORAGE_KEY } from '../assets/js/pcr-records.mjs';
 const fixture = JSON.parse(await readFile(new URL('../assets/data/pcr-primer-fixture.json', import.meta.url)));
 const url = process.env.PCR_TEST_URL || 'http://127.0.0.1:4173/bioinformatics/pcr-primer-design/';
-const output = resolve('verification.local/pcr-primer-design/phase5'); await mkdir(output, { recursive: true });
+const output = resolve(process.env.PCR_VERIFICATION_ROOT || 'verification.local/pcr-primer-design', 'phase5'); await mkdir(output, { recursive: true });
 let checks = 0; const results = [], screenshots = [], accessibility = [];
 const check = (value, label) => { assert.ok(value, label); checks++; };
 for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
@@ -41,7 +41,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
     check((await text('#ext-no-primer')).includes('유효한 primer pair'), 'empty design guidance');
     check(await page.locator('#ext-after-search').isHidden(), 'no result form at entry');
     check(!await page.locator('#ext-plan').evaluate(el=>el.open), 'plan is initially folded');
-    check((await text('#final-comparison')).includes('외부 검토 미실시'), '07 reads explicit unperformed state');
+    check((await text('#final-external-content')).includes('외부 검토 미실시'), '07 reads explicit unperformed state');
     await page.locator('#ext-route-mine').focus(); await page.keyboard.press('ArrowRight');
     check(await page.locator('#ext-route-paper').getAttribute('aria-pressed')==='true', 'arrow selects route');
     check(await page.locator('#ext-route-paper').evaluate(el=>el===document.activeElement), 'arrow keeps visible focus');
@@ -149,7 +149,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
     await page.emulateMedia({media:'screen'}); await page.evaluate(()=>window.dispatchEvent(new Event('afterprint')));
     check((await saved()).externalSearch.wetLabReflection===exported.externalSearch.wetLabReflection,'blank print preserves record');
     await page.locator('#ext-unperformed').click(); check(await page.locator('#ext-after-search').isHidden(),'manual unperformed hides recorded evidence');
-    check((await text('#final-comparison')).includes('외부 검토 미실시'),'07 reads reverted status');
+    check((await text('#final-external-content')).includes('외부 검토 미실시'),'07 reads reverted status');
     await open('#print-menu'); await page.locator('#print-filled').click(); await page.emulateMedia({media:'print'});
     check((await text('#ext-print')).includes('외부 검색 미실시'),'unperformed print'); check(!(await text('#ext-print')).includes('60.2'),'unperformed result drafts not printed as evidence');
     if(engineName==='chromium'&&width===1440) await page.pdf({path:resolve(output,'phase5-unperformed.pdf'),format:'A4',printBackground:false});

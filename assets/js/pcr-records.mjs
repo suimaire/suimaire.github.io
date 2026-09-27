@@ -3,6 +3,7 @@ import { emptyWorkbench } from './pcr-design.mjs';
 import { emptyReview, REVIEW_LENSES } from './pcr-review.mjs';
 import { emptyEvidence, EVIDENCE_CASES, EVIDENCE_LANES } from './pcr-evidence.mjs';
 import { emptyExternalSearch, validateExternalSearch } from './pcr-external.mjs';
+import { emptyFinalReview, validateFinalReview } from './pcr-final.mjs';
 export const STORAGE_KEY = 'hafs:pcr-primer:v1';
 export const DATA_VERSION = 'hafs-pcr-synthetic-20260926-v1';
 export const MAX_IMPORT_BYTES = 1000000;
@@ -13,7 +14,7 @@ export function emptyIntroView() {
 }
 export function emptyRecord() {
   return { schemaVersion: 1, dataVersion: DATA_VERSION, updatedAt: new Date().toISOString(), answers: {}, draft: { forward: '', reverse: '' }, designs: [], cycle: 0,
-    initialPrimerPrediction: { reference: 'A', units: 'relative-percent', forward: null, reverse: null }, introView: emptyIntroView(), workbench: emptyWorkbench(), review: emptyReview(), evidence: emptyEvidence(), externalSearch: emptyExternalSearch() };
+    initialPrimerPrediction: { reference: 'A', units: 'relative-percent', forward: null, reverse: null }, introView: emptyIntroView(), workbench: emptyWorkbench(), review: emptyReview(), evidence: emptyEvidence(), externalSearch: emptyExternalSearch(), finalReview: emptyFinalReview() };
 }
 const object = x => x !== null && typeof x === 'object' && !Array.isArray(x);
 function string(x, max = 12000) { if (typeof x !== 'string' || x.length > max) throw new Error('기록 문자열의 형식 또는 길이가 올바르지 않습니다.'); return x; }
@@ -66,6 +67,7 @@ export function validateRecord(value, allowedKeys) {
       !EVIDENCE_CASES.every(c => evidence.selectedLanes[c.id] === null || Object.hasOwn(EVIDENCE_LANES, evidence.selectedLanes[c.id]))) throw new Error('가상 관찰 보기 설정이 올바르지 않습니다.');
   return { schemaVersion: 1, dataVersion: DATA_VERSION, updatedAt: date(value.updatedAt), answers,
     externalSearch: validateExternalSearch(value.externalSearch),
+    finalReview: validateFinalReview(value.finalReview, answers, bindingFields),
     draft: { forward: string(value.draft.forward, 1000), reverse: string(value.draft.reverse, 1000), ...bindingFields(value.draft.bindings) }, designs, cycle: value.cycle,
     workbench: { mode: workbench.mode, windowStart: workbench.windowStart, showPrediction: workbench.showPrediction },
     review: { lens: review.lens, designId: review.designId, stage: review.stage },

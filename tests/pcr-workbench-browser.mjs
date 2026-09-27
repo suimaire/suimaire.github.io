@@ -5,7 +5,7 @@ import { resolve } from 'node:path';
 import { chromium, webkit } from './.pcr-tools/node_modules/playwright/index.mjs';
 import { STORAGE_KEY } from '../assets/js/pcr-records.mjs';
 const url = process.env.PCR_TEST_URL || 'http://127.0.0.1:4173/bioinformatics/pcr-primer-design/';
-const output = resolve('verification.local/pcr-primer-design/phase2');
+const output = resolve(process.env.PCR_VERIFICATION_ROOT || 'verification.local/pcr-primer-design', 'phase2');
 await mkdir(output, { recursive: true });
 const fixture = JSON.parse(await readFile(new URL('../assets/data/pcr-primer-fixture.json', import.meta.url), 'utf8'));
 const evidence = [], results = [];
