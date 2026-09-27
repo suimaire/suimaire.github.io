@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "hafs-pcr-synthetic-20260926-v1",
+  "updatedAt": "2026-09-27T00:00:00.000Z",
+  "answers": {
+    "first-placement": "결실 양옆에 배치해 두 시료의 길이 차이를 비교한다.",
+    "cycle-selector": "두 primer가 합성 시작점을 정한다.",
+    "direction-reason": "중합효소가 3′ OH에서 연장한다.",
+    "design-deletion": "80 bp 결실 구간",
+    "design-change": "두 결합 위치가 산물 경계를 정한다.",
+    "review-length-reason": "길이와 GC만으로 판단할 수 없다.",
+    "candidate-negative": "결합 부위 결실과 표적 부재를 구별해야 한다.",
+    "candidate-prediction": "P1과 P2의\n배경 결합 비교",
+    "review-ab-reason": "A/B 길이는 같음\nC에서 더 검토",
+    "candidate-judgment": "C까지 비교하면 판단이 달라진다.",
+    "evidence-identity": "크기가 같아도 다른 서열일 수 있다.",
+    "evidence-controls": "대조군으로 시료 결과의 해석 범위를 정한다.",
+    "review-unresolved": "실제 PCR과 산물 정체를 확인해야 한다."
+  },
+  "externalSearch": {
+    "route": "mine",
+    "status": "unperformed",
+    "searchRoute": "",
+    "paper": {
+      "source": "",
+      "species": "",
+      "purpose": "",
+      "forward": "",
+      "reverse": "",
+      "target": ""
+    },
+    "design": {
+      "type": "accession",
+      "target": "",
+      "organism": "",
+      "purpose": "일반 PCR",
+      "min": "",
+      "max": ""
+    },
+    "plan": {
+      "purpose": "",
+      "organism": "",
+      "target": "",
+      "database": "",
+      "notes": ""
+    },
+    "conditions": {
+      "date": "",
+      "organism": "",
+      "database": "",
+      "target": "",
+      "forward": "",
+      "reverse": "",
+      "product": "",
+      "specificity": "",
+      "other": ""
+    },
+    "sourcePrimer": {
+      "origin": "",
+      "forward": "",
+      "reverse": ""
+    },
+    "candidates": [
+      {
+        "forward": "",
+        "reverse": "",
+        "product": "",
+        "tmF": "",
+        "tmR": "",
+        "unintended": "",
+        "observations": "",
+        "other": ""
+      }
+    ],
+    "selectedCandidate": "",
+    "selectionReason": "",
+    "claimReflection": "",
+    "wetLabReflection": ""
+  },
+  "finalReview": {
+    "selectedDesignSource": "design-1",
+    "selectedAt": "2026-09-27T00:00:00.000Z",
+    "primerSnapshot": {
+      "forward": "AGTCGATGCTACGTTGACCA",
+      "reverse": "TTCAGGCTACGATCGTACGA",
+      "bindings": {
+        "F": {
+          "start": "41",
+          "end": "60",
+          "direction": "right"
+        },
+        "R": {
+          "start": "281",
+          "end": "300",
+          "direction": "left"
+        }
+      }
+    },
+    "researchQuestion": "80 bp 결실이 있는 두 시료를 구별할 수 있는가?",
+    "finalRationale": "A 260 bp와 B 180 bp를 예상하며 배경 C에서는 산물이 예측되지 않았다.",
+    "revisionReflection": "처음의 대략적 위치를 실제 서열과 방향으로 구체화했다.",
+    "controls": {
+      "positive": "표적을 포함하고 증폭이 확인된 주형",
+      "negative": "주형 대신 물을 넣은 NTC",
+      "additional": "필요하면 추출 대조군",
+      "interpretationLimit": "Positive control 실패 시 시료 음성을 표적 부재로 해석할 수 없다."
+    },
+    "otherLimitations": "시료 추출 상태와 반응 억제 가능성",
+    "finalAssessment": "제공된 서열 안에서 구별할 후보이며 실제 PCR과 산물의 정체는 별도로 확인해야 한다.",
+    "notebookExpanded": false
+  },
+  "draft": {
+    "forward": "AGTCGATGCTACGTTGACCA",
+    "reverse": "TTCAGGCTACGATCGTACGA"
+  },
+  "designs": [
+    {
+      "id": 1,
+      "createdAt": "2026-09-27T00:00:00.000Z",
+      "forward": "AGTCGATGCTACGTTGACCA",
+      "reverse": "TTCAGGCTACGATCGTACGA",
+      "prediction": "A와 B에 길이 차이가 날 것이다.",
+      "reason": "결실 양옆에 결합하는 첫 설계",
+      "unresolved": "C 이외의 서열과 실제 실험 조건"
+    }
+  ],
+  "cycle": 0,
+  "workbench": {
+    "mode": "F",
+    "windowStart": 1,
+    "showPrediction": false
+  },
+  "review": {
+    "lens": "length-gc",
+    "designId": null,
+    "stage": 0
+  },
+  "evidence": {
+    "activeCase": "case-1",
+    "selectedLanes": {
+      "case-1": null,
+      "case-2": null,
+      "case-3": null,
+      "case-4": null
+    }
+  },
+  "initialPrimerPrediction": {
+    "reference": "A",
+    "units": "relative-percent",
+    "forward": 15,
+    "reverse": 80
+  },
+  "introView": {
+    "stage": "mixture",
+    "comparisonCycle": 1,
+    "flipped": false,
+    "arrangement": "inward",
+    "complementConfirmed": false,
+    "reverseShown": false
+  }
+}

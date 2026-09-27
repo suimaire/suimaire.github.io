@@ -15,6 +15,7 @@ exclude:
   - node_modules/
   - vendor/
   - tests/
+  - verification.local/
 
 just_the_docs:
   heading_numbers: false

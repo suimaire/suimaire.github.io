@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "hafs-pcr-synthetic-20260926-v1",
+  "updatedAt": "2026-09-26T19:19:59.889Z",
+  "answers": {
+    "review-length-choice": "no",
+    "review-length-reason": "조성이 같아도 결합 위치와 상보 구간은 다를 수 있다.",
+    "review-end-observation": "마지막 5 nt의 염기 배열을 비교했다.",
+    "candidate-prediction": "P1과 P2의 차이를 서열과 산물에서 찾아본다.",
+    "review-ab-reason": "A와 B의 길이만으로는 P1과 P2를 구별하기 어렵다.",
+    "candidate-judgment": "C에서 추가 산물이 예측되어 비교 범위를 넓혀야 함을 알았다.",
+    "candidate-negative": "결합 부위가 결실되었는지 먼저 구분해야 한다.",
+    "review-unresolved": "실제 반응 조건과 더 넓은 서열 데이터베이스에서의 결합을 확인한다."
+  },
+  "draft": {
+    "forward": "TAGGAGGCTGCAAGCCACGC",
+    "reverse": "TTCAGGCTACGATCGTACGA",
+    "bindings": {
+      "F": {
+        "start": "121",
+        "end": "140",
+        "direction": "right"
+      },
+      "R": {
+        "start": "281",
+        "end": "300",
+        "direction": "left"
+      }
+    }
+  },
+  "designs": [
+    {
+      "id": 1,
+      "createdAt": "2026-09-26T19:19:57.924Z",
+      "forward": "AGTCGATGCTACGTTGACCA",
+      "reverse": "TTCAGGCTACGATCGTACGA",
+      "prediction": "",
+      "reason": "",
+      "unresolved": "",
+      "bindings": {
+        "F": {
+          "start": "41",
+          "end": "60",
+          "direction": "right"
+        },
+        "R": {
+          "start": "281",
+          "end": "300",
+          "direction": "left"
+        }
+      }
+    }
+  ],
+  "cycle": 0,
+  "workbench": {
+    "mode": "F",
+    "windowStart": 116,
+    "showPrediction": false
+  },
+  "review": {
+    "lens": "off-target",
+    "designId": 1,
+    "stage": 2
+  },
+  "initialPrimerPrediction": {
+    "reference": "A",
+    "units": "relative-percent",
+    "forward": null,
+    "reverse": null
+  },
+  "introView": {
+    "stage": "mixture",
+    "comparisonCycle": 1,
+    "flipped": false,
+    "arrangement": "inward",
+    "complementConfirmed": false,
+    "reverseShown": false
+  }
+}

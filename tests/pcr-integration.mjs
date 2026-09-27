@@ -1,0 +1,43 @@
+// Run against the real Jekyll output, served on port 4174.
+import assert from 'node:assert/strict';
+import { chromium } from './.pcr-tools/node_modules/playwright/index.mjs';
+import { resolve } from 'node:path';
+const base = process.env.PCR_SITE_URL || 'http://127.0.0.1:4174';
+const browser = await chromium.launch({ headless: true });
+const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+await page.goto(base + '/');
+const heading = page.locator('#bioinformatics h3').filter({ hasText: 'PCR과 프라이머 디자인' });
+assert.equal(await heading.count(), 1); assert.equal((await heading.innerText()).replace(/\s+/g, ' '), '1.3.2 PCR과 프라이머 디자인');
+assert.equal(await heading.locator('.heading-number').count(), 1);
+assert.equal((await page.locator('#bioinformatics h3').first().innerText()).replace(/\s+/g, ' '), '1.3.1 생물정보학 기초');
+await page.locator('#bioinformatics').scrollIntoViewIfNeeded();
+await page.screenshot({ path: resolve('tests/.pcr-output/portal-integration.png') });
+await heading.locator('a[href="/bioinformatics/pcr-primer-design/"]').click(); await page.waitForSelector('#pcr-worksheet[data-ready=true]');
+assert.equal(new URL(page.url()).pathname, '/bioinformatics/pcr-primer-design/');
+assert.equal((await page.reload()).status(), 200);
+await page.waitForSelector('#pcr-worksheet[data-ready=true]');
+await page.locator('#sequence-details').scrollIntoViewIfNeeded();
+await page.waitForSelector('[data-base="60"]');
+await page.locator('[data-base="41"]').scrollIntoViewIfNeeded();
+const from = await page.locator('[data-base="41"]').boundingBox(), to = await page.locator('[data-base="60"]').boundingBox();
+await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
+await page.mouse.down(); await page.mouse.move(to.x + to.width / 2, to.y + to.height / 2, { steps: 10 }); await page.mouse.up();
+assert.equal(await page.locator('#range-start').inputValue(), '41'); assert.equal(await page.locator('#range-end').inputValue(), '60');
+await page.goto(base + '/bioinformatics/');
+for (let day = 1; day <= 5; day++) {
+  const href = `/lectures/day${day}.html`;
+  assert.equal(await page.locator(`.lesson-list a[href="${href}"]`).count(), 1);
+  assert.equal((await page.request.get(base + href)).status(), 200);
+}
+assert.equal((await page.request.get(base + '/bioinformatics/pcr-primer-design/index.html')).status(), 200);
+const offline = await browser.newPage();
+await offline.route('**/pcr-primer-fixture.json', route => route.abort());
+await offline.goto(base + '/bioinformatics/pcr-primer-design/');
+await offline.waitForFunction(() => document.querySelector('#analysis-status').textContent.includes('로딩 실패'));
+await offline.locator('#first-placement').fill('자료 로딩 실패 시에도 답안은 보존');
+assert.match(await offline.locator('#save-status').innerText(), /자동 저장/);
+await offline.locator('#record-menu > summary').click();
+const download = offline.waitForEvent('download'); await offline.locator('#export-record').click(); await download;
+assert.match(await offline.locator('#activity-07').innerText(), /최종 설계 기록/);
+await browser.close();
+console.log('PASS Jekyll integration: portal numbering, direct URL, refresh, mouse drag, Day 1-5, fixture failure fallback');

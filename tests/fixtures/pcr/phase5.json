@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "hafs-pcr-synthetic-20260926-v1",
+  "updatedAt": "2026-09-26T19:24:19.462Z",
+  "answers": {},
+  "externalSearch": {
+    "route": "new",
+    "status": "recorded",
+    "searchRoute": "new",
+    "paper": {
+      "source": "수업 검토 예시 / 문헌 메모",
+      "species": "Homo sapiens",
+      "purpose": "보고된 pair 재검토",
+      "forward": "ACGTACGTACGTACGTACGT",
+      "reverse": "TGCATGCATGCATGCATGCA",
+      "target": "NM_recorded_example.1"
+    },
+    "design": {
+      "type": "fasta",
+      "target": ">classroom_target\nACGTACGTACGTACGT",
+      "organism": "Homo sapiens",
+      "purpose": "발현 분석",
+      "min": "120",
+      "max": "250"
+    },
+    "plan": {
+      "purpose": "같은 조건에서 두 후보의 비표적 산물 보고 비교",
+      "organism": "Homo sapiens",
+      "target": "교사가 지정한 target accession",
+      "database": "RefSeq RNA",
+      "notes": "전사체 범위를 먼저 살핀다. 다른 검색 범위는 별도로 검토한다."
+    },
+    "conditions": {
+      "date": "2026-09-27",
+      "organism": "Homo sapiens",
+      "database": "RefSeq RNA",
+      "target": "교사가 지정한 target accession",
+      "forward": "",
+      "reverse": "",
+      "product": "120–250 bp",
+      "specificity": "検索時の mismatch 조건을 기록 / 수업용 입력 예시",
+      "other": "UI 검증용 예시 / 실제 외부 검색 결과 아님"
+    },
+    "sourcePrimer": {
+      "origin": "새로운 primer 후보 설계",
+      "forward": "",
+      "reverse": ""
+    },
+    "candidates": [
+      {
+        "forward": "ACGTACGTACGTACGTACGT",
+        "reverse": "TGCATGCATGCATGCATGCA",
+        "product": "180",
+        "tmF": "60.2",
+        "tmR": "60.8",
+        "unintended": "none",
+        "observations": "",
+        "other": "target 내부 / 수업용 기록 예시"
+      },
+      {
+        "forward": "ACGTACGTACGTACGTACGA",
+        "reverse": "TGCATGCATGCATGCATGCT",
+        "product": "210",
+        "tmF": "61.0",
+        "tmR": "62.4",
+        "unintended": "reported",
+        "observations": "비표적 transcript 예시 / accession은 실제 결과에서 기록",
+        "other": "다른 위치의 pair"
+      }
+    ],
+    "selectedCandidate": "A",
+    "selectionReason": "A와 B의 product size와 보고된 비표적 산물을 비교했다. 이 선택은 기록한 검색 범위에 한정한다.",
+    "claimReflection": "기록한 날짜, 생물종, database와 설정 범위에서만 말할 수 있다.",
+    "wetLabReflection": "실제 증폭 효율과 band의 정체는 실험으로 더 살펴야 한다."
+  },
+  "draft": {
+    "forward": "AC?",
+    "reverse": "TTCAGGCTACGATCGTACGA",
+    "bindings": {
+      "F": null,
+      "R": {
+        "start": "281",
+        "end": "300",
+        "direction": "left"
+      }
+    }
+  },
+  "designs": [
+    {
+      "id": 1,
+      "createdAt": "2026-09-26T19:24:15.879Z",
+      "forward": "AGTCGATGCTACGTTGACCA",
+      "reverse": "TTCAGGCTACGATCGTACGA",
+      "prediction": "",
+      "reason": "",
+      "unresolved": "",
+      "bindings": {
+        "F": {
+          "start": "41",
+          "end": "60",
+          "direction": "right"
+        },
+        "R": {
+          "start": "281",
+          "end": "300",
+          "direction": "left"
+        }
+      }
+    }
+  ],
+  "cycle": 0,
+  "workbench": {
+    "mode": "R",
+    "windowStart": 276,
+    "showPrediction": false
+  },
+  "review": {
+    "lens": "length-gc",
+    "designId": 1,
+    "stage": 0
+  },
+  "evidence": {
+    "activeCase": "case-1",
+    "selectedLanes": {
+      "case-1": null,
+      "case-2": null,
+      "case-3": null,
+      "case-4": null
+    }
+  },
+  "initialPrimerPrediction": {
+    "reference": "A",
+    "units": "relative-percent",
+    "forward": null,
+    "reverse": null
+  },
+  "introView": {
+    "stage": "mixture",
+    "comparisonCycle": 1,
+    "flipped": false,
+    "arrangement": "inward",
+    "complementConfirmed": false,
+    "reverseShown": false
+  }
+}

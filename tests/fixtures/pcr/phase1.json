@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "hafs-pcr-synthetic-20260926-v1",
+  "updatedAt": "2026-09-27T00:00:00.000Z",
+  "answers": {
+    "first-placement": "결실 양옆에 배치해 두 시료의 길이 차이를 비교한다.",
+    "cycle-selector": "두 primer가 합성 시작점을 정한다.",
+    "direction-reason": "중합효소가 3′ OH에서 연장한다.",
+    "design-deletion": "80 bp 결실 구간",
+    "design-change": "두 결합 위치가 산물 경계를 정한다."
+  },
+  "draft": {
+    "forward": "AGTCGATGCTACGTTGACCA",
+    "reverse": "TTCAGGCTACGATCGTACGA"
+  },
+  "designs": [
+    {
+      "id": 1,
+      "createdAt": "2026-09-27T00:00:00.000Z",
+      "forward": "AGTCGATGCTACGTTGACCA",
+      "reverse": "TTCAGGCTACGATCGTACGA",
+      "prediction": "A와 B에 길이 차이가 날 것이다.",
+      "reason": "결실 양옆에 결합하는 첫 설계",
+      "unresolved": "C 이외의 서열과 실제 실험 조건"
+    }
+  ],
+  "cycle": 0,
+  "initialPrimerPrediction": {
+    "reference": "A",
+    "units": "relative-percent",
+    "forward": 15,
+    "reverse": 80
+  },
+  "introView": {
+    "stage": "mixture",
+    "comparisonCycle": 1,
+    "flipped": false,
+    "arrangement": "inward",
+    "complementConfirmed": false,
+    "reverseShown": false
+  }
+}
