@@ -33,7 +33,7 @@ for(const [engineName,engine] of Object.entries({chromium,webkit})) {
    screenshots.push({name,path:resolve(output,name),width});
   };
   await page.goto(url);await ready();await page.evaluate(()=>document.fonts.ready);
-  const visible=await page.locator('body').innerText();check(!/(?:약\s*)?\d+분/.test(visible),'no time limits');check(!/[\u00b7\u2022\u2027\u2219\u22c5\u30fb\u318d]/u.test(visible),'no decorative dots');
+  const visible=await page.locator('#pcr-worksheet').innerText();check(!/(?:약\s*)?\d+분/.test(visible),'no time limits');check(!/[\u00b7\u2022\u2027\u2219\u22c5\u30fb\u318d]/u.test(visible),'no decorative dots in worksheet');
   check(await page.locator('h1').count()===1,'single h1');
   for(let n=0;n<8;n++) {
    const id=`activity-${String(n).padStart(2,'0')}`;

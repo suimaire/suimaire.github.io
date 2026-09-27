@@ -1,0 +1,49 @@
+/* Shared identity styles for the theme footer and standalone worksheets. */
+.site-credit__name {
+  color: #0d5751;
+  font-size: 13px !important;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.site-credit__line {
+  color: #687470;
+  font-size: 12px !important;
+  line-height: 1.5;
+}
+
+/* Match the portal's typography, thin rule and quiet teal accent. */
+.pcr-site-footer {
+  border-top: 1px solid #e5e3dd;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px 32px;
+  width: calc(100% - 80px);
+  max-width: 1180px;
+  margin: 0 auto 40px;
+  padding-top: 24px;
+  font-family: "NanumSquareNeo", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+}
+
+.pcr-site-footer p { margin: 0; }
+.pcr-site-footer .site-credit { max-width: 310px; overflow-wrap: anywhere; }
+.pcr-site-footer .site-credit__line { margin-top: 4px; }
+.pcr-site-footer .page-views { --page-views-color: #687470; text-align: right; }
+.pcr-site-footer .page-views__today,
+.pcr-site-footer .page-views__total { display: block; }
+.pcr-site-footer .page-views__sep { display: none; }
+
+@media (max-width: 900px) {
+  .pcr-site-footer { width: calc(100% - 48px); }
+}
+
+@media (max-width: 600px) {
+  .pcr-site-footer { flex-direction: column; gap: 16px; }
+  .pcr-site-footer .page-views { text-align: left; }
+}
+
+@media (max-width: 520px) {
+  .pcr-site-footer { width: calc(100% - 36px); }
+}

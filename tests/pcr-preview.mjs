@@ -9,7 +9,15 @@ const relative = source => source.replace(/\{\{\s*'([^']+)'\s*\|\s*relative_url\
 export async function previewHtml() {
   const page = (await readFile(resolve(root, 'bioinformatics/pcr-primer-design.html'), 'utf8')).replace(/^---[\s\S]*?---\s*/, '');
   const layout = await readFile(resolve(root, '_layouts/pcr-worksheet.html'), 'utf8');
-  return relative(layout.replace('{{ content }}', page).replaceAll('{{ page.title | escape }}', 'PCR과 프라이머 디자인').replaceAll('{{ site.title | escape }}', 'HAFS Biology Lab').replaceAll('{{ page.description | escape }}', 'PCR 학습지 로컬 미리보기').replaceAll('{{ page.url | absolute_url }}', `http://127.0.0.1:4173${pagePath}`));
+  const config = await readFile(resolve(root, '_config.yml'), 'utf8');
+  const escape = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+  const setting = key => escape(config.match(new RegExp(`^${key}: "([^"]*)"`, 'm'))?.[1] || '');
+  // Only this worksheet's known footer conditions; portal/search QA uses real Jekyll.
+  const footer = (await readFile(resolve(root, '_includes/footer_custom.html'), 'utf8'))
+    .replace(/\{%[-]?\s*comment\s*[-]?%\}[\s\S]*?\{%[-]?\s*endcomment\s*[-]?%\}/g, '')
+    .replace(/\{%[-]?\s*if site.footer_content\s*[-]?%\}[\s\S]*?\{%[-]?\s*endif\s*[-]?%\}/g, '')
+    .replace(/\{%[-]?\s*(?:unless [^%]*?|endunless)\s*[-]?%\}/g, '');
+  return relative(layout.replace('{{ content }}', page).replace('{% include footer_custom.html %}', footer).replaceAll('{{ page.title | escape }}', 'PCR과 프라이머 디자인').replaceAll('{{ site.title | escape }}', setting('title')).replaceAll('{{ site.author_credit | escape }}', setting('author_credit')).replaceAll('{{ page.description | escape }}', 'PCR 학습지 로컬 미리보기').replaceAll('{{ page.url | absolute_url }}', `http://127.0.0.1:4173${pagePath}`));
 }
 export function startPreview(port = 4173) {
   const server = createServer(async (req, res) => {

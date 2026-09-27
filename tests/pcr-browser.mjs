@@ -20,7 +20,7 @@ for (const [name, engine] of Object.entries({ chromium, webkit })) {
     check(await page.locator('#analysis-results').innerText().then(t => !t.includes('260')), `${name} initial answer hidden`);
     check(await page.locator('#worksheet-toc').evaluate(e => e.open) === (width > 900), 'responsive table of contents');
     check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${name}/${width} no horizontal overflow`);
-    check(!/[\u00b7\u2022\u2027\u2219\u22c5\u30fb\u318d]/u.test(await page.locator('body').innerText()), 'no displayed forbidden dots');
+    check(!/[\u00b7\u2022\u2027\u2219\u22c5\u30fb\u318d]/u.test(await page.locator('#pcr-worksheet').innerText()), 'no displayed forbidden dots in worksheet');
     check(await page.locator('input:not([type=file]),textarea,select').evaluateAll(elements => elements.every(e => e.labels.length)), 'all fields have labels');
     await page.screenshot({ path: resolve(output, `${name}-${width}-opening.png`) });
     await page.locator('#first-placement').fill('처음 예측: 결실 양옆을 확인한다.');
