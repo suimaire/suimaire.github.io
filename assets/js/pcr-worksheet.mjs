@@ -9,6 +9,7 @@ import { cloneBindings, inspectDesign } from './pcr-design.mjs';
 import { initializeExternal } from './pcr-external-view.mjs';
 import { LEGACY_FINAL } from './pcr-final.mjs';
 import { initializeFinalReview } from './pcr-final-view.mjs';
+import { initializeRna } from './pcr-rna-view.mjs';
 
 const root = document.querySelector('#pcr-worksheet');
 if (root) initialize().catch(error => {
@@ -51,6 +52,7 @@ async function initialize() {
     status('save-status', `이전 기록을 읽을 수 없습니다: ${error.message} 기존 저장값을 덮어쓰지 않습니다. 현재 작업은 기록 내보내기로 보관하세요.`, true);
   }
   const intro = initializeIntro(root, () => state, save);
+  const rna = initializeRna(root, () => state, save);
   finalReviewView = initializeFinalReview(root, () => state, () => fixture, save);
   const review = initializeReview(root, () => state, () => fixture, save);
   const evidence = initializeEvidence(root, () => state, () => fixture);
@@ -70,6 +72,7 @@ async function initialize() {
     $('primer-f').value = state.draft.forward; $('primer-r').value = state.draft.reverse;
     intro.render(); workbench.resetSelection(); invalidate(); renderDesigns(); renderFinal(); evidence.render(); external.render();
     finalReviewView.restore();
+    rna.render();
   }
   root.addEventListener('input', event => {
     const f = event.target;
@@ -189,10 +192,12 @@ async function initialize() {
     evidence.preparePrint();
     external.preparePrint(printBlank);
     finalReviewView.preparePrint(printBlank);
+    rna.preparePrint(printBlank);
   }
   window.addEventListener('beforeprint', preparePrint);
   window.addEventListener('afterprint', () => {
     printBlank = false; delete root.dataset.printBlank; root.querySelectorAll('.pcr-print-value').forEach(el => el.remove());
+    rna.finishPrint();
     for (const [details, open] of printDetails) details.open = open; printDetails.clear();
     evidence.finishPrint(); finalReviewView.finishPrint();
   });

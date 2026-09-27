@@ -492,8 +492,7 @@ page_views: false
       </div>
       <details id="ext-transfer-help"><summary>외부 도구에 무엇을 입력하나요?</summary><p>기존 pair는 Forward와 Reverse의 실제 5′→3′ 서열을 모두 입력합니다. 두 primer가 있으면 template 없이도 검색할 수 있습니다. Intended target을 알고 있다면 template/accession도 함께 제공하세요. Template와 두 primer를 모두 넣으면 새 pair 설계 대신 기존 pair의 특이성 검토를 수행합니다.</p><p>Pair만 넣은 검색에서는 보고된 서열 중 무엇을 intended target으로 볼지 직접 살펴야 합니다. Template를 함께 제공하면 intended target의 정체를 해석하는 맥락을 줄 수 있습니다. 새 후보 설계는 target/template를 준비하고 원하는 product size, organism, 데이터베이스와 특이성 검토을 확인합니다.</p>
       </details>
-      <details id="ext-rna-help"><summary>RNA 발현 분석이라면?</summary><p>현재 NCBI의 exon/intron 설정은 RefSeq mRNA template를 요구합니다. Exon-exon junction을 가로지르는 primer 또는 genomic DNA에서 intron을 사이에 두는 pair 설정을 목적에 맞게 검토하세요. 실제 gDNA 증폭 배제나 발현 정량을 이 설정만으로 확정하지 않습니다.</p>
-      </details>
+      <p id="ext-rna-help" class="pcr-small">RNA 발현 분석에서 exon/intron을 고려하려면 <a href="#rna-extension">RNA 확장 활동</a>을 참고하세요.</p>
       <p class="pcr-small">NCBI 화면 구성은 변경될 수 있습니다. 버튼 위치보다 입력 정보와 검색 범위를 기록하세요.</p>
       <div class="pcr-tools"><a id="ext-open" href="https://www.ncbi.nlm.nih.gov/tools/primer-blast/" target="_blank" rel="noopener noreferrer" aria-label="NCBI Primer-BLAST 열기 (새 탭)">NCBI Primer-BLAST 열기 ↗</a>
       </div><p class="pcr-small">준비한 정보를 직접 옮기고 NCBI에서 조건을 확인하세요. 이 링크는 정보를 전송하거나 검색을 제출하지 않습니다.</p>
@@ -800,12 +799,95 @@ page_views: false
       <article id="final-notebook" aria-label="읽기 전용 최종 연구 노트" hidden></article>
     </section>
     <details id="rna-extension" class="pcr-activity pcr-extension-activity"><summary>확장 활동 / RNA 발현을 보려면?</summary>
-      <p>RNA에서 역전사로 만든 상보 DNA(cDNA)와 유전체 DNA(gDNA)는 주형의 구성이 다릅니다. 아래는 길이와 좌표를 생략한 개념도입니다.</p>
-      <figure><svg viewBox="0 0 700 245" role="img" aria-labelledby="rna-title"><title id="rna-title">gDNA는 두 exon 사이에 intron이 있고 cDNA는 exon이 연결된다. Junction 프라이머와 intron 양옆의 프라이머 쌍 비교</title><text x="5" y="38">gDNA</text><rect x="100" y="15" width="160" height="40" class="pcr-outline"/><text x="144" y="42">exon 1</text><path d="M260 35H440" class="pcr-strand"/><text x="316" y="25">intron</text><rect x="440" y="15" width="160" height="40" class="pcr-outline"/><text x="483" y="42">exon 2</text><text x="5" y="133">cDNA</text><rect x="100" y="110" width="160" height="40" class="pcr-outline"/><rect x="260" y="110" width="160" height="40" class="pcr-outline"/><text x="145" y="137">exon 1</text><text x="305" y="137">exon 2</text><path d="M220 170H300" class="pcr-forward"/><text x="150" y="202">junction에 걸친 프라이머 →</text><text x="130" y="83">F →</text><text x="520" y="83">← R</text><text x="390" y="232">F/R: intron을 사이에 둔 쌍</text></svg></figure>
-      <p>Exon-exon junction에 걸친 프라이머는 gDNA와의 구별에 도움을 줄 수 있습니다. Intron을 사이에 둔 프라이머 쌍은 gDNA와 cDNA에서 다른 길이의 산물을 만들 수 있습니다. 어느 방식도 gDNA 증폭 가능성을 절대 0으로 보장하지 않습니다. 유사 유전자와 가공 위유전자도 검토 대상입니다.</p>
-      <p>RT(-) 대조군은 역전사 효소를 넣지 않은 대조입니다. 남아 있는 DNA의 영향을 살피는 데 사용합니다. qPCR에는 짧은 산물을 주로 쓰지만 실제 정량에는 증폭 효율 검증이 필요합니다. 융해 곡선의 단일 피크도 표적 산물의 정체를 보장하지 않습니다.</p>
-      <label for="rna-plan">RNA 발현을 보기 위해 설계와 대조군 계획을 어떻게 바꾸겠는가?</label><textarea id="rna-plan" data-answer rows="4"></textarea>
-      <details class="pcr-explanation"><summary>RNA 발현 설계에서 더 확인할 것은?</summary><p>검출하려는 전사체, exon 구조와 gDNA 잔존 가능성을 함께 검토하세요. 실제 정량 데이터가 없으므로 이 학습지는 Cq, 발현량이나 증폭 효율을 만들어 내지 않습니다.</p></details>
+      <header id="rna-overview">
+        <h2>RNA 발현을 PCR로 비교하려면<br>template와 primer design에서 무엇이 달라질까?</h2>
+        <p>RNA를 직접 읽는 것이 아니라 reverse transcription(역전사)으로 만든 cDNA(상보 DNA)를 PCR template로 사용하는 상황을 살펴봅니다.</p>
+        <p class="pcr-small">01의 PCR cycle, 02의 primer 방향, 03의 primer 위치를 RNA 분석 상황에 연결합니다. 아래 그림은 길이와 서열을 생략한 교육용 구조이며 실제 증폭 결과가 아닙니다.</p>
+      </header>
+      <div class="pcr-tools rna-navigation" role="group" aria-label="RNA 확장 활동 순서">
+        <button type="button" data-rna-section="flow" aria-controls="rna-flow">A / RNA → cDNA</button>
+        <button type="button" data-rna-section="genomic" aria-controls="rna-genomic">B / gDNA가 섞이면?</button>
+        <button type="button" data-rna-section="strategy" aria-controls="rna-strategy">C / primer 위치</button>
+        <button type="button" data-rna-section="control" aria-controls="rna-control">D / RT(-)</button>
+        <button type="button" data-rna-section="transcripts" aria-controls="rna-transcripts">E / transcript</button>
+        <button type="button" data-rna-section="reflection" aria-controls="rna-reflection">마무리 / 내 primer</button>
+      </div>
+      <section id="rna-flow" class="rna-panel" data-rna-panel="flow" aria-labelledby="rna-flow-title">
+        <h3 id="rna-flow-title">A. RNA에서 cDNA까지</h3>
+        <div class="rna-flow-comparison">
+          <div><h4>DNA PCR</h4><ol class="rna-flow-list"><li>DNA template</li><li>PCR</li><li>amplicon</li></ol></div>
+          <div><h4>RNA 발현 분석</h4><ol class="rna-flow-list"><li class="rna-molecule">RNA</li><li>reverse transcription</li><li>cDNA</li><li>PCR 또는 qPCR</li><li>amplicon</li></ol></div>
+        </div>
+        <p>일반적인 PCR 단계에서 사용하는 DNA polymerase로 RNA 발현을 분석하려면 먼저 reverse transcription을 통해 cDNA를 만드는 과정이 필요합니다.</p>
+        <div class="pcr-tools" role="group" aria-label="RNA에서 PCR까지 단계 선택">
+          <button type="button" data-rna-option="flowStep" data-value="rna">1 / RNA</button>
+          <button type="button" data-rna-option="flowStep" data-value="rt">2 / reverse transcription</button>
+          <button type="button" data-rna-option="flowStep" data-value="cdna">3 / cDNA</button>
+          <button type="button" data-rna-option="flowStep" data-value="pcr">4 / PCR</button>
+        </div>
+        <p id="rna-flow-description" class="pcr-notice" aria-live="polite"></p>
+        <label for="rna-template">RNA 발현 분석에서 PCR에 실제로 들어가는 template는 무엇인가?</label>
+        <select id="rna-template" data-rna-answer="template" aria-describedby="rna-template-feedback"><option value="">선택하세요</option><option value="rna">RNA</option><option value="cdna">cDNA</option><option value="protein">단백질</option><option value="dntp">dNTP</option></select>
+        <p id="rna-template-feedback" aria-live="polite" class="pcr-small"></p>
+        <details><summary>RT-PCR과 RT-qPCR이라는 이름</summary><p>RT-PCR의 RT는 reverse transcription입니다. RT-PCR 자체가 정량 PCR을 뜻하지는 않습니다. One-step RT-PCR에서는 reverse transcription과 PCR이 한 반응 workflow 안에서 이어질 수 있습니다.</p></details>
+      </section>
+      <section id="rna-genomic" class="rna-panel" data-rna-panel="genomic" aria-labelledby="rna-genomic-title">
+        <h3 id="rna-genomic-title">B. Genomic DNA가 섞여 있다면?</h3>
+        <p>RNA에서 만든 cDNA를 측정하려는데 시료에 genomic DNA(유전체 DNA, 이하 gDNA)가 함께 남아 있다면 어떤 문제가 생길까요?</p>
+        <div id="rna-structure-comparison"></div>
+        <p>Exon은 이 예의 mature RNA에 이어지는 구간, intron은 splicing으로 제거되는 사이 구간입니다. cDNA에는 splicing된 mature RNA의 exon 연결 구조가 반영됩니다.</p>
+        <p class="pcr-notice">RNA preparation에 DNA가 남을 가능성을 검토합니다. 같은 primer pair가 cDNA뿐 아니라 gDNA에도 결합하면, 관찰한 신호를 RNA에서 유래한 것으로만 해석하기 어려울 수 있습니다.</p>
+      </section>
+      <section id="rna-strategy" class="rna-panel" data-rna-panel="strategy" aria-labelledby="rna-strategy-title">
+        <h3 id="rna-strategy-title">C. Primer 위치 세 가지 비교</h3>
+        <p>03에서 바꾼 primer 위치를 이번에는 exon 구조에 맞춰 비교하세요. 두 template에서 결합 부위와 가능한 product가 어떻게 달라질까요?</p>
+        <div class="pcr-tools rna-strategies" role="group" aria-label="Primer 배치 선택">
+          <button type="button" data-rna-option="primerStrategy" data-value="same-exon">설계 A<span>같은 exon 내부</span></button>
+          <button type="button" data-rna-option="primerStrategy" data-value="intron-spanning">설계 B<span>서로 다른 exon</span></button>
+          <button type="button" data-rna-option="primerStrategy" data-value="junction">설계 C<span>exon-exon junction</span></button>
+        </div>
+        <div id="rna-intron-options" class="pcr-tools" role="group" aria-label="Intron 길이 예 선택" hidden><button type="button" data-rna-option="intronExample" data-value="short">짧은 intron 예</button><button type="button" data-rna-option="intronExample" data-value="long">긴 intron 예</button></div>
+        <div id="rna-junction-options" hidden>
+          <p>F를 exon 내부에서 exon-exon junction(두 exon의 연결 경계)으로 옮겨 보세요.</p>
+          <div class="pcr-tools" role="group" aria-label="F primer 직접 배치"><button type="button" data-rna-option="junctionPosition" data-value="exon">F를 Exon 1 내부에 놓기</button><button type="button" data-rna-option="junctionPosition" data-value="junction">F를 Exon 1–2 junction에 놓기</button></div>
+          <p class="pcr-small">Junction 배치에서는 마주보는 R을 Exon 2에 둡니다. F 화살표 하나가 두 exon에 걸치는지 확인하세요.</p>
+        </div>
+        <p id="rna-placement" aria-live="polite"></p>
+        <div id="rna-strategy-comparison"></div>
+        <p id="rna-strategy-meaning" class="pcr-notice"></p>
+        <label for="rna-strategy-answer">cDNA를 주로 검출하고 싶다면, 어떤 원리가 gDNA의 영향을 줄이거나 구별하는 데 도움이 될까?</label><textarea id="rna-strategy-answer" data-rna-answer="strategy" rows="3"></textarea>
+      </section>
+      <section id="rna-control" class="rna-panel" data-rna-panel="control" aria-labelledby="rna-control-title">
+        <h3 id="rna-control-title">D. RT(-) control로 무엇을 확인할 수 있을까?</h3>
+        <p><a href="#activity-05">05에서 대조군을 해석했듯</a>, RNA 실험에서는 RT(-) control이 추가로 중요합니다. Reverse transcriptase는 reverse transcription을 수행하는 효소입니다.</p>
+        <div class="rna-flow-comparison"><div><h4>RT(+)</h4><p>RNA sample + reverse transcriptase<br>↓ cDNA 생성 가능<br>↓ PCR</p></div><div><h4>RT(-)</h4><p>같은 RNA sample, reverse transcriptase 생략<br>↓ RNA-derived cDNA가 만들어지지 않는 조건<br>↓ PCR</p></div></div>
+        <p>RT(-)에서도 PCR signal이 나타난다면 무엇을 의심해야 할까요?</p>
+        <div class="pcr-tools" role="group" aria-label="RT control 관찰 예 선택"><button type="button" data-rna-option="rtControlCase" data-value="case1">Case 1 / RT(+)에만 band</button><button type="button" data-rna-option="rtControlCase" data-value="case2">Case 2 / 둘 다 band</button></div>
+        <table class="rna-signal-table"><caption>교육용 PCR 관찰 예 / band 유무는 정량값이 아닙니다.</caption><thead><tr><th scope="col">반응</th><th scope="col">관찰</th></tr></thead><tbody><tr><th scope="row">RT(+)</th><td>band 있음</td></tr><tr><th scope="row">RT(-)</th><td id="rna-minus-signal">band 없음</td></tr></tbody></table>
+        <p id="rna-control-meaning" class="pcr-notice" aria-live="polite"></p>
+        <label for="rna-control-answer">Case 2에서 RNA expression만으로 signal을 해석하기 어려운 이유는 무엇인가?</label><textarea id="rna-control-answer" data-rna-answer="control" rows="3"></textarea>
+        <p class="pcr-small">RT(-)는 RNA-derived cDNA 신호와 DNA-derived 신호를 구분하는 데 도움을 주는 control입니다. NTC 등 다른 대조군과 산물의 정체도 함께 확인합니다.</p>
+      </section>
+      <section id="rna-transcripts" class="rna-panel" data-rna-panel="transcripts" aria-labelledby="rna-transcripts-title">
+        <h3 id="rna-transcripts-title">E. 어떤 transcript들을 검출할까?</h3>
+        <p>같은 Gene X에서도 exon 연결이 다른 transcript variant(전사체 변이형)가 생길 수 있습니다. F를 둘 영역을 바꾸어 결합 가능한 구조의 범위를 비교하세요.</p>
+        <p class="pcr-small">R은 모든 예에서 공통인 Exon 4의 하류 부위에 고정합니다. Exon 4를 선택하면 F는 같은 exon에서 R보다 앞에 놓입니다. 두 primer의 방향은 02에서 배운 대로 서로 마주봅니다.</p>
+        <div class="pcr-tools" role="group" aria-label="Transcript F primer 영역 선택"><button type="button" data-rna-option="transcriptTarget" data-value="exon2">Exon 2</button><button type="button" data-rna-option="transcriptTarget" data-value="exon3">Exon 3</button><button type="button" data-rna-option="transcriptTarget" data-value="exon4">Exon 4</button><button type="button" data-rna-option="transcriptTarget" data-value="junction23">Exon 2–3 junction</button><button type="button" data-rna-option="transcriptTarget" data-value="junction34">Exon 3–4 junction</button></div>
+        <p id="rna-transcript-summary" aria-live="polite"></p>
+        <div id="rna-transcript-comparison"></div>
+        <p id="rna-transcript-meaning" class="pcr-notice"></p>
+        <p class="pcr-small">실제 isoform 특이성은 전체 transcriptome과 서열 특이성 확인이 필요합니다. <a href="#activity-06">06의 Primer-BLAST</a> 및 transcript annotation에서 의도한 대상과 다른 결합 가능성을 검토하세요.</p>
+        <label for="rna-transcripts-answer">같은 gene의 발현을 측정한다고 말하려면 primer가 어떤 transcript들을 검출하는지 왜 확인해야 할까?</label><textarea id="rna-transcripts-answer" data-rna-answer="transcripts" rows="3"></textarea>
+        <label for="rna-specific-answer">특정 transcript만 측정하고 싶다면 어떤 종류의 exon 또는 junction을 찾을 수 있을까?</label><textarea id="rna-specific-answer" data-rna-answer="specific" rows="2"></textarea>
+      </section>
+      <section id="rna-reflection" class="rna-panel" data-rna-panel="reflection" aria-labelledby="rna-reflection-title">
+        <h3 id="rna-reflection-title">내 primer가 실제로 무엇을 측정하는가?</h3>
+        <label for="rna-reflection-answer">RNA 발현 분석용 primer를 설계할 때 DNA PCR primer 설계에 비해 추가로 확인해야 하는 것은 무엇인가?</label><textarea id="rna-reflection-answer" data-rna-answer="reflection" rows="4" aria-describedby="rna-reflection-help"></textarea>
+        <p id="rna-reflection-help" class="pcr-small">RNA → cDNA, gDNA contamination, exon/intron, exon-exon junction, RT(-), transcript variant를 자신의 언어로 연결해 보세요.</p>
+        <details id="rna-legacy" data-legacy-answers hidden><summary>이전 RNA 확장 기록</summary><p class="pcr-small">이전 답안의 원문입니다. 처음 불러올 때 위 reflection에도 복사했습니다. 새 답안을 수정해도 이 원문은 보존됩니다.</p><label for="rna-plan">이전 질문 / RNA 발현을 보기 위해 설계와 대조군 계획을 어떻게 바꾸겠는가?</label><textarea id="rna-plan" data-answer rows="4" readonly></textarea></details>
+        <details><summary>더 알아보기 / qPCR에서 발현량을 비교하려면?</summary><p>RT-qPCR에서는 amplification signal을 이용해 상대적 또는 절대적 정량을 수행할 수 있으며, reference gene, amplification efficiency, Cq/Ct 해석 등 추가 고려가 필요합니다.</p></details>
+      </section>
+      <noscript><p>각 절의 개념과 질문을 읽고 종이에 기록하세요. 단계 선택과 비교 그림은 JavaScript를 켜면 사용할 수 있습니다. 같은 exon은 두 template에 결합할 수 있고, 다른 exon pair는 gDNA에서 intron을 포함합니다. Junction primer는 연결된 exon 서열을 이용합니다. Gene X의 Transcript 1은 Exon 1–2–3–4, Transcript 2는 1–2–4, Transcript 3은 1–3–4입니다.</p></noscript>
     </details>
     <footer id="calculation-scope" class="pcr-references">
       <h2>자료와 계산 범위</h2>

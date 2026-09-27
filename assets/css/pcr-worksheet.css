@@ -594,3 +594,42 @@
   #pcr-worksheet #final-external-summary { padding-left: 12px; }
   #pcr-worksheet .pcr-gel-lane-name { font-size: 13px; }
 }
+
+/* RNA extension: reuse the worksheet's type, lines and single accent. */
+#pcr-worksheet .rna-panel { min-width: 0; border-top: 1px solid var(--pcr-rule); padding: 10px 0 20px; }
+#pcr-worksheet .rna-panel[hidden] { display: none; }
+#pcr-worksheet .rna-panel h4 { font-size: 16px; margin: 16px 0 8px; }
+#pcr-worksheet .rna-navigation { gap: 8px; }
+#pcr-worksheet #rna-extension button[aria-pressed=true] { box-shadow: inset 0 -3px var(--pcr-accent); font-weight: 700; }
+#pcr-worksheet .rna-flow-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+#pcr-worksheet .rna-flow-comparison > div { border-top: 1px solid var(--pcr-rule); }
+#pcr-worksheet .rna-flow-list { list-style: none; padding: 0; margin: 10px 0; }
+#pcr-worksheet .rna-flow-list li { width: fit-content; min-height: 36px; }
+#pcr-worksheet .rna-flow-list li + li::before { content: '↓'; display: block; color: var(--pcr-muted); margin: 4px 0; }
+#pcr-worksheet .rna-flow-list [data-active=true] { color: var(--pcr-accent); font-weight: 700; text-decoration: underline; text-underline-offset: 5px; }
+#pcr-worksheet .rna-molecule { border-bottom: 1px dashed currentColor; }
+#pcr-worksheet .rna-strategies { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#pcr-worksheet .rna-strategies button { text-align: left; }
+#pcr-worksheet .rna-strategies span { display: block; font-size: 13px; margin-top: 6px; }
+#pcr-worksheet .rna-figure { margin: 18px 0; min-width: 0; }
+#pcr-worksheet .rna-diagram-scroll { overflow-x: auto; padding: 5px 0; }
+#pcr-worksheet .rna-diagram-scroll svg { display: block; width: 100%; min-width: 540px; height: auto; }
+#pcr-worksheet .rna-diagram-scroll text { font-size: 17px; }
+#pcr-worksheet .rna-diagram-scroll .pcr-outline { stroke: #55605d; }
+#pcr-worksheet .rna-diagram-scroll .rna-intron-label { font-size: 15px; }
+#pcr-worksheet .rna-primer { stroke: var(--pcr-accent); stroke-width: 3; fill: none; }
+#pcr-worksheet .rna-primer-label { fill: var(--pcr-accent); font-weight: 700; }
+#pcr-worksheet .rna-separated { stroke: var(--pcr-muted); stroke-width: 2; stroke-dasharray: 4 3; fill: none; }
+#pcr-worksheet .rna-signal-table { width: 100%; table-layout: fixed; }
+#pcr-worksheet .rna-signal-table caption { text-align: left; font-size: 13px; }
+#pcr-worksheet .rna-transcript-row { border-top: 1px solid var(--pcr-rule); padding: 0 0 10px; }
+#pcr-worksheet .rna-transcript-track { display: flex; min-width: 0; margin: 12px 0; }
+#pcr-worksheet .rna-exon { border: 1px solid #55605d; padding: 10px; font-size: 14px; text-align: center; flex: 1; }
+#pcr-worksheet .rna-exon + .rna-exon { border-left: 0; }
+#pcr-worksheet .rna-exon[data-target=true] { border-bottom: 4px solid var(--pcr-accent); font-weight: 700; }
+@media screen and (max-width: 800px) {
+  #pcr-worksheet .rna-flow-comparison { grid-template-columns: 1fr; gap: 12px; }
+  #pcr-worksheet .rna-strategies { grid-template-columns: 1fr; }
+  #pcr-worksheet .rna-strategies span { display: inline; margin-left: 12px; }
+  #pcr-worksheet .rna-exon { padding: 10px 4px; font-size: 13px; }
+}
