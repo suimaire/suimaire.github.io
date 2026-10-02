@@ -24,7 +24,7 @@ function structure(label, genomic, { strategy, intron = 'long', position = 'junc
   });
   function primer(x1, x2, name, right) {
     const tip = right ? x2 : x1, back = right ? tip - 7 : tip + 7;
-    svg.append(svgNode('path', { d: `M${x1} 99H${x2} M${back} 94L${tip} 99L${back} 104`, class: 'rna-primer' }), svgNode('text', { x: (x1 + x2) / 2, y: 125, 'text-anchor': 'middle', class: 'rna-primer-label' }, name));
+    svg.append(svgNode('path', { d: `M${x1} 99H${x2} M${back} 94L${tip} 99L${back} 104`, class: `rna-primer pcr-primer-${name}` }), svgNode('text', { x: (x1 + x2) / 2, y: 125, 'text-anchor': 'middle', class: `rna-primer-label pcr-primer-${name}` }, name));
   }
   if (strategy) {
     if (strategy === 'junction' && position === 'junction') {
@@ -84,6 +84,7 @@ export function initializeRna(root, getState, save) {
   function templateFeedback() {
     const answer = rna().answers.template;
     $('rna-template-feedback').textContent = !answer ? '' : answer === 'cdna' ? 'cDNA가 PCR template입니다. RNA → reverse transcription → cDNA의 연결을 확인했습니다.' : 'RNA는 출발 물질, 단백질은 다른 분자, dNTP는 합성 재료입니다. Reverse transcription 뒤에 만들어진 cDNA가 PCR template가 됩니다.';
+    $('rna-template-feedback').dataset.result = answer === 'cdna' ? 'correct' : 'retry';
   }
   function renderTranscripts() {
     const target = rna().transcriptTarget;

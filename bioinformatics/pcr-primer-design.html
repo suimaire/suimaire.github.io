@@ -27,6 +27,11 @@ has_toc: false
   <h1>PCR과 프라이머 디자인</h1>
   <p class="pcr-subtitle">어디부터 어디까지 복제할 것인가</p>
   <p>중합효소 연쇄 반응(PCR)으로 두 DNA 시료를 구별할 primer를 설계하고,<br class="pcr-desktop-break"> 예상 산물과 실험 증거를 비교하며 설계를 수정합니다.</p>
+  <ol class="pcr-guide" aria-label="학습지 진행 방법">
+    <li><strong>순서대로</strong>활동 00부터 07까지 차례로 진행합니다.</li>
+    <li><strong>조작하고 적기</strong>그림을 직접 움직여 보고, <span class="pcr-q-mark" aria-hidden="true">Q</span> 표시가 붙은 질문에 답을 적습니다.</li>
+    <li><strong>제출과 보관</strong>마친 뒤 오른쪽 위 ‘인쇄’로 작성본을 출력하거나 ‘기록’에서 JSON 파일로 보관합니다.</li>
+  </ol>
   <p id="save-status" role="status">기록 도구를 준비하고 있습니다. 이 안내가 계속 보이면 자동 저장과 계산을 사용할 수 없습니다. 기본 문항을 읽고 종이에 기록하거나 브라우저 인쇄를 사용하세요.</p>
   <noscript><p class="pcr-notice">JavaScript가 꺼져 있습니다. 아래의 질문과 자료를 읽을 수 있지만 계산, 자동 저장, JSON 내보내기는 동작하지 않습니다. 답안은 종이에 쓰고 브라우저의 인쇄 기능을 이용하세요.</p></noscript>
 </header>
@@ -54,6 +59,7 @@ has_toc: false
       <p class="pcr-prompt">두 primer가 A와 B 모두에 결합하여 PCR 산물 길이가 정확히 80 bp 차이 나게 하려면, 두 결합 부위는 어디에 있어야 할까요?</p>
       <p class="pcr-small">정답 위치는 하나가 아닙니다. 두 primer 모두 A와 B에 결합하면서, 121~200 결실 구간 전체가 두 primer 결합 부위 사이에 포함되도록 배치해 보세요.</p>
       <p id="prediction-instructions" class="pcr-small">A 기준의 개략적 결합 위치를 예측합니다. F 또는 R을 선택한 뒤 A 선을 누르거나 아래 슬라이더를 움직이세요. B의 대응 위치는 같은 primer pair로 자동 표시되며, 따로 선택하지 않습니다.</p>
+      <div class="pcr-lab">
       <div class="pcr-tools pcr-prediction-tools" role="group" aria-label="A 기준으로 위치를 정할 프라이머 선택">
         <button type="button" data-prediction-primer="forward" aria-pressed="true">F 위치 정하기 (A 기준)</button>
         <button type="button" data-prediction-primer="reverse" aria-pressed="false">R 위치 정하기 (A 기준)</button>
@@ -84,18 +90,21 @@ has_toc: false
           </div>
           <p class="pcr-small pcr-region-caption">╳는 결실 양옆이 이어진 곳입니다. <span id="prediction-b-caption">A에서 위치를 정하면 B에 남아 있는 결합 부위에도 같은 primer가 표시됩니다.</span></p>
         </div></div>
-        <p class="pcr-small">결실 오른쪽 결합 부위의 bp 좌표는 B에서 A보다 80만큼 앞당겨집니다. 같은 숫자 좌표가 아니라, 같은 primer가 인식하는 결합 부위를 비교하는 것입니다.</p>
-        <p id="prediction-ab-concept" class="pcr-small">두 primer가 결실 양옆의 보존된 부위에 결합하면, A의 두 primer 사이에는 121~200의 80 bp가 포함됩니다. B에는 이 80 bp가 없으므로, 같은 primer pair로 얻은 B의 PCR 산물이 A보다 80 bp 짧아집니다.</p>
-        <div id="prediction-c-row" class="pcr-sample-row"><strong>C</strong><div>
-          <div class="pcr-dna-track pcr-background-dna"></div>
-          <p class="pcr-small pcr-region-caption">C는 A와 다른 서열의 배경 DNA입니다. <strong>이 단계에서는 결합 여부를 판단하지 않습니다.</strong> Primer 표식이 없다는 것이 결합하지 않는다는 뜻은 아닙니다. 서열 특이성(specificity)은 뒤 활동에서 검토합니다.</p>
-        </div></div>
         <figcaption>A와 B의 DNA 길이는 같은 축척으로 그렸습니다. F/R의 짧은 띠는 개략적 결합 범위이며 실제 primer 길이가 아닙니다. 결실 경계에 걸치면 겹침 주의를 표시합니다. 정밀한 염기서열 설계는 활동 03부터 시작합니다.</figcaption>
       </figure>
       <p id="prediction-feedback" class="pcr-prediction-feedback" role="status" aria-live="polite" aria-atomic="true">F와 R의 A 기준 위치를 정해 같은 primer pair의 A/B 배치를 비교해 보세요.</p>
       <div class="pcr-fields pcr-prediction-controls">
         <div><label for="prediction-forward">Forward 대략적 위치 (A 기준)</label><input id="prediction-forward" type="range" min="5" max="95" step="5" value="50" aria-describedby="prediction-instructions prediction-forward-value prediction-feedback"><output id="prediction-forward-value" for="prediction-forward">아직 표시하지 않음</output></div>
         <div><label for="prediction-reverse">Reverse 대략적 위치 (A 기준)</label><input id="prediction-reverse" type="range" min="5" max="95" step="5" value="50" aria-describedby="prediction-instructions prediction-reverse-value prediction-feedback"><output id="prediction-reverse-value" for="prediction-reverse">아직 표시하지 않음</output></div>
+      </div>
+      <div class="pcr-map-notes">
+        <p class="pcr-small">결실 오른쪽 결합 부위의 bp 좌표는 B에서 A보다 80만큼 앞당겨집니다. 같은 숫자 좌표가 아니라, 같은 primer가 인식하는 결합 부위를 비교하는 것입니다.</p>
+        <p id="prediction-ab-concept" class="pcr-small">두 primer가 결실 양옆의 보존된 부위에 결합하면, A의 두 primer 사이에는 121~200의 80 bp가 포함됩니다. B에는 이 80 bp가 없으므로, 같은 primer pair로 얻은 B의 PCR 산물이 A보다 80 bp 짧아집니다.</p>
+        <div id="prediction-c-row" class="pcr-sample-row"><strong>C</strong><div>
+          <div class="pcr-dna-track pcr-background-dna"></div>
+          <p class="pcr-small pcr-region-caption">C는 A와 다른 서열의 배경 DNA입니다. <strong>이 단계에서는 결합 여부를 판단하지 않습니다.</strong> Primer 표식이 없다는 것이 결합하지 않는다는 뜻은 아닙니다. 서열 특이성(specificity)은 뒤 활동에서 검토합니다.</p>
+        </div></div>
+      </div>
       </div>
       <label for="first-placement">같은 primer pair를 왜 이 위치에 놓았나요?</label>
       <p id="first-placement-help" class="pcr-small">각 primer의 A/B 결합 가능성과 결실 구간의 위치를 근거로, 두 산물의 길이를 비교해 설명해 보세요. C에 대해서는 지금 판단할 수 있는 것과 뒤 활동에서 확인할 것을 구분해 적어 보세요.</p>
@@ -108,7 +117,8 @@ has_toc: false
     <section id="activity-01" class="pcr-activity">
       <p class="pcr-section-label">01</p><h2>PCR 한 주기에서는 무엇이 달라질까?</h2>
       <p>반응 혼합물을 준비한 뒤 변성 → 결합 → 신장을 반복합니다. 단계마다 주형과 프라이머가 어떻게 달라지는지 살펴보세요.</p>
-      <div class="pcr-step-buttons" role="group" aria-label="PCR 반응 단계">
+      <div class="pcr-lab">
+      <div class="pcr-step-buttons pcr-stage-steps" role="group" aria-label="PCR 반응 단계">
         <button type="button" data-cycle-stage="mixture" aria-pressed="true">반응 혼합</button>
         <button type="button" data-cycle-stage="denaturation" aria-pressed="false">변성</button>
         <button type="button" data-cycle-stage="annealing" aria-pressed="false">결합</button>
@@ -135,7 +145,15 @@ has_toc: false
         </aside>
       </div>
       <div class="pcr-tools"><button type="button" id="cycle-prev" disabled>이전 단계</button><button type="button" id="cycle-next">다음 단계</button><button type="button" id="cycle-reset">반응 혼합으로</button></div>
-      <p class="pcr-small">회색 선: 기존 DNA / 청록 선: primer / 검정 선: 새 DNA / Pol: 중합효소. 95°C, 60°C, 72°C는 한 예시 protocol입니다. 실제 조건은 프라이머와 반응 조건에 따라 달라지며 Taq가 72°C에서만 작동하는 것은 아닙니다.</p>
+      <ul class="pcr-legend" aria-label="그림 범례">
+        <li><span class="pcr-swatch pcr-swatch-template" aria-hidden="true"></span>기존 DNA</li>
+        <li><span class="pcr-swatch pcr-swatch-f" aria-hidden="true"></span>Forward primer</li>
+        <li><span class="pcr-swatch pcr-swatch-r" aria-hidden="true"></span>Reverse primer</li>
+        <li><span class="pcr-swatch pcr-swatch-new" aria-hidden="true"></span>새 DNA</li>
+        <li><span class="pcr-legend-pol" aria-hidden="true">Pol</span>DNA 중합효소</li>
+      </ul>
+      <p class="pcr-small">95°C, 60°C, 72°C는 한 예시 protocol입니다. 실제 조건은 프라이머와 반응 조건에 따라 달라지며 Taq가 72°C에서만 작동하는 것은 아닙니다.</p>
+      </div>
       <div class="pcr-cycle-comparison">
         <h3>다음 주기의 주형이 되면?</h3>
         <div class="pcr-step-buttons" role="group" aria-label="초기 PCR 주기 비교"><button type="button" data-comparison-cycle="1" aria-pressed="true">1주기</button><button type="button" data-comparison-cycle="2" aria-pressed="false">2주기</button><button type="button" data-comparison-cycle="3" aria-pressed="false">3주기</button></div>
@@ -154,6 +172,7 @@ has_toc: false
     <section id="activity-02" class="pcr-activity">
       <p class="pcr-section-label">02</p><h2>두 primer의 3′ 말단은 어디를 향할까?</h2>
       <ol class="pcr-direction-principles"><li>DNA polymerase는 primer의 <strong>3′ OH</strong>에서 연장을 시작합니다. 새 DNA는 <strong>5′→3′</strong> 방향으로 합성됩니다.</li><li>두 primer의 <strong>3′ 말단은 서로를 향해야 합니다.</strong> 그래야 각 primer에서 시작한 DNA 합성이 두 결합 부위 사이의 표적 영역을 향해 진행됩니다.</li><li>논문과 주문서에는 F와 R 서열을 <strong>모두 5′→3′</strong> 방향으로 씁니다.</li></ol>
+      <div class="pcr-lab">
       <div class="pcr-tools" role="group" aria-label="프라이머 배치 비교"><button type="button" data-arrangement="inward" aria-pressed="true">정상 배치: F → / ← R</button><button type="button" data-arrangement="parallel" aria-pressed="false">잘못된 예: F → / R →</button><button type="button" id="flip-strands" aria-pressed="false">가닥 뒤집어 보기</button></div>
       <figure><svg id="direction-svg" viewBox="0 0 600 280" role="img" aria-label="두 프라이머의 3′ 말단은 표적 내부를 향한다">
         <text x="45" y="22">Reference strand</text><text x="10" y="60">5′</text><path d="M45 55H555" class="pcr-strand"/><text x="565" y="60">3′</text>
@@ -161,6 +180,7 @@ has_toc: false
         <text x="350" y="97">3′ ←──── 5′ R</text><text x="90" y="207">F 5′ ────→ 3′</text>
       </svg><figcaption id="direction-caption">이 그림에서는 위쪽 가닥을 reference strand로 5′→3′ 방향으로 그렸습니다. 위아래 위치보다 각 가닥의 방향이 중요합니다.</figcaption></figure>
       <p id="arrangement-description" aria-live="polite">두 primer의 3′ 말단에서 서로를 향해 합성이 진행됩니다.</p>
+      </div>
       <h3>상보 가닥을 주문 방향으로 읽기</h3>
       <p>앞서 본 reference strand의 오른쪽 결합 부위를 5′→3′로 읽은 8 nt(뉴클레오타이드 8개) 예제입니다. 방향 학습용이며 실제 PCR용 프라이머가 아닙니다.</p>
       <div class="pcr-complement-exercise">

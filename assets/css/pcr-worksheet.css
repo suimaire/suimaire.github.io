@@ -674,3 +674,279 @@
   white-space: pre;
   text-wrap: nowrap;
 }
+
+/* Learner layer: reading, doing, answering and checking each get their own look.
+   Screen only, so the print and blank-print rules above keep working unchanged. */
+#pcr-worksheet {
+  --pcr-ink: #1a1d1c;
+  --pcr-text: #2f3634;
+  --pcr-panel: #f3f6f5;
+  --pcr-panel-line: #d5dfdc;
+  --pcr-accent-soft: #e2eeea;
+  --pcr-accent-dark: #094440;
+  --pcr-f: #1f5fa6;
+  --pcr-f-soft: #e5eef8;
+  --pcr-r: #bd3a2c;
+  --pcr-r-soft: #fbebe8;
+  --pcr-ok: #1f6b3d;
+  --pcr-ok-soft: #e6f2ea;
+  --pcr-warn: #8a5300;
+  --pcr-warn-soft: #fbf3e2;
+  --pcr-paper: #fffefa;
+  --pcr-paper-line: #e8ebe5;
+}
+@media screen {
+  /* Header */
+  #pcr-worksheet .pcr-eyebrow { letter-spacing: 0; font-size: 14px; }
+  #pcr-worksheet .pcr-subtitle { color: var(--pcr-muted); }
+  #pcr-worksheet .pcr-document-menus { gap: 8px; }
+  #pcr-worksheet .pcr-menu > summary { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--pcr-panel-line); border-radius: 8px; background: #fff; color: var(--pcr-text); }
+  #pcr-worksheet .pcr-menu > summary:hover { border-color: var(--pcr-accent); color: var(--pcr-accent); }
+  #pcr-worksheet .pcr-menu > summary::after { content: '▾'; font-size: 11px; }
+  #pcr-worksheet .pcr-menu[open] > summary::after { content: '▴'; }
+  #pcr-worksheet .pcr-menu-body { top: calc(100% + 6px); border-radius: 10px; box-shadow: 0 10px 28px rgba(20, 32, 30, .14); }
+  #pcr-worksheet .pcr-menu-body button { border-radius: 6px; }
+  #pcr-worksheet .pcr-guide { list-style: none; counter-reset: guide; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: none; margin: 26px 0 6px; padding: 0; }
+  #pcr-worksheet .pcr-guide li { counter-increment: guide; position: relative; padding: 14px 16px 14px 52px; border-radius: 10px; background: var(--pcr-panel); font-size: 14px; line-height: 1.65; }
+  #pcr-worksheet .pcr-guide li::before { content: counter(guide); position: absolute; left: 16px; top: 15px; width: 26px; height: 26px; border-radius: 50%; background: var(--pcr-accent); color: #fff; font: 700 14px/26px PcrNanum, sans-serif; text-align: center; }
+  #pcr-worksheet .pcr-guide strong { display: block; margin-bottom: 2px; color: var(--pcr-ink); font-size: 15px; }
+  #pcr-worksheet .pcr-q-mark { display: inline-block; width: 20px; height: 20px; margin: 0 2px; border-radius: 5px; background: var(--pcr-accent); color: #fff; font: 700 12px/20px Consolas, monospace; text-align: center; vertical-align: 1px; }
+
+  /* Table of contents */
+  #pcr-worksheet .pcr-document { grid-template-columns: 220px minmax(0, 1fr); gap: 48px; }
+  #pcr-worksheet #worksheet-toc > summary { padding: 2px 0 10px; color: var(--pcr-ink); font-size: 14px; }
+  #pcr-worksheet .pcr-sidebar nav a { gap: 10px; margin: 2px 0; padding: 8px 10px; border-left: 0; border-radius: 8px; color: var(--pcr-text); font-size: 14px; line-height: 1.5; }
+  #pcr-worksheet .pcr-sidebar nav a:hover { background: var(--pcr-panel); }
+  #pcr-worksheet .pcr-sidebar nav a[aria-current=location] { background: var(--pcr-accent-soft); color: var(--pcr-accent-dark); }
+  #pcr-worksheet .pcr-toc-number { flex: 0 0 28px; height: 22px; border: 1px solid var(--pcr-panel-line); border-radius: 6px; background: #fff; color: var(--pcr-accent); font: 700 12px/20px Consolas, monospace; text-align: center; }
+  #pcr-worksheet nav a[aria-current=location] .pcr-toc-number { border-color: var(--pcr-accent); background: var(--pcr-accent); color: #fff; }
+  #pcr-worksheet .pcr-toc-extension > span { padding-left: 10px; }
+
+  /* Activity openings */
+  #pcr-worksheet .pcr-activity { padding: 56px 0 60px; scroll-margin-top: 12px; }
+  #pcr-worksheet :is(.pcr-activity, #ext-introduction) > .pcr-section-label { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 12px; padding: 4px 12px 4px 10px; border-radius: 6px; background: var(--pcr-accent); color: #fff; font: 700 14px/1.5 PcrNanum, sans-serif; letter-spacing: .02em; }
+  #pcr-worksheet :is(.pcr-activity, #ext-introduction) > .pcr-section-label::before { content: '활동'; font-weight: 400; }
+  #pcr-worksheet .pcr-activity h2 { margin: 0 0 18px; }
+  #pcr-worksheet :is(.pcr-activity, #ext-introduction) > h2 + p { color: var(--pcr-ink); font-size: 18px; }
+  #pcr-worksheet .pcr-activity > p.pcr-prompt { max-width: none; margin: 26px 0 12px; padding: 16px 20px; border-left: 4px solid var(--pcr-accent); border-radius: 0 10px 10px 0; background: var(--pcr-accent-soft); color: var(--pcr-ink); font-size: 18px; line-height: 1.7; }
+  #pcr-worksheet .pcr-prompt::before { content: '생각해 볼 질문'; display: block; margin-bottom: 4px; color: var(--pcr-accent); font-size: 13px; }
+  #pcr-worksheet .pcr-small, #pcr-worksheet figcaption, #pcr-worksheet [role=status] { font-size: 14px; }
+
+  /* Hands-on areas: a framed panel with its own title bar */
+  #pcr-worksheet :is(.pcr-lab, .pcr-workspace, .pcr-cycle-comparison, .pcr-complement-exercise, #evidence-case-view) { margin: 28px 0; padding: 0 24px 18px; border: 1px solid var(--pcr-panel-line); border-radius: 12px; background: #fff; }
+  #pcr-worksheet :is(.pcr-lab, .pcr-workspace, .pcr-cycle-comparison, .pcr-complement-exercise, #evidence-case-view)::before { content: '직접 해 보기'; display: block; margin: 0 -24px 18px; padding: 10px 24px; border-bottom: 1px solid var(--pcr-panel-line); border-radius: 12px 12px 0 0; background: var(--pcr-panel); color: var(--pcr-accent-dark); font-size: 14px; font-weight: 700; }
+  #pcr-worksheet .pcr-cycle-comparison::before { content: '주기를 넘기며 비교하기'; }
+  #pcr-worksheet .pcr-complement-exercise::before { content: '서열 연습'; }
+  #pcr-worksheet #evidence-case-view::before { content: '가상 gel 관찰하기'; }
+  #pcr-worksheet #evidence-case-view #evidence-case-heading { margin-top: 4px; }
+  #pcr-worksheet .pcr-cycle-comparison h3 { margin-top: 4px; }
+  #pcr-worksheet .pcr-lab > .pcr-tools:first-child, #pcr-worksheet .pcr-lab > .pcr-step-buttons:first-child { margin-top: 0; }
+  #pcr-worksheet .pcr-lab figure { margin: 18px 0; }
+  #pcr-worksheet .pcr-lab .pcr-sample-row:first-of-type { margin-top: 18px; }
+  #pcr-worksheet .pcr-direction-principles { list-style: none; counter-reset: rule; max-width: 760px; margin: 0 0 28px; padding: 16px 20px 12px; border: 1px solid #c9ddd6; border-radius: 12px; background: #f6faf8; }
+  #pcr-worksheet .pcr-direction-principles::before { content: '기억할 규칙'; display: block; margin-bottom: 6px; color: var(--pcr-accent-dark); font-size: 14px; font-weight: 700; }
+  #pcr-worksheet .pcr-direction-principles li { counter-increment: rule; position: relative; padding: 6px 0 6px 34px; }
+  #pcr-worksheet .pcr-direction-principles li::before { content: counter(rule); position: absolute; left: 0; top: 9px; width: 22px; height: 22px; border-radius: 50%; background: var(--pcr-accent); color: #fff; font: 700 12px/22px PcrNanum, sans-serif; text-align: center; }
+  #pcr-worksheet .pcr-prediction-controls { margin-bottom: 4px; }
+  #pcr-worksheet .pcr-map-notes { margin-top: 14px; padding-top: 4px; border-top: 1px dashed var(--pcr-panel-line); }
+  #pcr-worksheet .pcr-map-notes .pcr-sample-row { margin: 22px 0 6px; }
+
+  /* Buttons */
+  #pcr-worksheet button, #pcr-worksheet .pcr-file { border-radius: 8px; transition: background-color .15s, color .15s, border-color .15s, box-shadow .15s; }
+  #pcr-worksheet button:hover:not(:disabled) { background: var(--pcr-accent-soft); }
+  #pcr-worksheet button:disabled { border-color: #d3d9d7; background: #f2f4f3; color: #646d6a; cursor: not-allowed; }
+  #pcr-worksheet .pcr-tools button[aria-pressed=true] { border: 1px solid var(--pcr-accent); background: var(--pcr-accent); color: #fff; font-weight: 700; }
+  #pcr-worksheet .pcr-tools button[aria-pressed=true]:hover { background: var(--pcr-accent-dark); }
+  #pcr-worksheet :is(#check-complement, #check-direction, #reverse-complement, #save-design, #apply-range, #analyze-design, #compare-ab, #compare-abc, #cycle-next, #ext-to-plan, #ext-complete, #final-notebook-toggle) { border-color: var(--pcr-accent); background: var(--pcr-accent); color: #fff; font-weight: 700; }
+  #pcr-worksheet :is(#check-complement, #check-direction, #reverse-complement, #save-design, #apply-range, #analyze-design, #compare-ab, #compare-abc, #cycle-next, #ext-to-plan, #ext-complete, #final-notebook-toggle):hover:not(:disabled) { background: var(--pcr-accent-dark); }
+  #pcr-worksheet :is(#compare-abc, #cycle-next):disabled { border-color: #d3d9d7; background: #f2f4f3; color: #646d6a; font-weight: 400; }
+
+  /* Segmented choices: stages, cycles, primer selection, review lenses, cases */
+  #pcr-worksheet :is(.pcr-step-buttons, .pcr-review-tabs) { display: inline-flex; flex-wrap: wrap; gap: 4px; max-width: 100%; padding: 4px; border: 0; border-radius: 10px; background: #e9eeec; }
+  #pcr-worksheet :is(.pcr-step-buttons, .pcr-review-tabs) button { min-height: 40px; padding: 8px 14px; border: 0; border-radius: 7px; background: transparent; color: var(--pcr-muted); }
+  #pcr-worksheet :is(.pcr-step-buttons, .pcr-review-tabs) button:hover:not(:disabled) { background: rgba(255, 255, 255, .7); color: var(--pcr-text); }
+  #pcr-worksheet .pcr-step-buttons button[aria-pressed=true], #pcr-worksheet .pcr-review-tabs button[aria-selected=true] { border: 0; background: #fff; color: var(--pcr-accent-dark); box-shadow: 0 1px 3px rgba(20, 32, 30, .16); font-weight: 700; }
+  #pcr-worksheet .pcr-stage-steps { counter-reset: stage; }
+  #pcr-worksheet .pcr-stage-steps button { counter-increment: stage; }
+  #pcr-worksheet .pcr-stage-steps button::before { content: counter(stage); display: inline-block; width: 20px; height: 20px; margin-right: 7px; border-radius: 50%; background: #c9d4d0; color: #fff; font: 700 12px/20px PcrNanum, sans-serif; text-align: center; vertical-align: 1px; }
+  #pcr-worksheet .pcr-stage-steps button[aria-pressed=true]::before { background: var(--pcr-accent); }
+  #pcr-worksheet .pcr-review-lenses { padding-bottom: 6px; }
+  #pcr-worksheet .pcr-evidence-navigation { padding: 4px; border: 0; border-radius: 10px; background: #e9eeec; }
+  #pcr-worksheet .pcr-evidence-navigation > button { min-height: 40px; border: 0; border-radius: 7px; background: transparent; color: var(--pcr-muted); }
+  #pcr-worksheet .pcr-evidence-navigation > button[aria-pressed=true] { border: 0; background: #fff; color: var(--pcr-accent-dark); box-shadow: 0 1px 3px rgba(20, 32, 30, .16); }
+  #pcr-worksheet #evidence-additional summary { padding: 8px 10px; }
+}
+
+/* Forward is blue, Reverse is red, everywhere a primer is drawn or chosen (screen and print). */
+@media all {
+  #pcr-worksheet .pcr-intro-primer.pcr-primer-F, #pcr-worksheet .pcr-map-primer.pcr-primer-F, #pcr-worksheet .rna-primer.pcr-primer-F { stroke: var(--pcr-f); }
+  #pcr-worksheet .pcr-intro-primer.pcr-primer-R, #pcr-worksheet .pcr-map-primer.pcr-primer-R, #pcr-worksheet .rna-primer.pcr-primer-R { stroke: var(--pcr-r); }
+  #pcr-worksheet svg text.pcr-primer-F { fill: var(--pcr-f); font-weight: 700; }
+  #pcr-worksheet svg text.pcr-primer-R { fill: var(--pcr-r); font-weight: 700; }
+  #pcr-worksheet :is(#prediction-forward-marker, #prediction-b-forward-marker) { border-bottom-color: var(--pcr-f); color: var(--pcr-f); }
+  #pcr-worksheet :is(#prediction-reverse-marker, #prediction-b-reverse-marker) { border-bottom-color: var(--pcr-r); color: var(--pcr-r); }
+  #pcr-worksheet :is(#prediction-forward-binding, #prediction-b-forward-binding) { background: var(--pcr-f); }
+  #pcr-worksheet :is(#prediction-reverse-binding, #prediction-b-reverse-binding) { background: var(--pcr-r); }
+  #pcr-worksheet :is(#prediction-forward-marker, #prediction-reverse-marker)[data-overlap=true] { border-bottom-color: var(--pcr-warn); color: var(--pcr-warn); }
+  #pcr-worksheet :is(#prediction-forward-binding, #prediction-reverse-binding)[data-overlap=true] { background: var(--pcr-warn); }
+  #pcr-worksheet #prediction-forward { accent-color: var(--pcr-f); }
+  #pcr-worksheet #prediction-reverse { accent-color: var(--pcr-r); }
+  #pcr-worksheet label[for=prediction-forward] { color: var(--pcr-f); }
+  #pcr-worksheet label[for=prediction-reverse] { color: var(--pcr-r); }
+  #pcr-worksheet .pcr-tools button[data-prediction-primer=forward] { border-color: var(--pcr-f); color: var(--pcr-f); }
+  #pcr-worksheet .pcr-tools button[data-prediction-primer=reverse] { border-color: var(--pcr-r); color: var(--pcr-r); }
+  #pcr-worksheet .pcr-tools button[data-prediction-primer=forward][aria-pressed=true] { background: var(--pcr-f); color: #fff; }
+  #pcr-worksheet .pcr-tools button[data-prediction-primer=reverse][aria-pressed=true] { background: var(--pcr-r); color: #fff; }
+  #pcr-worksheet .pcr-step-buttons button[data-select-primer=F][aria-pressed=true] { color: var(--pcr-f); box-shadow: inset 0 -3px 0 var(--pcr-f), 0 1px 3px rgba(20, 32, 30, .16); }
+  #pcr-worksheet .pcr-step-buttons button[data-select-primer=R][aria-pressed=true] { color: var(--pcr-r); box-shadow: inset 0 -3px 0 var(--pcr-r), 0 1px 3px rgba(20, 32, 30, .16); }
+  #pcr-worksheet #selection-title[data-mode=F] { color: var(--pcr-f); }
+  #pcr-worksheet #selection-title[data-mode=R] { color: var(--pcr-r); }
+  #pcr-worksheet #sequence-grid[data-mode=F] .pcr-base[aria-pressed=true] { border-bottom-color: var(--pcr-f); background: var(--pcr-f-soft); color: var(--pcr-f); outline-color: var(--pcr-f); }
+  #pcr-worksheet #sequence-grid[data-mode=R] .pcr-base[aria-pressed=true] { border-bottom-color: var(--pcr-r); background: var(--pcr-r-soft); color: var(--pcr-r); outline-color: var(--pcr-r); }
+  #pcr-worksheet #primer-summary-f { border-left: 4px solid var(--pcr-f); padding-left: 14px; }
+  #pcr-worksheet #primer-summary-r { border-left: 4px solid var(--pcr-r); padding-left: 14px; }
+  #pcr-worksheet #primer-summary-f h4 { color: var(--pcr-f); }
+  #pcr-worksheet #primer-summary-r h4 { color: var(--pcr-r); }
+  #pcr-worksheet .pcr-mixture li[data-mixture=forward] { color: var(--pcr-f); }
+  #pcr-worksheet .pcr-mixture li[data-mixture=reverse] { color: var(--pcr-r); }
+  #pcr-worksheet .final-map-F { border-left-color: var(--pcr-f); color: var(--pcr-f); }
+  #pcr-worksheet .final-map-R { border-left-color: var(--pcr-r); color: var(--pcr-r); }
+  #pcr-worksheet .pcr-legend { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 18px 0 4px; padding: 0; list-style: none; font-size: 14px; color: var(--pcr-text); }
+  #pcr-worksheet .pcr-legend li { display: inline-flex; align-items: center; gap: 8px; padding: 0; }
+  #pcr-worksheet .pcr-swatch { display: inline-block; width: 24px; border-top: 4px solid; }
+  #pcr-worksheet .pcr-swatch-template { border-top-color: #687470; border-top-width: 3px; }
+  #pcr-worksheet .pcr-swatch-f { border-top-color: var(--pcr-f); }
+  #pcr-worksheet .pcr-swatch-r { border-top-color: var(--pcr-r); }
+  #pcr-worksheet .pcr-swatch-new { border-top-color: #151918; border-top-width: 3px; }
+  #pcr-worksheet .pcr-legend-pol { padding: 0 5px; border: 1px solid var(--pcr-text); border-radius: 2px; font-size: 12px; line-height: 18px; }
+}
+
+@media screen {
+  /* Questions to answer carry a Q mark; record fields do not */
+  #pcr-worksheet :is(label:has(+ textarea[data-answer]), label:has(+ .pcr-small + textarea[data-answer]), label:has(+ input[data-answer]), label:has(+ .pcr-small + input[data-answer]), label:has(+ select[data-answer]), label:has(+ textarea[data-final]), label:has(+ textarea[data-rna-answer]), label:has(+ select[data-rna-answer]), #ext-reflections label, label[for=ext-selectionReason], #final-controls > h3 + p, .pcr-choice legend) { position: relative; padding-left: 34px; color: var(--pcr-ink); font-size: 17px; line-height: 1.65; }
+  #pcr-worksheet :is(label:has(+ textarea[data-answer]), label:has(+ .pcr-small + textarea[data-answer]), label:has(+ input[data-answer]), label:has(+ .pcr-small + input[data-answer]), label:has(+ select[data-answer]), label:has(+ textarea[data-final]), label:has(+ textarea[data-rna-answer]), label:has(+ select[data-rna-answer]), #ext-reflections label, label[for=ext-selectionReason], #final-controls > h3 + p, .pcr-choice legend)::before { content: 'Q'; position: absolute; left: 0; top: 2px; width: 24px; height: 24px; border-radius: 6px; background: var(--pcr-accent); color: #fff; font: 700 13px/24px Consolas, monospace; text-align: center; }
+  #pcr-worksheet #final-controls label:not([for=final-control-limit]) { padding-left: 0; font-size: 16px; }
+  #pcr-worksheet #final-controls label:not([for=final-control-limit])::before { content: none; }
+
+  /* Writing space looks like a notebook page */
+  #pcr-worksheet textarea, #pcr-worksheet input:not([type=file]):not([type=range]):not([type=radio]):not([type=checkbox]), #pcr-worksheet select { border-color: #b4c1bd; border-radius: 8px; }
+  #pcr-worksheet textarea:not(.pcr-sequence) { padding: 10px 14px; background-color: var(--pcr-paper); background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 27px, var(--pcr-paper-line) 27px, var(--pcr-paper-line) 28px); background-attachment: local; background-position: 0 10px; line-height: 28px; }
+  #pcr-worksheet :is(textarea, input, select):focus-visible { border-color: var(--pcr-accent); outline: 3px solid var(--pcr-accent-soft); outline-offset: 0; }
+  #pcr-worksheet .pcr-choice { margin: 28px 0 8px; padding: 0; border: 0; }
+  #pcr-worksheet .pcr-choice label { margin: 10px 8px 0 0; padding: 6px 16px 6px 12px; border: 1px solid var(--pcr-panel-line); border-radius: 999px; background: #fff; cursor: pointer; }
+  #pcr-worksheet .pcr-choice label:hover { border-color: var(--pcr-accent); }
+  #pcr-worksheet .pcr-choice label:has(input:checked) { border-color: var(--pcr-accent); background: var(--pcr-accent-soft); color: var(--pcr-accent-dark); font-weight: 700; }
+
+  /* Feedback after checking an answer */
+  #pcr-worksheet [data-result]:not(:empty) { margin: 12px 0; padding: 10px 14px 10px 16px; border-left: 4px solid; border-radius: 0 8px 8px 0; color: var(--pcr-ink); font-size: 15px; }
+  #pcr-worksheet [data-result=correct]:not(:empty) { border-color: var(--pcr-ok); background: var(--pcr-ok-soft); }
+  #pcr-worksheet [data-result=retry]:not(:empty) { border-color: var(--pcr-warn); background: var(--pcr-warn-soft); }
+  #pcr-worksheet .pcr-prediction-feedback { margin: 16px 0; border-radius: 0 8px 8px 0; background: var(--pcr-panel); color: var(--pcr-text); font-size: 15px; }
+  #pcr-worksheet .pcr-prediction-feedback[data-state=valid] { border-left-color: var(--pcr-ok); background: var(--pcr-ok-soft); color: var(--pcr-ink); }
+  #pcr-worksheet .pcr-prediction-feedback[data-state=warning] { border-left-color: var(--pcr-warn); background: var(--pcr-warn-soft); color: #5c3800; }
+  #pcr-worksheet .pcr-notice { border-left-width: 4px; border-radius: 0 8px 8px 0; padding: 10px 16px; background: var(--pcr-panel); }
+
+  /* Explanations open on demand */
+  #pcr-worksheet details.pcr-explanation:not(.pcr-menu):not(#worksheet-toc):not(.pcr-extension-activity) { margin: 26px 0; padding: 0 18px; border: 1px solid var(--pcr-panel-line); border-radius: 10px; background: #fff; }
+  #pcr-worksheet details.pcr-explanation[open]:not(.pcr-menu):not(#worksheet-toc):not(.pcr-extension-activity) { padding-bottom: 6px; background: #fbfcfb; }
+  #pcr-worksheet details.pcr-explanation:not(.pcr-menu):not(#worksheet-toc):not(.pcr-extension-activity) > summary { padding: 12px 0; color: var(--pcr-ink); font-size: 15px; }
+  #pcr-worksheet .pcr-explanation summary::before { content: '해설'; width: fit-content; padding: 1px 8px; border-radius: 4px; background: var(--pcr-accent-soft); color: var(--pcr-accent-dark); font-size: 12px; font-weight: 700; }
+  #pcr-worksheet details:not(.pcr-menu):not(#worksheet-toc):not(.pcr-extension-activity) > summary::after { content: '펼치기 ▾'; padding: 2px 10px; border: 1px solid var(--pcr-panel-line); border-radius: 999px; }
+  #pcr-worksheet details[open]:not(.pcr-menu):not(#worksheet-toc):not(.pcr-extension-activity) > summary::after { content: '접기 ▴'; }
+
+  /* Wrap-up and the way on */
+  #pcr-worksheet .pcr-activity > p.pcr-activity-takeaway { max-width: none; padding: 16px 20px; border: 1px solid #c9ddd6; border-radius: 10px; background: #f6faf8; }
+  #pcr-worksheet .pcr-transition { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-top: 44px; padding: 18px 20px; border: 0; border-radius: 12px; background: var(--pcr-panel); }
+  #pcr-worksheet .pcr-transition p { flex: 1 1 320px; margin: 0; }
+  #pcr-worksheet .pcr-transition a { padding: 8px 18px; border-radius: 8px; background: var(--pcr-accent); color: #fff; font-size: 15px; font-weight: 700; text-decoration: none; }
+  #pcr-worksheet .pcr-transition a:hover { background: var(--pcr-accent-dark); }
+
+  /* Activity 03: the result board stays in view while bases are chosen */
+  #pcr-worksheet .pcr-current-design { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; padding: 18px 20px; border: 1px solid var(--pcr-panel-line); border-radius: 12px; background: #fff; }
+  #pcr-worksheet .pcr-current-design > h3:first-child { margin-top: 0; }
+  #pcr-worksheet .pcr-primer-coordinate { font: 700 16px/1.7 PcrNanum, 'Malgun Gothic', sans-serif; font-variant-numeric: tabular-nums; }
+  #pcr-worksheet .pcr-workspace .pcr-map-heading { margin-top: 4px; }
+  #pcr-worksheet .pcr-workbench-layout > .pcr-workspace { margin: 0; }
+  #pcr-worksheet .pcr-map-heading button { border-radius: 999px; }
+  #pcr-worksheet .pcr-design-records, #pcr-worksheet .pcr-review-conclusion, #pcr-worksheet .pcr-evidence-final { border-top-color: var(--pcr-rule); }
+  #pcr-worksheet #saved-designs .pcr-saved { padding: 12px 14px; border: 1px solid var(--pcr-panel-line); border-radius: 10px; }
+
+  /* Activity 04: one pair on a board, one lens at a time */
+  #pcr-worksheet #review-my-design:not(:empty) { margin: 8px 0 20px; padding: 4px 20px 12px; border-radius: 12px; background: var(--pcr-panel); }
+  #pcr-worksheet #review-my-design .pcr-review-pair { border-top: 0; }
+  #pcr-worksheet :is(.pcr-review-pair > div:first-child, .pcr-end-row[data-primer=F]) h4 { color: var(--pcr-f); }
+  #pcr-worksheet :is(.pcr-review-pair > div:nth-child(2), .pcr-end-row[data-primer=R]) h4 { color: var(--pcr-r); }
+  #pcr-worksheet .pcr-review-panel { margin-top: 12px; padding: 2px 22px 18px; border: 1px solid var(--pcr-panel-line); border-radius: 12px; }
+
+  /* Activity 05: the gel looks like a gel */
+  #pcr-worksheet .pcr-gel { column-gap: 0; padding: 10px 0 6px; border: 0; }
+  #pcr-worksheet .pcr-gel-axis { padding-right: 6px; }
+  #pcr-worksheet .pcr-gel-axis .pcr-gel-lane-name { white-space: nowrap; overflow-wrap: normal; }
+  #pcr-worksheet .pcr-gel-lane { padding: 0; border: 0; border-radius: 0; background: transparent; }
+  #pcr-worksheet .pcr-gel-lane:hover:not(:disabled) { background: transparent; }
+  #pcr-worksheet .pcr-gel-lane .pcr-gel-track { border: 0; background: #1f2528; }
+  #pcr-worksheet .pcr-gel-axis + .pcr-gel-lane .pcr-gel-track { border-radius: 10px 0 0 10px; }
+  #pcr-worksheet .pcr-gel-lane:last-child .pcr-gel-track { border-radius: 0 10px 10px 0; }
+  #pcr-worksheet .pcr-gel-lane:hover .pcr-gel-track { background: #283034; }
+  #pcr-worksheet .pcr-gel-lane-name { margin: 0 4px; border-radius: 6px; }
+  #pcr-worksheet .pcr-gel-lane[aria-pressed=true] { border: 0; font-weight: 700; }
+  #pcr-worksheet .pcr-gel-lane[aria-pressed=true] .pcr-gel-lane-name { background: var(--pcr-accent-soft); color: var(--pcr-accent-dark); }
+  #pcr-worksheet .pcr-gel-lane[aria-pressed=true] .pcr-gel-track { box-shadow: inset 0 0 0 2px #7fd3bb; }
+  #pcr-worksheet .pcr-gel-well { border-color: #75847f; background: #161b1d; }
+  #pcr-worksheet .pcr-gel-band { border-top-color: #eafff6; border-radius: 2px; box-shadow: 0 0 8px 1px rgba(150, 255, 214, .55); }
+  #pcr-worksheet .pcr-gel-selection { color: var(--pcr-accent); text-decoration: none; font-weight: 700; }
+  #pcr-worksheet .pcr-evidence-separation { padding: 14px 18px; border: 0; border-left: 4px solid var(--pcr-warn); border-radius: 0 10px 10px 0; background: var(--pcr-warn-soft); }
+  #pcr-worksheet .pcr-evidence-selection { border-left-width: 4px; border-radius: 0 8px 8px 0; background: var(--pcr-panel); }
+
+  /* Activity 06: three routes read as three options */
+  #pcr-worksheet #ext-routes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; border: 0; }
+  #pcr-worksheet #ext-routes button { grid-template-columns: minmax(0, 1fr); gap: 6px; height: 100%; padding: 16px 18px; border: 1px solid var(--pcr-panel-line); border-radius: 12px; background: #fff; }
+  #pcr-worksheet #ext-routes button > span:first-child { color: var(--pcr-accent); font: 700 13px/1.4 Consolas, monospace; }
+  #pcr-worksheet #ext-routes button[aria-pressed=true] { padding: 15px 17px; border: 2px solid var(--pcr-accent); background: var(--pcr-accent-soft); }
+  #pcr-worksheet #ext-routes [data-route-selected]:empty { display: none; }
+  #pcr-worksheet #ext-routes button { align-content: start; font-weight: 400; }
+  #pcr-worksheet #ext-routes [data-route-selected]:not(:empty) { width: fit-content; margin-top: 4px; padding: 1px 8px; border-radius: 4px; background: var(--pcr-accent); color: #fff; font-weight: 700; }
+  #pcr-worksheet .ext-primer-line:has(#ext-my-forward) strong { color: var(--pcr-f); }
+  #pcr-worksheet .ext-primer-line:has(#ext-my-reverse) strong { color: var(--pcr-r); }
+  #pcr-worksheet #ext-open { border-radius: 8px; background: var(--pcr-accent); color: #fff; font-weight: 700; text-decoration: none; }
+  #pcr-worksheet #ext-open:hover { background: var(--pcr-accent-dark); }
+  #pcr-worksheet .ext-candidate { margin-top: 12px; padding: 0 18px 18px; border: 1px solid var(--pcr-panel-line); border-radius: 10px; }
+
+  /* Activity 07 and the extension */
+  #pcr-worksheet .final-block { padding: 6px 0 18px; }
+  #pcr-worksheet #final-notebook { padding: 4px 24px 24px; border: 1px solid var(--pcr-panel-line); border-radius: 12px; background: var(--pcr-paper); }
+  #pcr-worksheet .pcr-extension-activity { margin: 56px 0 24px; padding: 0 24px; border: 1px solid var(--pcr-panel-line); border-radius: 14px; }
+  #pcr-worksheet .pcr-extension-activity > summary { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 16px 0; color: var(--pcr-ink); font-size: 18px; list-style: none; }
+  #pcr-worksheet .pcr-extension-activity > summary::-webkit-details-marker { display: none; }
+  #pcr-worksheet .pcr-extension-activity > summary::after { content: '펼치기 ▾'; margin-left: auto; padding: 2px 10px; border: 1px solid var(--pcr-panel-line); border-radius: 999px; color: var(--pcr-accent); font-size: 12px; font-weight: 400; white-space: nowrap; }
+  #pcr-worksheet .pcr-extension-activity[open] > summary::after { content: '접기 ▴'; }
+  #pcr-worksheet .pcr-extension-activity[open] > summary { border-bottom: 1px solid var(--pcr-rule); }
+}
+@media screen and (max-width: 1150px) {
+  #pcr-worksheet .pcr-current-design { position: static; max-height: none; overflow: visible; padding: 18px 20px; border-top: 1px solid var(--pcr-panel-line); }
+}
+@media screen and (max-width: 900px) {
+  #pcr-worksheet .pcr-document { display: block; }
+  #pcr-worksheet .pcr-guide { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  #pcr-worksheet #ext-routes { grid-template-columns: minmax(0, 1fr); }
+  #pcr-worksheet .pcr-sidebar details { padding-bottom: 0; border-bottom: 0; }
+  #pcr-worksheet #worksheet-toc > summary { padding: 10px 14px; border: 1px solid var(--pcr-panel-line); border-radius: 10px; background: var(--pcr-panel); }
+  #pcr-worksheet #worksheet-toc[open] > summary { margin-bottom: 8px; }
+}
+@media screen and (max-width: 520px) {
+  #pcr-worksheet :is(.pcr-lab, .pcr-workspace, .pcr-cycle-comparison, .pcr-complement-exercise, #evidence-case-view) { margin-left: -6px; margin-right: -6px; padding: 0 14px 14px; }
+  #pcr-worksheet :is(.pcr-lab, .pcr-workspace, .pcr-cycle-comparison, .pcr-complement-exercise, #evidence-case-view)::before { margin: 0 -14px 14px; padding: 9px 14px; }
+  #pcr-worksheet .pcr-activity { padding: 40px 0 44px; }
+  #pcr-worksheet .pcr-guide li { padding: 10px 14px 10px 46px; }
+  #pcr-worksheet .pcr-guide li::before { left: 12px; top: 11px; }
+  #pcr-worksheet .pcr-gel-axis { padding-right: 2px; }
+  #pcr-worksheet .pcr-activity > p.pcr-prompt { padding: 14px 16px; font-size: 17px; }
+  #pcr-worksheet .pcr-transition a { width: 100%; justify-content: center; }
+  #pcr-worksheet .pcr-extension-activity { padding: 0 14px; }
+  #pcr-worksheet #final-notebook { padding: 4px 14px 18px; }
+}
+@media print {
+  #pcr-worksheet .pcr-guide { display: none; }
+  #pcr-worksheet .pcr-legend { margin: 6px 0; font-size: 9pt; }
+  #pcr-worksheet .pcr-primer-F, #pcr-worksheet .pcr-primer-R { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}

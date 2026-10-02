@@ -47,11 +47,11 @@ export function initializeIntro(root, getState, save) {
     label(svg, 7, y + 6, reference ? '5′' : '3′'); label(svg, 568, y + 6, reference ? '3′' : '5′');
   }
   function primer(svg, five, three, y, name, labelAbove, extending = false) {
-    arrow(svg, five, y, three, 'pcr-intro-primer');
+    arrow(svg, five, y, three, `pcr-intro-primer pcr-primer-${name}`);
     const ly = y + (labelAbove ? -16 : 29);
     label(svg, five, ly, '5′', 'middle');
-    if (!extending) label(svg, three, ly, '3′', 'middle', 'pcr-three-prime');
-    label(svg, (five + three) / 2, ly, name, 'middle');
+    if (!extending) label(svg, three, ly, '3′', 'middle', `pcr-three-prime pcr-primer-${name}`);
+    label(svg, (five + three) / 2, ly, name, 'middle', `pcr-primer-name pcr-primer-${name}`);
   }
   const choose = (selector, selected, key) => all(selector).forEach(button => button.setAttribute('aria-pressed', String(button.dataset[key] === String(selected))));
   const roughRegion = value => value === null ? '아직 표시하지 않음' : value < DELETION_LEFT ? '결실 구간의 왼쪽' : value <= DELETION_RIGHT ? '결실 구간 안쪽' : '결실 구간의 오른쪽';
@@ -183,7 +183,7 @@ export function initializeIntro(root, getState, save) {
       label(svg, 30, 24, '원래 주형 / 긴 가닥');
       line(svg, 45, 58, 555, 58); label(svg, 12, 64, '3′'); label(svg, 565, 64, '5′');
       label(svg, 30, 100, '새 가닥 / 한쪽 끝만 정해짐');
-      line(svg, 140, 136, 210, 136, 'pcr-intro-primer'); arrow(svg, 210, 136, 550, 'pcr-new-dna');
+      line(svg, 140, 136, 210, 136, 'pcr-intro-primer pcr-primer-F'); arrow(svg, 210, 136, 550, 'pcr-new-dna');
       label(svg, 128, 142, '5′', 'end'); label(svg, 565, 142, '3′');
       line(svg, 140, 147, 140, 185, 'pcr-pair-guide'); label(svg, 140, 210, 'primer에서 시작', 'middle');
       line(svg, 440, 119, 440, 155, 'pcr-boundary-guide');
@@ -192,7 +192,7 @@ export function initializeIntro(root, getState, save) {
     } else if (cycle === 2) {
       label(svg, 30, 24, '1주기의 새 가닥 → 이번 주기의 주형');
       line(svg, 140, 62, 550, 62); label(svg, 125, 68, '5′', 'end'); label(svg, 565, 68, '3′');
-      line(svg, 440, 140, 370, 140, 'pcr-intro-primer'); arrow(svg, 370, 140, 140, 'pcr-new-dna');
+      line(svg, 440, 140, 370, 140, 'pcr-intro-primer pcr-primer-R'); arrow(svg, 370, 140, 140, 'pcr-new-dna');
       label(svg, 125, 146, '3′', 'end'); label(svg, 455, 146, '5′');
       for (const x of [140, 440]) line(svg, x, 46, x, 170, 'pcr-boundary-guide');
       label(svg, 440, 109, '반대 primer에서 시작', 'middle');
@@ -205,7 +205,7 @@ export function initializeIntro(root, getState, save) {
       line(svg, 140, 91, 440, 91, 'pcr-new-dna'); line(svg, 140, 129, 440, 129, 'pcr-new-dna');
       label(svg, 125, 97, '5′', 'end'); label(svg, 455, 97, '3′'); label(svg, 125, 135, '3′', 'end'); label(svg, 455, 135, '5′');
       for (let x = 155; x < 440; x += 25) line(svg, x, 97, x, 123, 'pcr-pair-guide');
-      line(svg, 140, 91, 210, 91, 'pcr-intro-primer'); line(svg, 370, 129, 440, 129, 'pcr-intro-primer');
+      line(svg, 140, 91, 210, 91, 'pcr-intro-primer pcr-primer-F'); line(svg, 370, 129, 440, 129, 'pcr-intro-primer pcr-primer-R');
       label(svg, 290, 196, '정확한 길이 / 이중가닥', 'middle');
       label(svg, 290, 254, '이후 축적됨 / 긴 산물도 함께 존재', 'middle');
     }
@@ -246,11 +246,12 @@ export function initializeIntro(root, getState, save) {
     $('reverse-step').hidden = !confirmed;
     $('reverse-demonstration').hidden = !confirmed || !view().reverseShown;
     $('complement-feedback').textContent = confirmed ? '상보 서열이 일치합니다. 이제 같은 가닥을 주문 방향으로 읽어 보세요.' : '';
+    $('complement-feedback').dataset.result = confirmed ? 'correct' : '';
     $('direction-feedback').textContent = '';
   }
   $('check-complement').addEventListener('click', () => {
     view().complementConfirmed = correctComplement(); view().reverseShown = false; renderComplement();
-    if (!view().complementConfirmed) $('complement-feedback').textContent = '다시 확인하세요. A–T, G–C를 짝짓고 왼쪽 3′와 오른쪽 5′ 방향을 유지하세요.';
+    if (!view().complementConfirmed) { $('complement-feedback').textContent = '다시 확인하세요. A–T, G–C를 짝짓고 왼쪽 3′와 오른쪽 5′ 방향을 유지하세요.'; $('complement-feedback').dataset.result = 'retry'; }
     save();
   });
   $('direction-complement').addEventListener('input', () => { view().complementConfirmed = false; view().reverseShown = false; renderComplement(); save(); });
@@ -258,8 +259,10 @@ export function initializeIntro(root, getState, save) {
   $('reverse-complement').addEventListener('click', () => { view().reverseShown = true; renderComplement(); save(); });
   $('check-direction').addEventListener('click', () => {
     try {
-      $('direction-feedback').textContent = normalizeSequence($('direction-reverse').value) === reverseComplement('AGTCCGTA') ? '주문용 역상보 서열이 일치합니다. F와 R 모두 5′→3′로 기록합니다.' : '다시 확인하세요. 아래 상보 가닥을 오른쪽 5′에서 왼쪽 3′로 읽어 보세요.';
-    } catch (error) { $('direction-feedback').textContent = error.message; }
+      const matched = normalizeSequence($('direction-reverse').value) === reverseComplement('AGTCCGTA');
+      $('direction-feedback').textContent = matched ? '주문용 역상보 서열이 일치합니다. F와 R 모두 5′→3′로 기록합니다.' : '다시 확인하세요. 아래 상보 가닥을 오른쪽 5′에서 왼쪽 3′로 읽어 보세요.';
+      $('direction-feedback').dataset.result = matched ? 'correct' : 'retry';
+    } catch (error) { $('direction-feedback').textContent = error.message; $('direction-feedback').dataset.result = 'retry'; }
   });
   function renderChoices() {
     for (const fieldset of all('[data-choice]')) {
@@ -269,6 +272,8 @@ export function initializeIntro(root, getState, save) {
     const a = getState().answers;
     $('cycle-choice-feedback').textContent = !a['cycle-boundary-choice'] ? '' : a['cycle-boundary-choice'] === 'primer-pair' ? '맞습니다. primer pair의 결합 위치가 양 끝을 정합니다.' : '각 요소의 역할을 다시 살펴보세요. 주형에 결합해 합성 시작점을 정하는 요소는 무엇일까요?';
     $('direction-choice-feedback').textContent = !a['direction-end-choice'] ? '' : a['direction-end-choice'] === '3' ? '맞습니다. 3′ 말단이 내부를 향하며 이 말단에서 새 DNA 합성이 진행됩니다.' : 'DNA polymerase가 어느 말단의 OH에서 연장하는지 다시 살펴보세요.';
+    $('cycle-choice-feedback').dataset.result = a['cycle-boundary-choice'] === 'primer-pair' ? 'correct' : 'retry';
+    $('direction-choice-feedback').dataset.result = a['direction-end-choice'] === '3' ? 'correct' : 'retry';
   }
   all('[data-choice] input').forEach(input => input.addEventListener('change', () => { getState().answers[input.name] = input.value; renderChoices(); save(); }));
   return {

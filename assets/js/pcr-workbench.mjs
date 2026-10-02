@@ -12,9 +12,9 @@ export function initializeWorkbench(root, getState, getFixture, save, onComputed
   };
   const label = (parent, x, y, text, anchor = 'start', className = '') => parent.appendChild(svgNode('text', { x, y, 'text-anchor': anchor, class: className }, text));
   const path = (parent, d, className) => parent.appendChild(svgNode('path', { d, class: className }));
-  const direction = (parent, from, to, y) => {
+  const direction = (parent, from, to, y, name) => {
     const sign = to > from ? 1 : -1;
-    path(parent, `M${from} ${y}H${to}M${to - sign * 6} ${y - 5}L${to} ${y}L${to - sign * 6} ${y + 5}`, 'pcr-map-primer');
+    path(parent, `M${from} ${y}H${to}M${to - sign * 6} ${y - 5}L${to} ${y}L${to - sign * 6} ${y + 5}`, `pcr-map-primer pcr-primer-${name}`);
   };
   let model = null, anchor = null, drag = null, suppressClick = false, columns = 12, focusPosition = 1;
   const view = () => getState().workbench;
@@ -174,9 +174,9 @@ export function initializeWorkbench(root, getState, getFixture, save, onComputed
       const binding = info.binding;
       if (!binding || !Number.isInteger(Number(binding.start)) || !Number.isInteger(Number(binding.end)) || Number(binding.start) < 1 || Number(binding.end) < Number(binding.start) || Number(binding.end) > length) continue;
       const start = x(Number(binding.start) - 1), end = x(Number(binding.end)), y = name === 'F' ? 134 : 172;
-      direction(bindings, binding.direction === 'right' ? start : end, binding.direction === 'right' ? end : start, y);
+      direction(bindings, binding.direction === 'right' ? start : end, binding.direction === 'right' ? end : start, y, name);
       const center = Math.max(90, Math.min(510, (start + end) / 2));
-      label(bindings, center, y - 10, binding.direction === 'right' ? `5′ ${name} → 3′` : `3′ ← ${name} 5′`, 'middle', 'pcr-map-primer-label');
+      label(bindings, center, y - 10, binding.direction === 'right' ? `5′ ${name} → 3′` : `3′ ← ${name} 5′`, 'middle', `pcr-map-primer-label pcr-primer-${name}`);
     }
     if (model.selectedProduct) {
       const product = model.selectedProduct;
@@ -195,7 +195,7 @@ export function initializeWorkbench(root, getState, getFixture, save, onComputed
     $('map-prediction-legend').textContent = '점선 / 00의 대략적 예측: ' + predictions.map(([name, key]) => `${name} ${getState().initialPrimerPrediction[key]}% 위치`).join(' / ');
     const description = `A ${length} bp. 결실 ${deletion.start}–${deletion.end}. F ${boundsText(model.primers.F.binding)}, R ${boundsText(model.primers.R.binding)}. ${model.selectedProduct ? `예상 amplicon ${model.selectedProduct.start + 1}–${model.selectedProduct.end}, ${model.selectedProduct.length} bp.` : model.placement || model.errors.join(' ')}`;
     $('map-description').textContent = description;
-    $('map-caption').textContent = view().showPrediction ? (Object.values(PRIMER_KEYS).some(key => getState().initialPrimerPrediction[key] !== null) ? '점선: 00의 대략적 예측 / 청록 화살표: 현재 선택. 좌표는 양 끝을 포함합니다.' : '00에서 저장한 초기 위치 예측이 없습니다. 현재 선택은 그대로 유지됩니다.') : '윤곽 구간: B에서 결실된 영역 / 화살표: 합성 방향. 좌표는 양 끝을 포함합니다.';
+    $('map-caption').textContent = view().showPrediction ? (Object.values(PRIMER_KEYS).some(key => getState().initialPrimerPrediction[key] !== null) ? '점선: 00의 대략적 예측 / 파란 F, 빨간 R 화살표: 현재 선택. 좌표는 양 끝을 포함합니다.' : '00에서 저장한 초기 위치 예측이 없습니다. 현재 선택은 그대로 유지됩니다.') : '윤곽 구간: B에서 결실된 영역 / 화살표: 합성 방향. 좌표는 양 끝을 포함합니다.';
   }
   function renderPrimer(name) {
     const info = model.primers[name], container = $(name === 'F' ? 'primer-summary-f' : 'primer-summary-r');
@@ -257,6 +257,7 @@ export function initializeWorkbench(root, getState, getFixture, save, onComputed
       button.textContent = `${name} 선택 ${(model.primers[name].binding?.direction ?? (name === 'F' ? 'right' : 'left')) === 'right' ? '→' : '←'}`;
     }
     $('selection-title').textContent = view().mode === 'F' ? 'Forward primer 선택' : 'Reverse primer 결합 부위 선택';
+    $('selection-title').dataset.mode = view().mode; $('sequence-grid').dataset.mode = view().mode;
     const binding = selected();
     $('range-status').textContent = binding ? `${view().mode} ${boundsText(binding)} 선택${model.primers[view().mode].stats ? ` / ${model.primers[view().mode].stats.length} nt` : ''}. 시작과 끝을 다시 선택해 옮길 수 있습니다.` : '시작 염기와 끝 염기를 차례로 선택하세요.';
     $('selection-direction').textContent = binding ? (binding.direction === 'left' ? '3′ ←──────── 5′ / 왼쪽으로 합성' : '5′ ────────→ 3′ / 오른쪽으로 합성') : '';
