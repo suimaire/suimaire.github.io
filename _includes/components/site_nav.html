@@ -6,7 +6,8 @@
   Includes:
     components/nav/pages.html
   NOTE: local override of the just-the-docs theme include, adding the optional
-    `hide_home_nav_branches` parameter (see below).
+    `hide_home_nav_branches` parameter (see below) and an optional `code`
+    (course letter A/B/C, shown before the title) on site.nav_external_links.
   Overwrites:
     pages_top_size, collections_size, collection_entry,
     collection_key, collection_value, collection.
@@ -47,7 +48,7 @@
               target="_blank" rel="noopener noreferrer"
             {% endif %}
           >
-            {{ node.title }}
+            {% if node.code %}<span class="nav-code">{{ node.code }}</span> {% endif %}{{ node.title }}
             {% unless node.hide_icon %}<svg viewBox="0 0 24 24" aria-labelledby="svg-external-link-title"><use xlink:href="#svg-external-link"></use></svg>{% endunless %}
           </a>
         </li>

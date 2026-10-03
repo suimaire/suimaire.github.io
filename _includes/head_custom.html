@@ -1,6 +1,12 @@
 <link rel="stylesheet" href="{{ '/assets/css/override.css' | relative_url }}">
 <link rel="stylesheet" href="{{ '/assets/css/site-footer.css' | relative_url }}">
 <link rel="stylesheet" href="{{ '/assets/css/portal.css' | relative_url }}">
+{%- if page.url == "/" %}
+{%- comment -%} 메인 포털의 h1 · 수업 제목에만 쓰는 바탕체(assets/css/portal.css --home-serif) {%- endcomment %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&display=swap">
+{%- endif %}
 
 <script src="{{ '/assets/js/heading-numbers.js' | relative_url }}"></script>
 

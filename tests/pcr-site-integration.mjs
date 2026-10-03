@@ -64,9 +64,9 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
       if (!await nav.isVisible()) await page.locator('#menu-button').click();
       check(await nav.getByRole('link', { name: 'PCR과 프라이머 디자인', exact: true }).count() === 0, 'PCR leaf excluded');
       check(await nav.locator('a').count() === 4, 'portal and three category links only');
-      check(await nav.getByRole('link', { name: '생물정보학 · 데이터', exact: true }).count() === 1, 'bioinformatics category preserved');
+      check(await nav.getByRole('link', { name: 'C 생물정보학 · 데이터', exact: true }).count() === 1, 'bioinformatics category preserved');
       const heading = page.locator('#bioinformatics h3').filter({ hasText: 'PCR과 프라이머 디자인' });
-      check((await heading.locator('.heading-number').innerText()).trim() === '1.3.2', 'portal 1.3.2 preserved');
+      check((await heading.locator('.res__code').innerText()).trim() === 'C2', 'portal code C2');
       if (engineName === 'chromium' && width === 1440) {
         await shot(page, 'portal-sidebar.png');
         await page.locator('#bioinformatics').scrollIntoViewIfNeeded(); await shot(page, 'portal-bioinformatics-section.png');
@@ -81,7 +81,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
       check(new URL(page.url()).pathname === path, 'portal link opens PCR');
       check((await page.reload()).status() === 200, 'reload'); await ready(page);
       check(await page.locator('.pcr-back').getAttribute('href') === '/#bioinformatics', 'back link preserved');
-      check(await page.locator('.pcr-eyebrow').innerText() === '1.3.2 생물정보학', 'internal hierarchy preserved');
+      check(await page.locator('.pcr-eyebrow').innerText() === 'C2 · 생물정보학', 'portal code shown on worksheet');
       check(await page.title() === 'PCR과 프라이머 디자인 | HAFS Biology Lab', 'title preserved');
       check(await page.locator('link[rel=canonical]').getAttribute('href') === 'https://suimaire.github.io' + path, 'canonical preserved');
       check(await page.locator('script[src$="/page-views.js"]').count() === 1, 'one module tag');

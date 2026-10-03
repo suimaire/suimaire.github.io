@@ -58,7 +58,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
       assert.equal((await page.goto(base + '/')).status(), 200);
       assert.equal(await saved(), null);
       const portalHeading = page.locator('#bioinformatics h3').filter({ hasText: 'PCR과 프라이머 디자인' });
-      assert.match((await portalHeading.innerText()).replace(/\s+/g, ' '), /^1\.3\.2\s*PCR과 프라이머 디자인$/);
+      assert.match((await portalHeading.innerText()).replace(/\s+/g, ' '), /^C2\s*PCR과 프라이머 디자인$/);
       assert.doesNotMatch(await portalHeading.locator('..').innerText(), /\d+분/);
       await portalHeading.locator('a[href="/bioinformatics/pcr-primer-design/"]').click(); await ready();
       assert.equal(page.url(), url);

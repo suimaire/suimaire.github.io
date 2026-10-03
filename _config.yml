@@ -31,16 +31,21 @@ home_nav_hidden_branches:
 
 # 사이드바에 표시할 수업 영역 (메인 COURSE LIBRARY 의 각 영역으로 이동)
 # 세부 자료는 사이드바가 아니라 메인 COURSE LIBRARY 에서 찾습니다.
+# code: 메인 화면 자료 번호(A1, B4 …)의 앞 글자. 제목 앞에 표시된다
+#       (_includes/components/site_nav.html). index.md 의 수업 글자와 맞춘다.
 nav_external_links:
-  - title: 생태계 · 개체군 모델링
+  - code: A
+    title: 생태계 · 개체군 모델링
     url: /#ecosystem
     hide_icon: true
     opens_in_new_tab: false
-  - title: 분자 · 생화학 탐구
+  - code: B
+    title: 분자 · 생화학 탐구
     url: /#molecular
     hide_icon: true
     opens_in_new_tab: false
-  - title: 생물정보학 · 데이터
+  - code: C
+    title: 생물정보학 · 데이터
     url: /#bioinformatics
     hide_icon: true
     opens_in_new_tab: false

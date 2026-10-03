@@ -84,6 +84,14 @@
   outline-offset: -2px;
 }
 
+/* 수업 영역 앞 글자(A/B/C) — 메인 화면 자료 번호의 앞 글자 */
+.side-bar .nav-code {
+  color: #0d5751;
+  display: inline-block;
+  font-weight: 700;
+  width: 1.15em;
+}
+
 /* nav 묶음 사이 간격 (포털 홈 / 수업 영역) */
 .side-bar .site-nav > .nav-list + .nav-list {
   border-top: 1px solid #e5e3dd;
