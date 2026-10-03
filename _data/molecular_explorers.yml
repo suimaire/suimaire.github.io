@@ -64,3 +64,14 @@
   url: "https://suimaire.github.io/enzyme-explorer/"
   cta: "탐색기 열기"
   status: "운영 중"
+
+- label: "INTERACTIVE BIOENERGETICS"
+  title: "세포호흡 · 광합성과 화학삼투 탐색기"
+  description: "해당과정, 아세틸-CoA 생성, TCA cycle과 광합성의 명반응·Calvin cycle을 그래픽으로 정리하고, H⁺의 전기화학적 기울기와 ATP 합성의 연결을 직접 조작하며 탐구합니다."
+  meta:
+    - "세포호흡 · 광합성"
+    - "화학삼투 · ATP synthase"
+    - "인터랙티브 탐구"
+  url: "https://suimaire.github.io/chemiosmosis-atp-explorer/"
+  cta: "탐색기 열기"
+  status: "운영 중"
