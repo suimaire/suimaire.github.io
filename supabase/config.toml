@@ -1,0 +1,6 @@
+# HAFS public feedback board (development only)
+# Public anonymous requests are allowed through the Edge gateway.
+# The function itself verifies captcha tokens and enforces write quotas;
+# teacher actions verify user JWTs plus feedback_moderators membership.
+[functions.feedback-api]
+verify_jwt = false
