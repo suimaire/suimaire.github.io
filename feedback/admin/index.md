@@ -28,6 +28,7 @@ nav_exclude: true
     </div>
     <p class="feedback-notice" role="status" aria-live="polite" data-admin-notice hidden></p>
     <div class="feedback-admin__list" data-admin-list></div>
+    <button type="button" class="feedback-button feedback-board__more" data-admin-more hidden>이전 의견 더 보기</button>
   </div>
 </section>
 
