@@ -1,5 +1,5 @@
 import {
-  feedbackReady, feedbackApi, feedbackClientId,
+  feedbackReady, feedbackPostingEnabled, feedbackApi, feedbackClientId,
 } from "./feedback-client.js";
 
 const CATEGORY = { bug: "작동 오류", content: "내용 오류", idea: "개선 제안", question: "질문", other: "자유 의견" };
@@ -51,6 +51,7 @@ function postCard(post) {
 }
 
 function initCompose() {
+  if (!feedbackPostingEnabled) return;
   const dialog = element("dialog", "feedback-dialog");
   dialog.innerHTML = [
     '<form class="feedback-form" novalidate>',
@@ -244,7 +245,8 @@ async function refreshHome() {
   try {
     const { posts } = await feedbackApi("list", { params: { offset: 0 } });
     const recent = posts.slice(0, 2);
-    if (!recent.length) list.append(element("li", "feedback-empty", "첫 의견을 남겨 주세요."));
+    if (!recent.length) list.append(element("li", "feedback-empty",
+      feedbackPostingEnabled ? "첫 의견을 남겨 주세요." : "아직 게시된 의견이 없습니다."));
     else list.append(...recent.map(postCard));
   } catch {
     list.append(element("li", "feedback-empty", "의견을 불러오지 못했습니다."));
@@ -266,7 +268,8 @@ async function refreshBoard(append = false) {
   showNotice(notice, "");
   try {
     const { posts, has_more } = await feedbackApi("list", { params: { offset: boardOffset } });
-    if (!append && !posts.length) list.append(element("li", "feedback-empty", "아직 등록된 의견이 없습니다. 첫 의견을 남겨 주세요."));
+    if (!append && !posts.length) list.append(element("li", "feedback-empty",
+      feedbackPostingEnabled ? "아직 등록된 의견이 없습니다. 첫 의견을 남겨 주세요." : "현재 공개된 의견이 없습니다."));
     list.append(...posts.map(postCard));
     boardOffset += posts.length;
     more.hidden = !has_more;
@@ -277,8 +280,20 @@ async function refreshBoard(append = false) {
   }
 }
 if (home || board) {
-  document.querySelectorAll("[data-feedback-compose]").forEach(button =>
-    button.addEventListener("click", initCompose));
+  document.querySelectorAll("[data-feedback-compose]").forEach(button => {
+    if (feedbackPostingEnabled) {
+      button.addEventListener("click", initCompose);
+      return;
+    }
+    button.disabled = true;
+    button.textContent = "의견 작성 준비 중";
+    button.title = "안전 점검이 끝나면 작성 기능을 시작합니다.";
+  });
+  document.querySelectorAll("[data-feedback-intro]").forEach(node => {
+    node.textContent = feedbackPostingEnabled
+      ? "수업 자료의 오류, 질문, 개선 아이디어를 자유롭게 공유해 주세요. 작성한 글은 즉시 공개됩니다."
+      : "의견 게시판을 준비 중입니다. 공개된 의견은 읽을 수 있으며 글쓰기 기능은 안전 점검 후 열립니다.";
+  });
   if (home) refreshHome();
   if (board) {
     refreshBoard();
