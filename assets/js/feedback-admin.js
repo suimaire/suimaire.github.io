@@ -37,7 +37,11 @@ if (root) {
     const h = el("h3", "", post.title);
     const meta = el("p", "feedback-post__meta",
       [post.author_name, post.resource_code, post.category, dateText(post.created_at),
-        post.report_count + "건 신고", post.hidden ? "숨김" : "공개"].join(" · "));
+        post.report_count + "건 신고" + (post.report_reasons?.length ? " (" +
+          post.report_reasons.map(reason => ({
+            spam: "광고", abuse: "비방", privacy: "개인정보", other: "기타",
+          })[reason] || reason).join(", ") + ")" : ""),
+        post.hidden ? "숨김" : "공개"].join(" · "));
     const body = el("p", "feedback-detail__body", post.body);
     const row = el("div", "feedback-actions");
     const status = el("select", "feedback-admin-select");
