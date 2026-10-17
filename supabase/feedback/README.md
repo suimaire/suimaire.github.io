@@ -7,8 +7,8 @@ Status: **feature branch only**. Do not merge/deploy until the separate backend 
 - Home page: latest 2 public posts, "전체 의견 보기", "의견 남기기".
 - /feedback/: public timeline (15/page), anonymous or named posts, view teacher replies,
   report posts, and delete one's own post using a per-post password.
-- /feedback/admin/: teacher email/password login, reply, update status, hide/unhide,
-  permanently delete. No public registration is needed.
+- /feedback/admin/: teacher email/password login, 50-item pagination, reply, update status,
+  hide/unhide and permanently delete. No public registration is needed.
 - New posts appear immediately after successful database insertion. No approval step.
 - Plain-text rendering via textContent; no HTML or Markdown from visitors.
 - Categories: bug / content / idea / question / other. Resource: portal or A1–C99.
