@@ -31,7 +31,7 @@ function showDialog(dialog) {
   }, { once: true });
   if (typeof dialog.showModal === "function") dialog.showModal();
   else dialog.setAttribute("open", "");
-  dialog.querySelector("[data-close]")?.addEventListener("click", () => dialog.close());
+  dialog.querySelectorAll("[data-close]").forEach(button => button.addEventListener("click", () => dialog.close()));
 }
 
 function postCard(post) {
