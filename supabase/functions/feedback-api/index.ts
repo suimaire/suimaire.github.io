@@ -152,13 +152,17 @@ async function postsList(offset: number, admin: boolean): Promise<unknown> {
     .select("post_id,body,created_at,updated_at").in("post_id", ids) : { data: [], error: null };
   if (replies.error) throw replies.error;
   const replyMap = new Map((replies.data || []).map(r => [r.post_id, r]));
-  const reports = admin && ids.length ? await db.from("feedback_reports").select("post_id").in("post_id", ids) : { data: [], error: null };
+  const reports = admin && ids.length ? await db.from("feedback_reports").select("post_id,reason").in("post_id", ids) : { data: [], error: null };
   if (reports.error) throw reports.error;
   const reportCounts = new Map<string,number>();
-  for (const item of reports.data || []) reportCounts.set(item.post_id, (reportCounts.get(item.post_id) || 0) + 1);
+  const reasons = new Map<string,string[]>();
+  for (const item of reports.data || []) {
+    reportCounts.set(item.post_id, (reportCounts.get(item.post_id) || 0) + 1);
+    reasons.set(item.post_id, [...(reasons.get(item.post_id) || []), item.reason]);
+  }
   return {
     posts: items.map(p => ({ ...p, reply: replyMap.get(p.id) || null,
-      ...(admin ? { report_count: reportCounts.get(p.id) || 0 } : {}) })),
+      ...(admin ? { report_count: reportCounts.get(p.id) || 0, report_reasons: reasons.get(p.id) || [] } : {}) })),
     has_more: (data || []).length > limit,
   };
 }
