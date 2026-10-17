@@ -6,6 +6,10 @@ export const feedbackReady = Boolean(
   FEEDBACK_CONFIG.publishableKey.startsWith("sb_publishable_")
 );
 
+// The server retains its own independent write-enable secret. Never rely
+// on this UI flag for actual authorization or write protection.
+export const feedbackPostingEnabled = feedbackReady && FEEDBACK_CONFIG.postingEnabled === true;
+
 export function feedbackClientId() {
   const key = "hafs-feedback-client-id";
   try {
