@@ -179,8 +179,10 @@ async function handle(req: Request): Promise<Response> {
   const b = await readBody(req);
   const clientId = clean(b.client_id);
   if (action === "create") {
-    if (Deno.env.get("FEEDBACK_PUBLIC_POSTING_ENABLED") === "false")
-      throw new HttpError(503, "새 의견 작성이 일시 중지되었습니다.");
+    // Require an explicit server-side opt-in. Newly deployed public functions
+    // must not accept writes before the operator completes QA and moderation setup.
+    if (Deno.env.get("FEEDBACK_PUBLIC_POSTING_ENABLED") !== "true")
+      throw new HttpError(503, "새 의견 작성이 아직 활성화되지 않았습니다.");
     rejectBotTrap(b.website);
     await consume(req, "create", clientId, 3, 600);
     const anonymous = b.is_anonymous !== false;
