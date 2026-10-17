@@ -145,7 +145,15 @@
 .feedback-field input:focus-visible, .feedback-field textarea:focus-visible,
 .feedback-field select:focus-visible { outline: 2px solid #5a9c8a; outline-offset: 1px; }
 .feedback-field textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
-.feedback-captcha { min-height: 36px; }
+.feedback-trap {
+  /* Invisible to ordinary users; non-tabbable input traps naive form bots.
+     This is NOT proof of human origin and MUST be paired with server quotas. */
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 .feedback-detail__body {
   white-space: pre-wrap; overflow-wrap: anywhere; color: #2b3832;
   font-size: .94rem; line-height: 1.8; margin: 1.1rem 0;
