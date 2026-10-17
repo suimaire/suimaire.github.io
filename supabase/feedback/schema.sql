@@ -2,7 +2,7 @@
 -- Apply only to a designated feedback Supabase project. Do not apply to student-record projects.
 -- The browser receives no service/secret key. All database access goes through feedback-api.
 
-create table if not exists public.feedback_posts (
+create table public.feedback_posts (
   id uuid primary key default gen_random_uuid(),
   author_name text not null check (char_length(author_name) between 1 and 24),
   is_anonymous boolean not null default true,
@@ -18,23 +18,23 @@ create table if not exists public.feedback_posts (
   updated_at timestamptz not null default now()
 );
 
-create index if not exists feedback_posts_visible_recent_idx
+create index feedback_posts_visible_recent_idx
   on public.feedback_posts (created_at desc, id desc) where hidden = false;
 
-create table if not exists public.feedback_post_credentials (
+create table public.feedback_post_credentials (
   post_id uuid primary key references public.feedback_posts(id) on delete cascade,
   password_salt text not null,
   password_hash text not null
 );
 
-create table if not exists public.feedback_replies (
+create table public.feedback_replies (
   post_id uuid primary key references public.feedback_posts(id) on delete cascade,
   body text not null check (char_length(body) between 2 and 1500),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
-create table if not exists public.feedback_reports (
+create table public.feedback_reports (
   id uuid primary key default gen_random_uuid(),
   post_id uuid not null references public.feedback_posts(id) on delete cascade,
   reason text not null check (reason in ('spam','abuse','privacy','other')),
@@ -43,15 +43,15 @@ create table if not exists public.feedback_reports (
   unique(post_id, reporter_hash)
 );
 
-create index if not exists feedback_reports_post_id_idx
+create index feedback_reports_post_id_idx
   on public.feedback_reports(post_id);
 
-create table if not exists public.feedback_moderators (
+create table public.feedback_moderators (
   user_id uuid primary key references auth.users(id) on delete cascade,
   created_at timestamptz not null default now()
 );
 
-create table if not exists public.feedback_rate_limits (
+create table public.feedback_rate_limits (
   key_hash text not null,
   action text not null,
   window_bucket bigint not null,
@@ -60,7 +60,7 @@ create table if not exists public.feedback_rate_limits (
   primary key (key_hash, action, window_bucket)
 );
 
-create index if not exists feedback_rate_limits_created_at_idx
+create index feedback_rate_limits_created_at_idx
   on public.feedback_rate_limits(created_at);
 
 -- Every table in the exposed public schema is locked down, including credential hashes.
@@ -87,7 +87,7 @@ grant select, insert, update, delete on public.feedback_rate_limits to service_r
 
 -- One atomic counter. Only the server-side service role can call it.
 -- UTC epoch buckets keep the quota independent of application server clocks.
-create or replace function public.feedback_consume_quota(
+create function public.feedback_consume_quota(
   p_key_hash text, p_action text, p_window_seconds integer, p_max_hits integer
 ) returns boolean
 language plpgsql
