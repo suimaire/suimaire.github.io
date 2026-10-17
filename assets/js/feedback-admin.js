@@ -8,6 +8,8 @@ if (root) {
   const notice = root.querySelector("[data-admin-notice]");
   const authNotice = root.querySelector("[data-admin-auth-notice]");
   let token = "";
+  let offset = 0;
+  const more = root.querySelector("[data-admin-more]");
 
   const say = (target, message) => { target.hidden = !message; target.textContent = message; };
   const dateText = value => new Date(value).toLocaleString("ko-KR", { dateStyle: "short", timeStyle: "short" });
@@ -78,20 +80,26 @@ if (root) {
     card.append(h, meta, body, row, replyLabel, save);
     return card;
   }
-  async function load() {
+  async function load(append = false) {
     if (!token) return;
+    if (!append) offset = 0;
     say(notice, "의견을 불러오는 중입니다.");
+    more.disabled = true;
     try {
-      const { posts, has_more } = await feedbackApi("admin-list", { body: { offset: 0 }, token });
-      feed.replaceChildren();
-      if (!posts.length) feed.append(el("p", "feedback-empty", "접수된 의견이 없습니다."));
+      const { posts, has_more } = await feedbackApi("admin-list", { body: { offset }, token });
+      if (!append) feed.replaceChildren();
+      if (!posts.length && !append) feed.append(el("p", "feedback-empty", "접수된 의견이 없습니다."));
       else feed.append(...posts.map(adminCard));
-      say(notice, has_more ? "최근 50건만 표시됩니다. 이전 의견은 추후 페이지 이동 기능으로 확장할 수 있습니다." : "");
+      offset += posts.length;
+      more.hidden = !has_more;
+      say(notice, "");
       login.hidden = true;
       panel.hidden = false;
     } catch (error) {
       if (/로그인|권한|만료/.test(error.message)) logout(error.message);
       else say(notice, error.message);
+    } finally {
+      more.disabled = false;
     }
   }
   login.addEventListener("submit", async event => {
@@ -115,6 +123,7 @@ if (root) {
     }
   });
   root.querySelector("[data-admin-logout]")?.addEventListener("click", () => logout());
-  root.querySelector("[data-admin-refresh]")?.addEventListener("click", load);
+  root.querySelector("[data-admin-refresh]")?.addEventListener("click", () => load());
+  more?.addEventListener("click", () => load(true));
   if (!feedbackReady) say(authNotice, "독립 Supabase 프로젝트 연결 및 보안 인증 설정 전입니다.");
 }
