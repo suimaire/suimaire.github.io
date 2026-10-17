@@ -25,6 +25,21 @@ export function feedbackClientId() {
   }
 }
 
+async function fetchWithTimeout(url, init, timeoutMs = 12000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } catch (error) {
+    if (error && error.name === "AbortError") {
+      throw new Error("서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해 주세요.");
+    }
+    throw error;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function responseJson(res) {
   let data = {};
   try { data = await res.json(); } catch { /* generic failure below */ }
@@ -41,7 +56,7 @@ export async function feedbackApi(action, { params = {}, body = null, token = nu
   const headers = { apikey: FEEDBACK_CONFIG.publishableKey };
   if (body !== null) headers["Content-Type"] = "application/json";
   if (token) headers.Authorization = "Bearer " + token;
-  const res = await fetch(url, {
+  const res = await fetchWithTimeout(url, {
     method: body === null ? "GET" : "POST",
     headers, body: body === null ? undefined : JSON.stringify(body),
     cache: "no-store",
@@ -52,7 +67,7 @@ export async function feedbackApi(action, { params = {}, body = null, token = nu
 
 export async function teacherLogin(email, password) {
   if (!feedbackReady) throw new Error("의견 게시판 연결을 준비하고 있습니다.");
-  const response = await fetch(FEEDBACK_CONFIG.supabaseUrl + "/auth/v1/token?grant_type=password", {
+  const response = await fetchWithTimeout(FEEDBACK_CONFIG.supabaseUrl + "/auth/v1/token?grant_type=password", {
     method: "POST",
     headers: {
       apikey: FEEDBACK_CONFIG.publishableKey,
