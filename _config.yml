@@ -17,6 +17,11 @@ exclude:
   - vendor/
   - tests/
   - verification.local/
+  # Site-only publishing: keep development artifacts in Git but never render
+  # them as publicly navigable GitHub Pages pages.
+  - supabase/
+  - README.md
+  - MIGRATION_PLAN.md
 
 just_the_docs:
   heading_numbers: false
