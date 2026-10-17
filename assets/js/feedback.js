@@ -1,5 +1,5 @@
 import {
-  feedbackReady, feedbackApi, feedbackClientId, initFeedbackCaptcha,
+  feedbackReady, feedbackApi, feedbackClientId,
 } from "./feedback-client.js";
 
 const CATEGORY = { bug: "작동 오류", content: "내용 오류", idea: "개선 제안", question: "질문", other: "자유 의견" };
@@ -68,7 +68,7 @@ function initCompose() {
     '<label class="feedback-field">내용<textarea name="body" required minlength="5" maxlength="1500" rows="6" placeholder="의견을 구체적으로 적어 주세요."></textarea></label>',
     '<label class="feedback-field">게시글 비밀번호<input name="password" type="password" required minlength="6" maxlength="64" autocomplete="new-password" placeholder="나중에 글을 삭제할 때 필요합니다."></label>',
     '<p class="feedback-help">비밀번호는 서버에서 해시하여 저장합니다. 분실하면 본인이 직접 삭제할 수 없습니다.</p>',
-    '<div class="feedback-captcha" data-captcha></div>',
+    '<label class="feedback-trap" aria-hidden="true">웹사이트<input name="website" tabindex="-1" autocomplete="off"></label>',
     '<p class="feedback-notice" role="status" aria-live="polite" data-notice hidden></p>',
     '<div class="feedback-actions"><button type="button" data-close class="feedback-button feedback-button--secondary">취소</button>',
     '<button type="submit" class="feedback-button feedback-button--primary">작성 즉시 공개</button></div>',
@@ -86,18 +86,12 @@ function initCompose() {
     }
   });
 
-  let captchaToken = "";
-  let resetCaptcha = () => {};
   showDialog(dialog);
   if (!feedbackReady) {
     showNotice(notice, "게시판 서버 연결을 준비하고 있습니다.", true);
     form.querySelector('[type="submit"]').disabled = true;
     return;
   }
-  initFeedbackCaptcha(dialog.querySelector("[data-captcha]"), token => { captchaToken = token; })
-    .then(reset => { resetCaptcha = reset; })
-    .catch(error => showNotice(notice, error.message, true));
-
   form.addEventListener("submit", async event => {
     event.preventDefault();
     const named = form.elements.namedItem("identity").value === "named";
@@ -113,8 +107,6 @@ function initCompose() {
       return showNotice(notice, "제목은 2~80자, 내용은 5~1500자로 입력해 주세요.", true);
     if (password.length < 6 || password.length > 64)
       return showNotice(notice, "게시글 비밀번호는 6~64자로 입력해 주세요.", true);
-    if (!captchaToken) return showNotice(notice, "보안 인증을 완료해 주세요.", true);
-
     const submit = form.querySelector('[type="submit"]');
     submit.disabled = true;
     showNotice(notice, "게시글을 등록하고 있습니다.");
@@ -122,7 +114,8 @@ function initCompose() {
       const result = await feedbackApi("create", { body: {
         category: form.elements.namedItem("category").value,
         is_anonymous: !named, author_name: author, resource_code: code || "portal",
-        title, body, password, captcha_token: captchaToken,
+        title, body, password,
+        website: form.elements.namedItem("website").value,
         client_id: feedbackClientId(),
       } });
       dialog.close();
@@ -134,7 +127,6 @@ function initCompose() {
       }
     } catch (error) {
       showNotice(notice, error.message, true);
-      resetCaptcha();
     } finally {
       submit.disabled = false;
     }
@@ -187,33 +179,27 @@ function openReport(id) {
     '<option value="spam">광고·도배</option><option value="abuse">비방·부적절한 표현</option>',
     '<option value="privacy">개인정보 노출</option><option value="other">기타</option></select></label>',
     '<p class="feedback-help">신고가 접수되면 관리자가 확인합니다. 자동으로 삭제되지는 않습니다.</p>',
-    '<div class="feedback-captcha" data-captcha></div>',
+    '<label class="feedback-trap" aria-hidden="true">웹사이트<input name="website" tabindex="-1" autocomplete="off"></label>',
     '<p data-notice class="feedback-notice" role="status" hidden></p>',
     '<div class="feedback-actions"><button type="button" data-close class="feedback-button feedback-button--secondary">취소</button>',
     '<button type="submit" class="feedback-button feedback-button--primary">신고하기</button></div></form>',
   ].join("");
   showDialog(dialog);
-  let captchaToken = "";
-  let resetCaptcha = () => {};
   const notice = dialog.querySelector("[data-notice]");
-  initFeedbackCaptcha(dialog.querySelector("[data-captcha]"), token => { captchaToken = token; })
-    .then(reset => { resetCaptcha = reset; })
-    .catch(error => showNotice(notice, error.message, true));
   dialog.querySelector("form").addEventListener("submit", async event => {
     event.preventDefault();
-    if (!captchaToken) return showNotice(notice, "보안 인증을 완료해 주세요.", true);
     const button = dialog.querySelector('[type="submit"]');
     button.disabled = true;
     try {
       await feedbackApi("report", { body: {
         id, reason: dialog.querySelector("select").value,
-        captcha_token: captchaToken, client_id: feedbackClientId(),
+        website: dialog.querySelector('[name="website"]').value,
+        client_id: feedbackClientId(),
       } });
       showNotice(notice, "신고가 접수되었습니다.");
       button.textContent = "신고 완료";
     } catch (error) {
       showNotice(notice, error.message, true);
-      resetCaptcha();
       button.disabled = false;
     }
   });
