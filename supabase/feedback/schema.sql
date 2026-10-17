@@ -1,6 +1,9 @@
 -- HAFS Biology Lab / public feedback board
 -- Apply only to a designated feedback Supabase project. Do not apply to student-record projects.
 -- The browser receives no service/secret key. All database access goes through feedback-api.
+-- Apply the entire migration as one transaction: failure rolls back all new objects.
+
+BEGIN;
 
 create table public.feedback_posts (
   id uuid primary key default gen_random_uuid(),
@@ -122,3 +125,5 @@ grant execute on function public.feedback_consume_quota(text,text,integer,intege
 -- Moderator bootstrap (after creating a teacher Auth user):
 -- insert into public.feedback_moderators(user_id) values ('<verified-auth-user-uuid>');
 -- Password hashes, rate limits, reports, moderator IDs must never be returned to visitors.
+
+COMMIT;
