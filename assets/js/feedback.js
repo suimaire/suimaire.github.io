@@ -282,6 +282,8 @@ async function refreshBoard(append = false) {
 if (home || board) {
   document.querySelectorAll("[data-feedback-compose]").forEach(button => {
     if (feedbackPostingEnabled) {
+      button.disabled = false;
+      button.textContent = "＋ 의견 남기기";
       button.addEventListener("click", initCompose);
       return;
     }
