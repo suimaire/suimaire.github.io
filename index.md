@@ -43,6 +43,7 @@ og_image_alt: HAFS BIOLOGY LAB
 {%- endfor -%}
 {%- assign molecular_last = explorer_count | plus: prelearning_count -%}
 
+<link rel="stylesheet" href="{{ '/assets/css/feedback.css' | relative_url }}">
 <div class="science-portal">
   <header class="home-intro">
     <div class="home-intro__text">
@@ -93,6 +94,18 @@ og_image_alt: HAFS BIOLOGY LAB
       </li>
     </ul>
   </nav>
+
+  <section class="feedback-home" data-feedback-home aria-labelledby="feedback-home-title">
+    <div class="feedback-home__head">
+      <h2 id="feedback-home-title">학생 의견 게시판</h2>
+      <a class="feedback-home__link" href="{{ '/feedback/' | relative_url }}">전체 의견 보기 →</a>
+    </div>
+    <p class="feedback-home__help">수업 자료에서 발견한 오류, 질문, 개선 아이디어를 자유롭게 공유해 주세요. 작성한 글은 즉시 공개됩니다.</p>
+    <ul class="feedback-list" data-feedback-recent aria-label="최근 학생 의견"></ul>
+    <div class="feedback-home__actions">
+      <button class="feedback-button feedback-button--primary" type="button" data-feedback-compose>＋ 의견 남기기</button>
+    </div>
+  </section>
 
   <div id="courses">
 
@@ -205,3 +218,5 @@ og_image_alt: HAFS BIOLOGY LAB
 
   </div>
 </div>
+
+<script type="module" src="{{ '/assets/js/feedback.js' | relative_url }}"></script>
