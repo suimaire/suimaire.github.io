@@ -1,6 +1,9 @@
 # HAFS Biology Lab — Public feedback board
 
-Status: **feature branch only.** Do not merge into main or publish until the existing backend and safety checks are reviewed.
+Status: **Phase 1 read-only rollout**. Existing public listing and teacher-login
+paths may be published, but **new student posts remain disabled at both browser
+and server layers** until the remaining moderation/write-path tests pass. Do not
+present this as a fully operational open board.
 
 ## Selected architecture
 
@@ -11,8 +14,9 @@ Status: **feature branch only.** Do not merge into main or publish until the exi
 - ChatGPT's current Supabase connection is to a **different account**.
   Project changes require its owning account in the dashboard or reconnecting.
 - Cloudflare Turnstile is **not required and not used** in this version.
-- Public reads and immediate anonymous/named writes are allowed; only
-  a verified teacher Auth user can moderate.
+- Public reads are allowed now; anonymous/named writes are intentionally
+  disabled during Phase 1. When activated, successful posts publish immediately.
+- Only a verified teacher Auth user can moderate.
 
 ## Check permissions
 
@@ -87,11 +91,14 @@ NOT proof of a genuine human visitor.
 5. Deploy supabase/functions/feedback-api/index.ts, with
    supabase/config.toml specifying verify_jwt=false. Its admin actions
    authenticate the token inside the handler.
-6. assets/js/feedback-config.js already contains the existing project URL
-   and function URL, but its publishableKey is intentionally empty. Add only
-   the existing project's public sb_publishable_... key AFTER the function
-   is deployed and its permissions checked. No secret belongs in GitHub.
-7. Run all tests below before merging the feature branch to main.
+6. assets/js/feedback-config.js uses the existing project's already-public
+   sb_publishable_... key, also used by the page-view counter. No secret key
+   belongs in GitHub.
+7. Phase 1: merge the display-only frontend while postingEnabled=false.
+   The Edge function must continue to return HTTP 503 for action=create.
+8. Phase 2: after moderation and author-post write/delete validation, set the
+   Edge server secret FEEDBACK_PUBLIC_POSTING_ENABLED=true and change the
+   frontend config postingEnabled=true in a separate reviewed deployment.
 
 ## Retention
 
@@ -104,6 +111,31 @@ for example, an operator-approved SQL cleanup after 7 days:
 
 Also agree retention and removal policies for published posts, reports and
 teacher replies, particularly any student personal information.
+
+## Evidence recorded as of 2026-10-17 KST
+
+Verified through dashboard responses/screenshots:
+- Six new feedback tables exist and RLS is enabled.
+- Direct anon/authenticated privileges for the six tables and quota RPC all
+  reported false.
+- Public GET feedback-api?action=list returned an empty list.
+- POST action=admin-list without an Auth JWT returned HTTP 401.
+- Verified teacher login and admin-list both returned HTTP 200.
+- POST action=create returned HTTP 503 (intentionally locked).
+- The one hidden QA post was deleted through the SQL Editor (one row returned).
+
+**Not verified:** in-browser admin reply/status/hide/delete, anonymous create
+and password deletion, reports, write quotas, iPad Safari, school network,
+and end-to-end public post publishing. A failed attempt to operate a local
+moderation test was traced to the wrong test program and is **not** evidence
+that the moderation actions work.
+
+## Phase 1 read-only launch checks
+- Keep postingEnabled=false and backend missing/false secret.
+- The visible "의견 작성 준비 중" button must remain disabled.
+- Public listing may appear empty; this is expected while posting is off.
+- Keep page-view module and A/B/C resource anchors intact.
+- Never modify existing apex_* or page_views_* database objects.
 
 ## Must-pass tests
 
