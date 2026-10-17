@@ -186,8 +186,8 @@ async function handle(req: Request): Promise<Response> {
   const b = await readBody(req);
   const clientId = clean(b.client_id);
   if (action === "create") {
-    await consume(req, "create", clientId, 3, 600);
     await captcha(req, b.captcha_token);
+    await consume(req, "create", clientId, 3, 600);
     const anonymous = b.is_anonymous !== false;
     const author = anonymous ? "익명" : sized(b.author_name, 1, 24, "작성자");
     const category = clean(b.category);
@@ -213,8 +213,8 @@ async function handle(req: Request): Promise<Response> {
     return json(req, { post }, 201);
   }
   if (action === "report") {
-    await consume(req, "report", clientId, 5, 3600);
     await captcha(req, b.captcha_token);
+    await consume(req, "report", clientId, 5, 3600);
     const id = uuid(b.id);
     const reason = clean(b.reason);
     if (!REASONS.has(reason)) throw new HttpError(400, "신고 사유를 선택해 주세요.");
