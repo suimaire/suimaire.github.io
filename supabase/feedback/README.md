@@ -58,9 +58,10 @@ The Cloudflare widget and both Turnstile keys are removed. Protection uses:
 - Honeypot input for simple generic bots.
 - Input validation and safe text-only rendering.
 - Reporting, moderator hiding/deletion.
-- Emergency pause: Supabase Edge Function server setting
-  FEEDBACK_PUBLIC_POSTING_ENABLED = false prevents new posts but allows
-  reading and reports.
+- Safe rollout: new post creation is DENIED by default. Only explicitly
+  setting the server-side Edge secret FEEDBACK_PUBLIC_POSTING_ENABLED=true
+  enables submissions after testing. Setting it to false (or removing it)
+  pauses new posts while preserving reads and reports.
 
 **Limit:** browser identifiers can be replaced, and network/IP signals can be
 unreliable. Deliberate attackers may bypass these measures and cause spam
