@@ -5,4 +5,7 @@ export const FEEDBACK_CONFIG = Object.freeze({
   functionUrl: "https://szbmpsvxzrnewyzqiokr.supabase.co/functions/v1/feedback-api",
   supabaseUrl: "https://szbmpsvxzrnewyzqiokr.supabase.co",
   publishableKey: "sb_publishable_bOM16W0j9Dh6U72M_fNp8Q_HwRZm9tF",
+  // Fail-closed staging. Turn on only after the deployed server's
+  // FEEDBACK_PUBLIC_POSTING_ENABLED=true and the moderation checks pass.
+  postingEnabled: false,
 });
