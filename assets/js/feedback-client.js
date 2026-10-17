@@ -3,8 +3,7 @@ import { FEEDBACK_CONFIG } from "./feedback-config.js";
 export const feedbackReady = Boolean(
   /^https:\/\/[a-z0-9-]+\.supabase\.co\/functions\/v1\/feedback-api$/.test(FEEDBACK_CONFIG.functionUrl) &&
   /^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(FEEDBACK_CONFIG.supabaseUrl) &&
-  FEEDBACK_CONFIG.publishableKey.startsWith("sb_publishable_") &&
-  FEEDBACK_CONFIG.turnstileSiteKey
+  FEEDBACK_CONFIG.publishableKey.startsWith("sb_publishable_")
 );
 
 export function feedbackClientId() {
@@ -45,38 +44,6 @@ export async function feedbackApi(action, { params = {}, body = null, token = nu
     credentials: "omit",
   });
   return responseJson(res);
-}
-
-let turnstilePromise = null;
-function ensureTurnstileScript() {
-  if (window.turnstile) return Promise.resolve(window.turnstile);
-  if (!turnstilePromise) {
-    turnstilePromise = new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-      script.async = true;
-      script.onload = () => window.turnstile ? resolve(window.turnstile) : reject(new Error("보안 인증을 불러오지 못했습니다."));
-      script.onerror = () => reject(new Error("보안 인증 서비스에 연결하지 못했습니다."));
-      document.head.append(script);
-    });
-  }
-  return turnstilePromise;
-}
-
-export async function initFeedbackCaptcha(mount, onToken) {
-  if (!feedbackReady) throw new Error("보안 인증 설정을 준비 중입니다.");
-  const turnstile = await ensureTurnstileScript();
-  const id = turnstile.render(mount, {
-    sitekey: FEEDBACK_CONFIG.turnstileSiteKey,
-    theme: "auto",
-    callback: token => onToken(token),
-    "expired-callback": () => onToken(""),
-    "error-callback": () => onToken(""),
-  });
-  return () => {
-    onToken("");
-    try { turnstile.reset(id); } catch { /* widget may already have been removed */ }
-  };
 }
 
 export async function teacherLogin(email, password) {
