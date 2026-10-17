@@ -1,96 +1,136 @@
-# HAFS Biology Lab — public feedback board
+# HAFS Biology Lab — Public feedback board
 
-Status: **feature branch only**. Do not merge/deploy until the separate backend and safety checklist below are completed.
+Status: **feature branch only.** Do not merge into main or publish until the existing backend and safety checks are reviewed.
+
+## Selected architecture
+
+- Reuse the existing **page-view** Supabase project: predator-prey-simulation-2
+  (project ref: szbmpsvxzrnewyzqiokr). Do NOT create another project.
+- That project already serves assets/js/page-views.js. Do not change or
+  delete its existing page-view tables, functions, settings, or keys.
+- ChatGPT's current Supabase connection is to a **different account**.
+  Project changes require its owning account in the dashboard or reconnecting.
+- Cloudflare Turnstile is **not required and not used** in this version.
+- Public reads and immediate anonymous/named writes are allowed; only
+  a verified teacher Auth user can moderate.
+
+## Check permissions
+
+1. Open https://supabase.com/dashboard/project/szbmpsvxzrnewyzqiokr
+2. Click the organization at top left (cavempt Org) and open
+   Organization Settings > Team / Members.
+3. Confirm logged-in member's role. Owner or Administrator has project
+   management permission. Developer can work with database content but has
+   limited project settings; Read-Only cannot make changes.
+4. Open SQL Editor and Edge Functions to check availability. Do not run SQL
+   mutations until the existing schema is understood.
+
+Reference: https://supabase.com/docs/guides/platform/access-control
 
 ## User flow
 
-- Home page: latest 2 public posts, "전체 의견 보기", "의견 남기기".
-- /feedback/: public timeline (15/page), anonymous or named posts, view teacher replies,
-  report posts, and delete one's own post using a per-post password.
-- /feedback/admin/: teacher email/password login, 50-item pagination, reply, update status,
-  hide/unhide and permanently delete. No public registration is needed.
-- New posts appear immediately after successful database insertion. No approval step.
-- Plain-text rendering via textContent; no HTML or Markdown from visitors.
-- Categories: bug / content / idea / question / other. Resource: portal or A1–C99.
+- Home: latest 2 public posts, full board link, quick compose.
+- /feedback/: most recent 15/page, anonymous or named submission,
+  teacher replies, reporting and password-protected deletion.
+- /feedback/admin/: teacher login, 50-item pagination, reply,
+  status changes, hiding/unhiding and deletion.
+- All comments are displayed as plain text (no visitor-provided HTML).
+- Categories: bug, content, idea, question, other. Resources: portal, A1–C99.
 
-## Architecture and data protection
+## Authorization
 
-- Frontend: static GitHub Pages + ES modules under assets/js.
-- Server: one Supabase Edge Function, feedback-api.
-- Database: schema.sql creates posts, credentials, replies, reports, moderators, rate limits.
-- All six tables have RLS enabled and no public CRUD grants or policies.
-- The Edge Function is the only access path, using the server-side service/secret key.
-- Teacher authorization checks a verified Auth user against feedback_moderators.
-- Post passwords: random per-post salt + 180,000-iteration PBKDF2/SHA-256.
-- Abuse controls: Cloudflare Turnstile server-side Siteverify and atomic browser/network quotas.
-- Turnstile secret is mandatory for anonymous submissions. No secret = writes fail closed.
-- Browser IDs/IP-based quotas are not a guarantee against deliberate attackers; monitor reports.
-- Neither IP addresses nor raw passwords are stored in post tables. Hashed abuse identifiers
-  are stored and should have a documented retention/cleanup policy.
+- Browser: static GitHub Pages ES modules.
+- Server: Supabase Edge Function feedback-api (verify_jwt=false).
+- Six new tables named feedback_*: posts, post_credentials, replies,
+  reports, moderators, rate_limits.
+- RLS is enabled on every new table and anonymous/authenticated direct
+  table operations are denied; server operations use its own secret key.
+- Teacher operations require a verified Auth JWT and membership in
+  feedback_moderators; never accept a name or browser flag as proof.
+- Author post deletion uses salted PBKDF2-SHA256 password hashing.
 
-## Deployment prerequisites
+## No-CAPTCHA tradeoffs
 
-**Do not use a database that contains student screen-time uploads or English participation
-records.** Provision/designate a separate Supabase project for the feedback board first.
-The current connected Supabase account does not grant access to the legacy page-view project.
+The Cloudflare widget and both Turnstile keys are removed. Protection uses:
+- Atomic database quotas via feedback_consume_quota: 3 posts/10m per
+  browser+network, 5 reports/hour per browser+network, 120 requests/hour and
+  320 requests/day per network.
+- Honeypot input for simple generic bots.
+- Input validation and safe text-only rendering.
+- Reporting, moderator hiding/deletion.
+- Emergency pause: Supabase Edge Function server setting
+  FEEDBACK_PUBLIC_POSTING_ENABLED = false prevents new posts but allows
+  reading and reports.
 
-1. Create a separate Supabase project in the desired organization and region after reviewing
-   any billing implications. Do not assume a third free project is available.
-2. Review and run supabase/feedback/schema.sql on the chosen project. Prefer generating a
-   regular timestamped migration through the installed Supabase CLI for repository-managed history.
-   Run Supabase security advisors; confirm all six feedback tables deny anon/authenticated access.
-3. In Supabase Authentication, create the teacher's account manually. Disable public signup
-   unless it is needed for other parts of the dedicated project. Add its verified Auth user UUID
-   to public.feedback_moderators with the example INSERT at the end of schema.sql.
-4. Create a Cloudflare Turnstile widget for the exact hostname suimaire.github.io.
-   Configure the private FEEDBACK_TURNSTILE_SECRET in the Edge Function's **server-only** secrets.
-   Never commit the secret key.
-5. Deploy supabase/functions/feedback-api/index.ts with the setting in supabase/config.toml.
-   The function must use verify_jwt=false because anonymous visitors are allowed;
-   admin endpoints verify JWTs and authorization inside the handler.
-6. Set the four public values in assets/js/feedback-config.js:
-   - functionUrl = https://<project-ref>.supabase.co/functions/v1/feedback-api
-   - supabaseUrl = https://<project-ref>.supabase.co
-   - publishableKey = the project's **sb_publishable_...** public key
-   - turnstileSiteKey = the Turnstile public site key
-   NEVER put a sb_secret/service_role key in a browser file.
-7. Verify the deployment tests below BEFORE merging this branch into main.
+**Limit:** browser identifiers can be replaced, and network/IP signals can be
+unreliable. Deliberate attackers may bypass these measures and cause spam
+or consume the project's shared resources. Be prepared to disable posting
+and add stronger bot verification if abuse occurs. CORS and honeypots are
+NOT proof of a genuine human visitor.
 
-Note: recent Supabase Data API configurations may require explicit exposure/grants for
-newly created public-schema tables and functions. The only callable RPC needed by
-feedback-api is feedback_consume_quota, granted to service_role only.
-Confirm PostgREST is configured to permit the service-role requests needed by the function.
+## Deployment on the page-view project
 
-## Must-pass tests before public launch
+1. First run only this **read-only** SQL in the selected project's SQL Editor:
 
-1. Guest reads latest posts and detail without login; hidden posts do not appear.
-2. A visitor can submit both as "익명" and as a named author. Post appears instantly.
-3. The stored displayed name is "익명" for anonymous submissions.
-4. Missing/invalid/expired/reused Turnstile token is rejected server-side.
-5. Input length, invalid resource codes and excessive posting are rejected server-side.
-6. HTML injection payload displays as literal plain text, not executable markup.
-7. Wrong deletion password does not delete; correct password deletes only its own post.
-8. Reports appear in moderator counts, and duplicate reports from the same identifier
-   do not count twice.
-9. Non-moderator Auth users and missing/expired JWTs cannot call admin actions.
-10. A moderator can answer, set statuses, hide/reveal and delete posts.
-11. Anonymous Data API requests to ALL feedback tables and RPC are denied.
-12. Check mobile Safari/iPad layout, keyboard focus, modal cancellation, page scrolling,
-    and behavior on the school's actual network.
-13. Confirm existing home course links A1–C2 and page-view counter still work.
-14. Observe moderation workload and define data retention, handling of student information,
-    content takedown response time and abuse-response procedures.
+       SELECT schemaname, tablename FROM pg_tables
+       WHERE schemaname = 'public' ORDER BY tablename;
+
+   Check existing table/function names before adding any objects.
+2. Review and apply supabase/feedback/schema.sql, which creates only
+   feedback_* tables and one feedback_* quota RPC.
+3. Run database security advisors. Check that anon and authenticated roles
+   cannot directly access feedback_* tables or the private quota RPC.
+4. Authentication > Users: create a dedicated teacher account. Confirm the
+   current project's Auth configuration before disabling any signup setting.
+   Insert the teacher's verified Auth UID into feedback_moderators.
+5. Deploy supabase/functions/feedback-api/index.ts, with
+   supabase/config.toml specifying verify_jwt=false. Its admin actions
+   authenticate the token inside the handler.
+6. assets/js/feedback-config.js already contains the existing project URL
+   and function URL, but its publishableKey is intentionally empty. Add only
+   the existing project's public sb_publishable_... key AFTER the function
+   is deployed and its permissions checked. No secret belongs in GitHub.
+7. Run all tests below before merging the feature branch to main.
+
+## Retention
+
+feedback_rate_limits stores hashes, not plaintext IP addresses. The schema
+adds a created_at timestamp to support cleanup. Decide a retention policy;
+for example, an operator-approved SQL cleanup after 7 days:
+
+    DELETE FROM public.feedback_rate_limits
+    WHERE created_at < now() - interval '7 days';
+
+Also agree retention and removal policies for published posts, reports and
+teacher replies, particularly any student personal information.
+
+## Must-pass tests
+
+1. Existing page-view counter and all A1–C2 links still work.
+2. Visitors can read public posts; hidden posts are not exposed.
+3. Anonymous and named posts appear immediately after submission.
+4. Honeypot, invalid payloads and over-quota writes are rejected.
+5. Teacher can authenticate, reply, change status, hide/unhide and delete.
+6. No-session and non-moderator JWTs cannot call admin actions.
+7. Data API denies anon reads/writes to new tables and private quota RPC.
+8. Incorrect password cannot delete; correct one can delete its own post.
+9. User input never executes HTML or scripts.
+10. Report reasons/counts and deduplication work as specified.
+11. Emergency pause blocks new posts while preserving reads and reports.
+12. Test iPad Safari, school network, keyboard focus and modal cancellation.
+13. Monitor quota and ensure sharing the DB does not disrupt page views.
 
 ## Rollback
 
-Before production, the entire feature is isolated to feature/public-feedback-board.
-If deployment fails later, revert the feature's frontend merge or clear functionUrl
-to disable frontend requests. Do not drop feedback tables if legitimate posts exist:
-archive/export responsibly and plan deletion with the operator.
+All code is on feature/public-feedback-board, not main. If problems occur
+after public launch, revert the frontend or unset publishableKey. Keep
+student data and page-view schema intact; never reset the Supabase project
+to remove this feature.
 
-## References
+## Official references
 
-- Supabase Edge secrets: https://supabase.com/docs/guides/functions/secrets
-- Edge function JWT configuration: https://supabase.com/docs/guides/functions/function-configuration
-- Data API grants and RLS: https://supabase.com/docs/guides/api/securing-your-api
-- Turnstile server validation: https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
+- https://supabase.com/docs/guides/platform/access-control
+- https://supabase.com/docs/guides/functions/secrets
+- https://supabase.com/docs/guides/functions/auth
+- https://supabase.com/docs/guides/api/securing-your-api
+- https://supabase.com/docs/guides/functions/examples/rate-limiting
