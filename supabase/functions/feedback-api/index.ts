@@ -87,7 +87,8 @@ async function consume(req: Request, action: string, clientId: string,
   // network quota avoids blocking a whole classroom behind one public IP.
   const rules: Array<[string, string, number, number]> = [
     [action + "-browser", "browser:" + browser + ":" + network, browserMax, windowSeconds],
-    [action + "-network", "network:" + network, 120, 3600],
+    [action + "-network-hour", "network:" + network, 120, 3600],
+    [action + "-network-day", "network:" + network, 320, 86400],
   ];
   for (const [scope, key, max, seconds] of rules) {
     const digest = await sha256(serviceKey + ":" + key);
@@ -98,22 +99,10 @@ async function consume(req: Request, action: string, clientId: string,
     if (data !== true) throw new HttpError(429, "요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.");
   }
 }
-async function captcha(req: Request, token: unknown): Promise<void> {
-  const secret = Deno.env.get("FEEDBACK_TURNSTILE_SECRET");
-  if (!secret) throw new HttpError(503, "게시판 보안 인증이 아직 설정되지 않았습니다.");
-  const value = sized(token, 10, 2048, "보안 인증");
-  const data = new FormData();
-  data.set("secret", secret);
-  data.set("response", value);
-  if (requester(req) !== "unavailable") data.set("remoteip", requester(req));
-  const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST", body: data,
-  });
-  if (!response.ok) throw new HttpError(503, "보안 인증 서버에 연결하지 못했습니다.");
-  const result = await response.json();
-  if (result.success !== true || result.hostname !== "suimaire.github.io") {
-    throw new HttpError(403, "보안 인증에 실패했습니다. 다시 시도해 주세요.");
-  }
+function rejectBotTrap(value: unknown): void {
+  // Simple honeypot. This deters naive automated form submissions but not
+  // determined scripts; the database-enforced quotas remain necessary.
+  if (clean(value)) throw new HttpError(400, "올바르지 않은 입력입니다.");
 }
 async function readBody(req: Request): Promise<Record<string, unknown>> {
   if (!(req.headers.get("content-type") || "").startsWith("application/json"))
@@ -190,7 +179,9 @@ async function handle(req: Request): Promise<Response> {
   const b = await readBody(req);
   const clientId = clean(b.client_id);
   if (action === "create") {
-    await captcha(req, b.captcha_token);
+    if (Deno.env.get("FEEDBACK_PUBLIC_POSTING_ENABLED") === "false")
+      throw new HttpError(503, "새 의견 작성이 일시 중지되었습니다.");
+    rejectBotTrap(b.website);
     await consume(req, "create", clientId, 3, 600);
     const anonymous = b.is_anonymous !== false;
     const author = anonymous ? "익명" : sized(b.author_name, 1, 24, "작성자");
@@ -217,7 +208,7 @@ async function handle(req: Request): Promise<Response> {
     return json(req, { post }, 201);
   }
   if (action === "report") {
-    await captcha(req, b.captcha_token);
+    rejectBotTrap(b.website);
     await consume(req, "report", clientId, 5, 3600);
     const id = uuid(b.id);
     const reason = clean(b.reason);
