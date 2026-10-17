@@ -4,5 +4,5 @@ export const FEEDBACK_CONFIG = Object.freeze({
   // Existing HAFS page-view project. Endpoint is not yet deployed.
   functionUrl: "https://szbmpsvxzrnewyzqiokr.supabase.co/functions/v1/feedback-api",
   supabaseUrl: "https://szbmpsvxzrnewyzqiokr.supabase.co",
-  publishableKey: "",
+  publishableKey: "sb_publishable_bOM16W0j9Dh6U72M_fNp8Q_HwRZm9tF",
 });
