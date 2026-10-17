@@ -56,8 +56,12 @@ create table if not exists public.feedback_rate_limits (
   action text not null,
   window_bucket bigint not null,
   hit_count integer not null default 1 check (hit_count >= 1),
+  created_at timestamptz not null default now(),
   primary key (key_hash, action, window_bucket)
 );
+
+create index if not exists feedback_rate_limits_created_at_idx
+  on public.feedback_rate_limits(created_at);
 
 -- Every table in the exposed public schema is locked down, including credential hashes.
 alter table public.feedback_posts enable row level security;
