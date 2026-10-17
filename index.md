@@ -100,10 +100,10 @@ og_image_alt: HAFS BIOLOGY LAB
       <h2 id="feedback-home-title">학생 의견 게시판</h2>
       <a class="feedback-home__link" href="{{ '/feedback/' | relative_url }}">전체 의견 보기 →</a>
     </div>
-    <p class="feedback-home__help">수업 자료에서 발견한 오류, 질문, 개선 아이디어를 자유롭게 공유해 주세요. 작성한 글은 즉시 공개됩니다.</p>
+    <p class="feedback-home__help" data-feedback-intro>의견 게시판을 준비 중입니다. 현재 공개된 글을 읽을 수 있습니다.</p>
     <ul class="feedback-list" data-feedback-recent aria-label="최근 학생 의견"></ul>
     <div class="feedback-home__actions">
-      <button class="feedback-button feedback-button--primary" type="button" data-feedback-compose>＋ 의견 남기기</button>
+      <button class="feedback-button feedback-button--primary" type="button" data-feedback-compose disabled>의견 작성 준비 중</button>
     </div>
   </section>
 
