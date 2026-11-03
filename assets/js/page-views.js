@@ -90,6 +90,16 @@ export function isWithinDedupeWindow(lastCountedAt, now, windowMs = PAGE_VIEWS_C
 
 const formatNumber = (value) => Number(value).toLocaleString('ko-KR');
 
+/**
+ * Sites can display a clearly documented estimated pre-counter baseline
+ * without altering the actual stored view counts. Invalid offsets are ignored.
+ */
+export function displayTotalWithOffset(total, rawOffset) {
+  if (typeof rawOffset !== 'string' || !/^(0|[1-9][0-9]{0,8})$/.test(rawOffset)) return total;
+  const adjusted = total + Number(rawOffset);
+  return Number.isSafeInteger(adjusted) ? adjusted : total;
+}
+
 export function formatCounts(today, total) {
   return `today ${formatNumber(today)} · total ${formatNumber(total)}`;
 }
@@ -289,7 +299,8 @@ export async function initPageViewCounter(options = {}) {
     element.hidden = false;
     try {
       const { today, total } = await countsPromise;
-      renderCounts(element, today, total, mode === 'mock' ? ' (mock)' : mode === 'read' ? ' (읽기 전용)' : '');
+      const displayTotal = displayTotalWithOffset(total, element.getAttribute('data-page-views-total-offset'));
+      renderCounts(element, today, displayTotal, mode === 'mock' ? ' (mock)' : mode === 'read' ? ' (읽기 전용)' : '');
     } catch (error) {
       element.hidden = true;
       element.textContent = '';
