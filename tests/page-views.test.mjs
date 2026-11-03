@@ -6,6 +6,7 @@ import {
   resolveMode,
   isWithinDedupeWindow,
   formatCounts,
+  displayTotalWithOffset,
   renderCounts,
   loadCounts,
   callCounterRpc,
@@ -68,6 +69,18 @@ test('isWithinDedupeWindow: 30분', () => {
   assert.equal(isWithinDedupeWindow(now - win + 1, now), true);
   assert.equal(isWithinDedupeWindow(now - win, now), false);
   assert.equal(isWithinDedupeWindow(now + 60_000, now), false);
+});
+
+
+test('displayTotalWithOffset: estimated historical baseline affects display only', () => {
+  assert.equal(displayTotalWithOffset(1, '500'), 501);
+  assert.equal(displayTotalWithOffset(2, '500'), 502);
+  assert.equal(displayTotalWithOffset(1, null), 1);
+  assert.equal(displayTotalWithOffset(1, ''), 1);
+  assert.equal(displayTotalWithOffset(1, '-500'), 1);
+  assert.equal(displayTotalWithOffset(1, 'abc'), 1);
+  assert.equal(displayTotalWithOffset(1, '1.5'), 1);
+  assert.equal(displayTotalWithOffset(1, '1000000000'), 1);
 });
 
 test('formatCounts: ko-KR 천 단위', () => {
