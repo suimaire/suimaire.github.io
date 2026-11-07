@@ -84,8 +84,8 @@ test('displayTotalWithOffset: estimated historical baseline affects display only
 });
 
 test('formatCounts: ko-KR 천 단위', () => {
-  assert.equal(formatCounts(37, 1284), 'today 37 - total 1,284');
-  assert.equal(formatCounts(0, 1234567), 'today 0 - total 1,234,567');
+  assert.equal(formatCounts(37, 1284), 'today 37 | total 1,284');
+  assert.equal(formatCounts(0, 1234567), 'today 0 | total 1,234,567');
 });
 
 // renderCounts 가 쓰는 DOM API 만 흉내 낸 최소 element
@@ -112,11 +112,11 @@ test('renderCounts: 기본 텍스트는 formatCounts 와 동일, today/sep/total
   assert.equal(element.text, formatCounts(1234, 18392));
   assert.deepEqual(element.children.map((n) => [n.className, n.textContent]), [
     ['page-views__today', 'today 1,234'],
-    ['page-views__sep', ' - '],
+    ['page-views__sep', ' | '],
     ['page-views__total', 'total 18,392'],
   ]);
   renderCounts(element, 24, 1392, ' (mock)');
-  assert.equal(element.text, 'today 24 - total 1,392 (mock)');
+  assert.equal(element.text, 'today 24 | total 1,392 (mock)');
 });
 
 function memoryStorage() {

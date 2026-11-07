@@ -1,5 +1,5 @@
 /*
- * HAFS 과학 수업 포털 공통 조회수 표시 ("today 37 - total 1,284")
+ * HAFS 과학 수업 포털 공통 조회수 표시 ("today 37 | total 1,284")
  *
  * 이 파일 하나를 포털(Jekyll)과 모든 학습 앱(별도 GitHub Pages 저장소)이 함께 씁니다.
  *   포털  : _includes/footer_custom.html 이 로드
@@ -9,13 +9,13 @@
  * DB 스키마: suimaire/predator-prey-simulation-2 저장소 supabase/migrations/20260913_page_views.sql
  *
  * 집계 규칙
- *   - page_key = URL pathname 정규화 (query/hash 제외, index.html-.html 제거, 끝 '/' 통일, 소문자)
- *   - https://suimaire.github.io 에서만 증가. localhost-127.0.0.1-file:// 등은 절대 증가시키지 않음
+ *   - page_key = URL pathname 정규화 (query/hash 제외, index.html 및 .html 제거, 끝 '/' 통일, 소문자)
+ *   - https://suimaire.github.io 에서만 증가. localhost, 127.0.0.1, file:// 등은 절대 증가시키지 않음
  *   - 같은 브라우저에서 같은 page_key 를 30분 이내 다시 열면 증가 없이 현재 값만 읽음
  *   - 오늘/전체 계산과 KST 날짜 판정은 전부 DB 함수가 수행
  *
  * 개발 환경 표시 (production 이 아닌 곳)
- *   기본       : "조회수 - 개발 환경에서는 집계하지 않음"
+ *   기본       : "조회수: 개발 환경에서는 집계하지 않음"
  *   ?page-views=mock : 가짜 숫자로 UI 확인
  *   ?page-views=live : 실제 숫자를 읽기 전용으로 표시(증가 없음)
  *
@@ -101,12 +101,12 @@ export function displayTotalWithOffset(total, rawOffset) {
 }
 
 export function formatCounts(today, total) {
-  return `today ${formatNumber(today)} - total ${formatNumber(total)}`;
+  return `today ${formatNumber(today)} | total ${formatNumber(total)}`;
 }
 
 /**
  * 표시 줄을 semantic span 으로 채웁니다. 기본 표시는 formatCounts 와 같은 한 줄
- *   <span class="page-views__today">today 37</span><span class="page-views__sep"> - </span><span class="page-views__total">total 1,284</span>
+ *   <span class="page-views__today">today 37</span><span class="page-views__sep"> | </span><span class="page-views__total">total 1,284</span>
  * 앱은 이 class 로 배치를 바꿀 수 있습니다(예: separator 숨기고 today/total 을 두 줄로).
  */
 export function renderCounts(element, today, total, suffix = '') {
@@ -119,7 +119,7 @@ export function renderCounts(element, today, total, suffix = '') {
   };
   element.replaceChildren(
     part('page-views__today', `today ${formatNumber(today)}`),
-    part('page-views__sep', ' - '),
+    part('page-views__sep', ' | '),
     part('page-views__total', `total ${formatNumber(total)}`),
   );
   if (suffix) element.append(suffix);
@@ -290,7 +290,7 @@ export async function initPageViewCounter(options = {}) {
     element.classList.add('page-views');
 
     if (mode === 'disabled') {
-      element.textContent = '조회수 - 개발 환경에서는 집계하지 않음';
+      element.textContent = '조회수: 개발 환경에서는 집계하지 않음';
       element.hidden = false;
       return;
     }

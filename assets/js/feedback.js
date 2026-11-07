@@ -41,9 +41,9 @@ function postCard(post) {
   const heading = element("span", "feedback-post__title", post.title);
   const meta = element("span", "feedback-post__meta");
   meta.textContent = [CATEGORY[post.category] || "의견", post.resource_code === "portal" ? "전체 포털" : post.resource_code,
-    post.author_name, dateText(post.created_at)].join(" - ");
+    post.author_name, dateText(post.created_at)].join(" | ");
   const lower = element("span", "feedback-post__status", STATUS[post.status] || "접수");
-  if (post.reply) lower.textContent += " - 교사 답변";
+  if (post.reply) lower.textContent += " | 교사 답변";
   button.append(heading, meta, lower);
   button.addEventListener("click", () => openDetail(post.id));
   item.append(button);
@@ -59,7 +59,7 @@ function initCompose() {
     '<p class="feedback-help">게시글은 제출 즉시 전체 공개됩니다. 개인정보와 타인의 실명은 게시하지 마세요.</p>',
     '<fieldset class="feedback-fieldset"><legend>작성자 표시</legend>',
     '<label><input type="radio" name="identity" value="anonymous" checked> 익명</label>',
-    '<label><input type="radio" name="identity" value="named"> 이름-닉네임</label></fieldset>',
+    '<label><input type="radio" name="identity" value="named"> 이름 또는 닉네임</label></fieldset>',
     '<label class="feedback-field feedback-nickname" hidden>표시할 이름 또는 닉네임<input name="author" maxlength="24" autocomplete="nickname" placeholder="24자 이내"></label>',
     '<div class="feedback-form__row"><label class="feedback-field">분류<select name="category">',
     '<option value="idea">개선 제안</option><option value="bug">작동 오류</option>',
@@ -155,7 +155,7 @@ async function openDetail(id) {
     const { post } = await feedbackApi("detail", { params: { id } });
     dialog.querySelector("[data-title]").textContent = post.title;
     dialog.querySelector("[data-meta]").textContent = [CATEGORY[post.category], post.resource_code === "portal" ? "전체 포털" : post.resource_code,
-      post.author_name, dateText(post.created_at), STATUS[post.status]].join(" - ");
+      post.author_name, dateText(post.created_at), STATUS[post.status]].join(" | ");
     dialog.querySelector("[data-body]").textContent = post.body;
     const replyBox = dialog.querySelector("[data-reply]");
     if (post.reply) {
@@ -177,7 +177,7 @@ function openReport(id) {
     '<form class="feedback-form"><div class="feedback-dialog__top"><h2>게시글 신고</h2>',
     '<button type="button" data-close class="feedback-close" aria-label="닫기">×</button></div>',
     '<label class="feedback-field">신고 사유<select name="reason">',
-    '<option value="spam">광고-도배</option><option value="abuse">비방-부적절한 표현</option>',
+    '<option value="spam">광고 또는 도배</option><option value="abuse">비방 또는 부적절한 표현</option>',
     '<option value="privacy">개인정보 노출</option><option value="other">기타</option></select></label>',
     '<p class="feedback-help">신고가 접수되면 관리자가 확인합니다. 자동으로 삭제되지는 않습니다.</p>',
     '<label class="feedback-trap" aria-hidden="true">웹사이트<input name="website" tabindex="-1" autocomplete="off"></label>',

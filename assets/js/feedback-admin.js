@@ -43,7 +43,7 @@ if (root) {
           post.report_reasons.map(reason => ({
             spam: "광고", abuse: "비방", privacy: "개인정보", other: "기타",
           })[reason] || reason).join(", ") + ")" : ""),
-        post.hidden ? "숨김" : "공개"].join(" - "));
+        post.hidden ? "숨김" : "공개"].join(" | "));
     const body = el("p", "feedback-detail__body", post.body);
     const row = el("div", "feedback-actions");
     const status = el("select", "feedback-admin-select");
