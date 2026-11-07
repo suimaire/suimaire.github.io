@@ -81,13 +81,13 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
       check(new URL(page.url()).pathname === path, 'portal link opens PCR');
       check((await page.reload()).status() === 200, 'reload'); await ready(page);
       check(await page.locator('.pcr-back').getAttribute('href') === '/#bioinformatics', 'back link preserved');
-      check(await page.locator('.pcr-eyebrow').innerText() === 'C2 - 생물정보학', 'portal code shown on worksheet');
+      check(await page.locator('.pcr-eyebrow').innerText() === 'C2 | 생물정보학', 'portal code shown on worksheet');
       check(await page.title() === 'PCR과 프라이머 디자인 | HAFS Biology Lab', 'title preserved');
       check(await page.locator('link[rel=canonical]').getAttribute('href') === 'https://suimaire.github.io' + path, 'canonical preserved');
       check(await page.locator('script[src$="/page-views.js"]').count() === 1, 'one module tag');
       check(await page.locator('[data-page-views]').count() === 1, 'one counter mount');
       check(await page.locator('.site-credit__name').innerText() === 'HAFS Biology Lab', 'shared title');
-      check(await page.locator('.site-credit__line').innerText() === 'Teacher-built interactive science tools - CH Park', 'shared author credit');
+      check(await page.locator('.site-credit__line').innerText() === 'Teacher-built interactive science tools | CH Park', 'shared author credit');
       check(await page.locator('.pcr-site-footer').evaluate(e => !e.closest('#pcr-worksheet') && !!(document.querySelector('#calculation-scope').compareDocumentPosition(e) & Node.DOCUMENT_POSITION_FOLLOWING)), 'footer after all worksheet content and sources');
       // Existing preview modes label read-only live data or mock data. Neither records views.
       await page.goto(base + path + '?page-views=' + previewMode); await ready(page); await counterReady(page);
