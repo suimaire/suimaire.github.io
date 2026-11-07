@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 과학 수업 포털
-nav_order: 1
+nav_exclude: true
 description: 질문하고, 관찰하고, 데이터로 설명하는 과학 수업 공간
 og_title: HAFS BIOLOGY LAB
 og_description: EXPLORE - MODEL - ANALYZE - EXPLAIN
