@@ -119,7 +119,7 @@
   .side-bar {
     left: 0 !important;
     position: fixed;
-    width: 260px !important;
+    width: 224px !important;
   }
 
   /* 사이드바 내부 블록 폭을 사이드바 폭과 정확히 일치시킨다
@@ -138,21 +138,21 @@
      내용 폭은 아래 래퍼에서 제한하므로, 넓은 모니터에서도 왼쪽에 붙지 않는다. */
   .main {
     box-sizing: border-box;
-    margin-left: 260px !important;
+    margin-left: 224px !important;
     max-width: none !important;
     min-width: 0;
     padding-left: 0 !important;
-    width: calc(100% - 260px) !important;
+    width: calc(100% - 224px) !important;
   }
 
   /* 2) 검색 헤더와 본문을 동일한 기준선에 놓고 화면 가운데로 맞춘다.
-     700px = 사이드바 260px + 래퍼 반폭 440px.
+     664px = 사이드바 224px + 래퍼 반폭 440px.
      좁은 화면에서는 여백을 0으로 제한해 사이드바와 겹치지 않게 한다.
      기존 실제 본문 폭 800px(880 - 80)은 유지해 카드 줄바꿈을 보존한다. */
   .main-header,
   .main-content-wrap {
     box-sizing: border-box;
-    margin-left: max(0px, calc(50vw - 700px)) !important;
+    margin-left: max(0px, calc(50vw - 664px)) !important;
     margin-right: 0 !important;
     max-width: 880px !important;
     padding-left: 40px !important;
