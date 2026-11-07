@@ -99,7 +99,7 @@
   padding-top: 0.85rem;
 }
 
-/* ===== pmarsceill/just-the-docs (구버전) 레이아웃 최종 정리 ===== */
+/* ===== pmarsceill/just-the-docs (구버전) 반응형 중앙 정렬 ===== */
 @media (min-width: 50rem) {
   /* 0) 사이드바: 화면 맨 왼쪽에 고정 */
   .side-bar {
@@ -120,25 +120,34 @@
     padding-top: 1.75rem;
   }
 
-  /* 1) 본문: 사이드바 폭만큼 밀고, 좌우 여백은 래퍼 한 곳에서만 준다.
-        (예전에는 wrap 과 content 양쪽에 margin 25 + padding 25 를 줘서
-         100px 을 여백으로 흘려보내고 있었다.) */
+  /* 1) .main은 사이드바 오른쪽의 전체 공간을 사용한다.
+     내용 폭은 아래 래퍼에서 제한하므로, 넓은 모니터에서도 왼쪽에 붙지 않는다. */
   .main {
+    box-sizing: border-box;
     margin-left: 260px !important;
-    max-width: 880px !important;
+    max-width: none !important;
+    min-width: 0;
     padding-left: 0 !important;
+    width: calc(100% - 260px) !important;
   }
 
+  /* 2) 검색 헤더와 본문을 동일한 기준선에 놓고 화면 가운데로 맞춘다.
+     700px = 사이드바 260px + 래퍼 반폭 440px.
+     좁은 화면에서는 여백을 0으로 제한해 사이드바와 겹치지 않게 한다.
+     기존 실제 본문 폭 800px(880 - 80)은 유지해 카드 줄바꿈을 보존한다. */
   .main-header,
   .main-content-wrap {
-    margin-left: 0 !important;
-    padding-left: 56px !important;
-    padding-right: 24px !important;
+    box-sizing: border-box;
+    margin-left: max(0px, calc(50vw - 700px)) !important;
+    margin-right: 0 !important;
+    max-width: 880px !important;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+    width: 100%;
   }
 
-  /* 2) 본문 실제 폭: 래퍼가 잡아 준 폭을 그대로 쓴다.
-        (예전 clamp(820px, …) 은 최소값이 820px 이라 1130px 이하 화면에서
-         가로 스크롤이 생겼다.) */
+  /* 3) 본문 실제 폭: 래퍼가 잡아 준 폭을 그대로 쓴다.
+     좁은 화면에서도 고정 최소 폭을 강제하지 않아 가로 스크롤을 방지한다. */
   .main-content,
   #main-content {
     margin-left: 0 !important;
