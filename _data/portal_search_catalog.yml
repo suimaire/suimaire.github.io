@@ -1,0 +1,33 @@
+# Search entries for A/C resources linked in index.md.
+# B entries, including prelearning B3, are generated from molecular_explorers.
+# Match public course titles and canonical URLs when updating this catalog.
+
+- code: A1
+  title: "포식자와 피식자, 누가 먼저 변할까?"
+  url: "/predator-prey-worksheet/"
+  description: "포식자와 피식자 개체군 변화를 두 시뮬레이션으로 관찰하고 시간 지연과 그래프를 학습지에서 해석합니다."
+  keywords: "통합과학2 생태계 개체군 모델링 학습지 predator prey population"
+
+- code: A2
+  title: "포식자-피식자 동역학 실험실"
+  url: "/predator-prey-simulation/"
+  description: "포식자와 피식자 개체군의 시간에 따른 변화와 진동, 시간 지연을 모형과 그래프로 탐구합니다."
+  keywords: "통합과학2 생태계 시뮬레이션 로트카 볼테라 Lotka Volterra population simulation"
+
+- code: A3
+  title: "토끼와 늑대 숲 생태계 (Apex Survival)"
+  url: "/predator-prey-simulation-2/"
+  description: "개별 토끼와 늑대의 이동, 먹이와 번식 조건을 바꾸며 숲 생태계를 탐구하고 Apex Survival에 도전합니다."
+  keywords: "통합과학2 생태계 시뮬레이션 Apex Survival 자유 탐구 숲 도전 개체 기반 모델링"
+
+- code: C1
+  title: "생물정보학 기초"
+  url: "/bioinformatics/"
+  description: "Biopython과 공개 생명과학 데이터를 이용하는 5일 강좌입니다."
+  keywords: "생물정보학 데이터 Google Colab 유전체 서열 SNP 단백질 계통수 특강"
+
+- code: C2
+  title: "PCR과 프라이머 디자인"
+  url: "/bioinformatics/pcr-primer-design/"
+  description: "프라이머 결합 위치, 방향과 PCR 산물을 예측하고 설계의 적합성을 검토하는 웹 학습지입니다."
+  keywords: "생물정보학 프라이머 primer PCR DNA 증폭 염기서열 웹 학습지"
