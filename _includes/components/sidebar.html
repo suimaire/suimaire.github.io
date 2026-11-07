@@ -41,17 +41,7 @@
   {% endif %}
 
   {%- comment -%}
-    note: nav_footer_custom and/or this "site footer" appear in components/footer.html for the mobile view.
+    No redundant theme attribution is shown in the sidebar.
+    Site credit and the page view counter remain in footer_custom.html.
   {%- endcomment -%}
-
-  <div class="d-md-block d-none site-footer">
-  {% capture nav_footer_custom %}
-    {%- include nav_footer_custom.html -%}
-  {% endcapture %}
-  {% if nav_footer_custom != "" %}
-    {{ nav_footer_custom }}
-  {% else %}
-    This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
-  {% endif %}
-  </div>
 </header>
