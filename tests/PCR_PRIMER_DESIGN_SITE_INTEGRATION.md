@@ -26,7 +26,7 @@ PCR front matter에 `nav_exclude: true`만 추가했다. 기존 navigation overr
 
 기존 site name은 `_config.yml`의 `title`에 있었고, 동일한 두 줄이 `index.md`의 masthead와 `_includes/footer_custom.html`에도 직접 적혀 있었다.
 
-이번 변경에서는 site name에 `site.title`, 제작자 문구에 새 공통 설정 `site.author_credit`를 사용한다. 두 문구는 각각 **HAFS Biology Lab**, **Teacher-built interactive science tools · CH Park** 그대로다. 포털 masthead와 공통 footer가 동일 설정을 참조한다. PCR 전용 HTML에는 제작자 문구를 중복 작성하지 않았다.
+이번 변경에서는 site name에 `site.title`, 제작자 문구에 새 공통 설정 `site.author_credit`를 사용한다. 두 문구는 각각 **HAFS Biology Lab**, **Teacher-built interactive science tools - CH Park** 그대로다. 포털 masthead와 공통 footer가 동일 설정을 참조한다. PCR 전용 HTML에는 제작자 문구를 중복 작성하지 않았다.
 
 ## 6. 기존 counter 구현 / 데이터 소스
 
@@ -78,9 +78,9 @@ pathname을 소문자로 바꾸고 query/hash, `index.html`, `.html` 등을 정�
 | `_layouts/pcr-worksheet.html` | 공통 footer include 및 CSS 연결 |
 | `assets/css/override.css` | 기존 identity 스타일을 공통 CSS로 이동 |
 | `assets/css/site-footer.css` | 기존 identity 스타일과 PCR footer 배치 |
-| `tests/pcr-browser.mjs`, `tests/pcr-polish-browser.mjs` | 학습지의 장식 점 금지 검사를 `#pcr-worksheet`로 한정; 요청된 공통 저작자 문구의 `·` 허용 |
+| `tests/pcr-browser.mjs`, `tests/pcr-polish-browser.mjs` | 학습지의 장식 점 금지 검사를 `#pcr-worksheet`로 한정; 공통 저작자 문구에서 하이픈(`-`) 사용 |
 | `tests/pcr-preview.mjs` | Ruby 없는 간이 학습지 preview에서도 실제 공통 footer/config 반영 |
-| `tests/pcr-site-integration.mjs` | 실제 Jekyll navigation/search/footer 및 counter 실패·중복 검증과 PNG 생성 |
+| `tests/pcr-site-integration.mjs` | 실제 Jekyll navigation/search/footer 및 counter 실패-중복 검증과 PNG 생성 |
 | `tests/PCR_PRIMER_DESIGN_SITE_INTEGRATION.md` | 본 보고서 |
 
 ## 12. 테스트 결과
