@@ -5,7 +5,7 @@
      .science-portal   → 메인 포털(/). 수업을 고르고 자료를 여는 화면.
                          아래 "메인 포털" 부분. 수업별 색(.course--eco / --mol / --bio)
                          과 자료 한 칸(.res)으로 이루어진다.
-     .course-overview  → /bioinformatics/ 강좌 안내. 선 · 여백 · 타이포그래피로
+     .course-overview  → /bioinformatics/ 강좌 안내. 선 - 여백 - 타이포그래피로
                          위계를 만드는 편집형 목록. 색은 짙은 청록 하나.
      .portal-eyebrow   → /bioinformatics/ 에서 쓰는 작은 라벨
    그 밖의 페이지(강의안 등)는 건드리지 않는다.
@@ -226,7 +226,7 @@
   box-sizing: border-box;
 }
 
-/* 수업 색. 대비는 모두 흰 바탕·옅은 바탕에서 4.5:1 이상 */
+/* 수업 색. 대비는 모두 흰 바탕-옅은 바탕에서 4.5:1 이상 */
 .course--eco {
   --c: #3f7a2c;
   --c-tint: #f1f6ec;
@@ -245,7 +245,7 @@
   --c-line: #ecd3c5;
 }
 
-/* 테마 기본값 정리: 자동 번호 · 제목 anchor · 목록 기호 */
+/* 테마 기본값 정리: 자동 번호 - 제목 anchor - 목록 기호 */
 .science-portal .heading-number,
 .science-portal .anchor-heading {
   display: none !important;
@@ -782,7 +782,7 @@
   margin-top: 0 !important;
 }
 
-/* 차례로 놓는 자료 (분자 · 생화학) */
+/* 차례로 놓는 자료 (분자 - 생화학) */
 .res-list {
   display: grid;
   gap: 0.85rem;

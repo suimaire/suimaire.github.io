@@ -20,7 +20,7 @@ nav_exclude: true
   </form>
   <div data-admin-panel hidden>
     <div class="feedback-admin__head">
-      <strong>게시글 관리 · 최근 50건</strong>
+      <strong>게시글 관리 - 최근 50건</strong>
       <div class="feedback-actions">
         <button type="button" class="feedback-button" data-admin-refresh>새로고침</button>
         <button type="button" class="feedback-button feedback-button--secondary" data-admin-logout>로그아웃</button>
