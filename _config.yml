@@ -1,5 +1,5 @@
 title: "HAFS Biology Lab"
-author_credit: "Teacher-built interactive science tools · CH Park"
+author_credit: "Teacher-built interactive science tools - CH Park"
 description: "질문하고, 관찰하고, 데이터로 설명하는 과학 수업 공간"
 url: "https://suimaire.github.io"
 
@@ -40,17 +40,17 @@ home_nav_hidden_branches:
 #       (_includes/components/site_nav.html). index.md 의 수업 글자와 맞춘다.
 nav_external_links:
   - code: A
-    title: 생태계 · 개체군 모델링
+    title: 생태계 - 개체군 모델링
     url: /#ecosystem
     hide_icon: true
     opens_in_new_tab: false
   - code: B
-    title: 분자 · 생화학 탐구
+    title: 분자 - 생화학 탐구
     url: /#molecular
     hide_icon: true
     opens_in_new_tab: false
   - code: C
-    title: 생물정보학 · 데이터
+    title: 생물정보학 - 데이터
     url: /#bioinformatics
     hide_icon: true
     opens_in_new_tab: false

@@ -14,8 +14,8 @@ nav_exclude: true
     <p class="feedback-board__help" data-feedback-intro>의견을 나누고 자료를 개선하는 공개 게시판입니다. 작성한 글은 즉시 공개됩니다.</p>
   </div>
   <p class="feedback-board__rules">
-    작성한 의견은 승인 없이 즉시 공개됩니다. 익명 또는 이름·닉네임을 선택할 수 있지만, 이름은 신원 인증을 의미하지 않습니다.
-    타인의 이름·학번·연락처·사진 등 개인정보를 게시하지 마세요.
+    작성한 의견은 승인 없이 즉시 공개됩니다. 익명 또는 이름-닉네임을 선택할 수 있지만, 이름은 신원 인증을 의미하지 않습니다.
+    타인의 이름-학번-연락처-사진 등 개인정보를 게시하지 마세요.
   </p>
   <div class="feedback-board__controls">
     <strong>최근 의견</strong>

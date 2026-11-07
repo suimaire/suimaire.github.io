@@ -10,14 +10,14 @@ has_toc: false
 
 <div class="course-overview">
   <header class="course-overview__hero">
-    <p class="portal-eyebrow">BIOINFORMATICS · 5 DAY COURSE</p>
+    <p class="portal-eyebrow">BIOINFORMATICS - 5 DAY COURSE</p>
     <h1>생물정보학 기초</h1>
     <p>생명과학의 질문을 데이터와 코드로 탐구합니다. 모든 실습은 기존 Day 1–5 자료에 연결되며, 원래 문서 주소도 그대로 유지됩니다.</p>
   </header>
 
   <section class="course-overview__intro" aria-label="강좌 정보">
-    <div class="course-overview__fact"><span>도구</span><strong>Google Colab · Biopython</strong></div>
-    <div class="course-overview__fact"><span>수업 구성</span><strong>개념 · 실습 · 생각해보기</strong></div>
+    <div class="course-overview__fact"><span>도구</span><strong>Google Colab - Biopython</strong></div>
+    <div class="course-overview__fact"><span>수업 구성</span><strong>개념 - 실습 - 생각해보기</strong></div>
     <div class="course-overview__fact"><span>권장 방식</span><strong>하루 한 주제씩 탐구</strong></div>
   </section>
 

@@ -1,5 +1,5 @@
 /* ============================================================================
-   사이트 공통 껍데기(사이드바 · 본문 폭) 조정 — just-the-docs 위에 덧씌운다.
+   사이트 공통 껍데기(사이드바 - 본문 폭) 조정 — just-the-docs 위에 덧씌운다.
    포털 본문 디자인은 assets/css/portal.css 에 있다.
    ========================================================================== */
 
@@ -15,13 +15,27 @@
   padding-top: 6px;
 }
 
-/* 브랜드는 아래 navigation 과 같은 왼쪽 기준선에 맞춘다 */
+/* Desktop sidebar: center the two-line HAFS Biology Lab brand as one block. */
+@media (min-width: 50rem) {
+  .side-bar .site-header .site-title {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* 브랜드 두 줄은 패널의 중심선에 맞춘다 */
 .site-brand {
   display: inline-grid;
   gap: 1px;
-  justify-items: start;
+  justify-items: center;
   line-height: 1.25;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
 }
 
@@ -90,6 +104,18 @@
   display: inline-block;
   font-weight: 700;
   width: 1.15em;
+}
+
+/* Center only the home-page navigation title; keep A/B/C items left-aligned. */
+@media (min-width: 50rem) {
+  .side-bar #site-nav .nav-list-link[href="/"],
+  .side-bar #site-nav .nav-list-link[href="https://suimaire.github.io/"] {
+    box-sizing: border-box;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: center !important;
+    width: 100%;
+  }
 }
 
 /* nav 묶음 사이 간격 (포털 홈 / 수업 영역) */
