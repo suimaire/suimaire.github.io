@@ -34,17 +34,31 @@ function showDialog(dialog) {
   dialog.querySelectorAll("[data-close]").forEach(button => button.addEventListener("click", () => dialog.close()));
 }
 
-function postCard(post) {
+function postCard(post, homeSummary = false) {
   const item = element("li", "feedback-post");
   const button = element("button", "feedback-post__open");
   button.type = "button";
   const heading = element("span", "feedback-post__title", post.title);
-  const meta = element("span", "feedback-post__meta");
-  meta.textContent = [CATEGORY[post.category] || "의견", post.resource_code === "portal" ? "전체 포털" : post.resource_code,
-    post.author_name, dateText(post.created_at)].join(" | ");
-  const lower = element("span", "feedback-post__status", STATUS[post.status] || "접수");
-  if (post.reply) lower.textContent += " | 교사 답변";
-  button.append(heading, meta, lower);
+
+  if (homeSummary) {
+    // The portal homepage previews only the title, author and publication date.
+    // Categories, related resource, status and teacher replies remain in the detail view.
+    const byline = element("span", "feedback-post__byline");
+    const author = element("span", "feedback-post__author", post.author_name || "익명");
+    const date = element("time", "feedback-post__date", dateText(post.created_at));
+    const timestamp = new Date(post.created_at);
+    if (!Number.isNaN(timestamp.getTime())) date.dateTime = timestamp.toISOString();
+    byline.append(author, date);
+    button.append(heading, byline);
+  } else {
+    const meta = element("span", "feedback-post__meta");
+    meta.textContent = [CATEGORY[post.category] || "의견", post.resource_code === "portal" ? "전체 포털" : post.resource_code,
+      post.author_name, dateText(post.created_at)].join(" | ");
+    const lower = element("span", "feedback-post__status", STATUS[post.status] || "접수");
+    if (post.reply) lower.textContent += " | 교사 답변";
+    button.append(heading, meta, lower);
+  }
+
   button.addEventListener("click", () => openDetail(post.id));
   item.append(button);
   return item;
@@ -247,7 +261,7 @@ async function refreshHome() {
     const recent = posts.slice(0, 2);
     if (!recent.length) list.append(element("li", "feedback-empty",
       feedbackPostingEnabled ? "첫 의견을 남겨 주세요." : "아직 게시된 의견이 없습니다."));
-    else list.append(...recent.map(postCard));
+    else list.append(...recent.map(post => postCard(post, true)));
   } catch {
     list.append(element("li", "feedback-empty", "의견을 불러오지 못했습니다."));
   }
@@ -270,7 +284,7 @@ async function refreshBoard(append = false) {
     const { posts, has_more } = await feedbackApi("list", { params: { offset: boardOffset } });
     if (!append && !posts.length) list.append(element("li", "feedback-empty",
       feedbackPostingEnabled ? "아직 등록된 의견이 없습니다. 첫 의견을 남겨 주세요." : "현재 공개된 의견이 없습니다."));
-    list.append(...posts.map(postCard));
+    list.append(...posts.map(post => postCard(post)));
     boardOffset += posts.length;
     more.hidden = !has_more;
   } catch (error) {

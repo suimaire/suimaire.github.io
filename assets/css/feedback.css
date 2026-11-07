@@ -63,6 +63,25 @@
 .feedback-post__title { display: block; color: var(--feedback-ink); font-size: .96rem; font-weight: 700; overflow-wrap: anywhere; }
 .feedback-post__meta { display: block; color: #56665f; font-size: .78rem; line-height: 1.6; margin: .2rem 0; overflow-wrap: anywhere; }
 .feedback-post__status { color: #245d4c; font-size: .77rem; font-weight: 700; }
+
+/* Home preview: only the title, author and date; details live in the dialog. */
+.feedback-home .feedback-post__byline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .25rem 1rem;
+  width: 100%;
+  margin-top: .25rem;
+  color: #56665f;
+  font-size: .78rem;
+  line-height: 1.6;
+}
+.feedback-home .feedback-post__author { min-width: 0; overflow-wrap: anywhere; }
+.feedback-home .feedback-post__date {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
 .feedback-empty { padding: 1.3rem .5rem !important; color: #576760; font-size: .87rem; }
 .feedback-button {
   display: inline-flex; justify-content: center; align-items: center;
