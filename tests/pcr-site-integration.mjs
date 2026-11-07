@@ -63,7 +63,7 @@ for (const [engineName, engine] of Object.entries({ chromium, webkit })) {
       const nav = page.locator('#site-nav');
       if (!await nav.isVisible()) await page.locator('#menu-button').click();
       check(await nav.getByRole('link', { name: 'PCR과 프라이머 디자인', exact: true }).count() === 0, 'PCR leaf excluded');
-      check(await nav.locator('a').count() === 4, 'portal and three category links only');
+      check(await nav.locator('a').count() === 3, 'only A/B/C category links in home sidebar');
       check(await nav.getByRole('link', { name: 'C 생물정보학 - 데이터', exact: true }).count() === 1, 'bioinformatics category preserved');
       const heading = page.locator('#bioinformatics h3').filter({ hasText: 'PCR과 프라이머 디자인' });
       check((await heading.locator('.res__code').innerText()).trim() === 'C2', 'portal code C2');
