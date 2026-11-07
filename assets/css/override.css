@@ -106,18 +106,6 @@
   width: 1.15em;
 }
 
-/* Center only the home-page navigation title; keep A/B/C items left-aligned. */
-@media (min-width: 50rem) {
-  .side-bar #site-nav .nav-list-link[href="/"],
-  .side-bar #site-nav .nav-list-link[href="https://suimaire.github.io/"] {
-    box-sizing: border-box;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    text-align: center !important;
-    width: 100%;
-  }
-}
-
 /* nav 묶음 사이 간격 (포털 홈 / 수업 영역) */
 .side-bar .site-nav > .nav-list + .nav-list {
   border-top: 1px solid #e5e3dd;
