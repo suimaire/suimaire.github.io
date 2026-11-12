@@ -134,6 +134,12 @@
     padding-top: 1.75rem;
   }
 
+  /* A/B/C 수업 이름은 224px 사이드바에서도 글자 크기를 유지해 한 줄로 표시한다. */
+  .side-bar .nav-list .nav-list-item > .nav-list-link:has(.nav-code) {
+    padding-right: 1rem;
+    white-space: nowrap;
+  }
+
   /* 1) .main은 사이드바 오른쪽의 전체 공간을 사용한다.
      내용 폭은 아래 래퍼에서 제한하므로, 넓은 모니터에서도 왼쪽에 붙지 않는다. */
   .main {
