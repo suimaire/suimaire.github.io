@@ -170,6 +170,17 @@
     padding-right: 0 !important;
     width: auto !important;
   }
+
+  /* 메인 포털은 사이드바를 제외한 .main 영역을 기준으로 중앙 정렬한다. */
+  body:has(.science-portal) .side-bar {
+    /* 넓은 화면에서 테마의 최소 폭(264px)이 지정 폭(224px)을 넘지 않게 한다. */
+    min-width: 0;
+  }
+
+  .main:has(.science-portal) .main-header,
+  .main:has(.science-portal) .main-content-wrap {
+    margin-inline: auto !important;
+  }
 }
 
 /* 3) 표/코드 잘림 방지 */
