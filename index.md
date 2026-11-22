@@ -96,8 +96,8 @@ og_image_alt: HAFS BIOLOGY LAB
       <li>
         <a class="home-picker__item course--gene" href="#gene-editing">
           <span class="home-picker__letter" aria-hidden="true">D</span>
-          <span class="home-picker__course">유전자 편집과 생물안전성</span>
-          <span class="home-picker__topic">유전정보의 전달과 개체군 변화, LMO의 환경 위해성을 탐구합니다.</span>
+          <span class="home-picker__course">생명공학기술</span>
+          <span class="home-picker__topic">유전자 편집과 생물안정성</span>
           <span class="home-picker__count"><b>D1</b> | 시뮬레이션&nbsp;1개</span>
         </a>
       </li>
