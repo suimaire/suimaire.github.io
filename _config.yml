@@ -54,3 +54,8 @@ nav_external_links:
     url: /#bioinformatics
     hide_icon: true
     opens_in_new_tab: false
+  - code: D
+    title: 유전자 편집과 생물안전성
+    url: /#gene-editing
+    hide_icon: true
+    opens_in_new_tab: false

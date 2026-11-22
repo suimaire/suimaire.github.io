@@ -18,6 +18,7 @@ og_image_alt: HAFS BIOLOGY LAB
       A  #ecosystem      통합과학2      .course--eco  (초록)
       B  #molecular      기초 생화학    .course--mol  (파랑)
       C  #bioinformatics 생물정보학     .course--bio  (주황)
+      D  #gene-editing   유전자 편집    .course--gene (보라)
     - 번호는 화면의 배지(.res__code)와 칸의 id 가 같다.
       suimaire.github.io/#B4 로 열면 그 자료로 바로 내려가 테두리가 강조된다.
     - 이미 수업에서 쓴 번호가 바뀌지 않도록, 새 자료는 각 수업의 맨 뒤에 추가한다.
@@ -27,7 +28,7 @@ og_image_alt: HAFS BIOLOGY LAB
 
   자료 추가 위치
     B 분자-생화학 탐구 → _data/molecular_explorers.yml 맨 아래에만 항목 추가 (번호 자동)
-    A, C               → 아래 해당 <ul class="res-grid"> 맨 뒤에 <li class="res"> 추가하고
+    A, C, D            → 아래 해당 <ul class="res-grid"> 맨 뒤에 <li class="res"> 추가하고
                          번호(id, .res__code)와 맨 위 "수업 고르기"의 번호 범위-개수를 고친다.
 
   자료 한 칸(.res)은 제목 링크 하나가 칸 전체를 덮는다. 따로 버튼 링크를 두지 않고
@@ -90,6 +91,14 @@ og_image_alt: HAFS BIOLOGY LAB
           <span class="home-picker__course">생물정보학 특강</span>
           <span class="home-picker__topic">생물정보학 - 데이터</span>
           <span class="home-picker__count"><b>C1–C2</b> 5일&nbsp;강좌, 웹&nbsp;학습지&nbsp;1개</span>
+        </a>
+      </li>
+      <li>
+        <a class="home-picker__item course--gene" href="#gene-editing">
+          <span class="home-picker__letter" aria-hidden="true">D</span>
+          <span class="home-picker__course">유전자 편집과 생물안전성</span>
+          <span class="home-picker__topic">유전정보의 전달과 개체군 변화, LMO의 환경 위해성을 탐구합니다.</span>
+          <span class="home-picker__count"><b>D1</b> | 시뮬레이션&nbsp;1개</span>
         </a>
       </li>
     </ul>
@@ -212,6 +221,23 @@ og_image_alt: HAFS BIOLOGY LAB
             프라이머의 결합 위치와 방향을 바꾸며 PCR 산물을 예측하고, 설계한 프라이머의 적합성을 검토합니다.
           </p>
           <span class="res__go" aria-hidden="true">학습지 열기 <span class="arrow">→</span></span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="course course--gene" id="gene-editing" aria-labelledby="gene-editing-module-title">
+      <div class="course__head">
+        <p class="course__tab"><span class="course__letter">D</span>유전자 편집과 생물안전성</p>
+        <h2 id="gene-editing-module-title">유전자 편집과 생물안전성</h2>
+        <p class="course__note">유전자 편집으로 변화된 유전정보가 자손에게 전달되는 과정을 관찰하고, LMO의 환경 방출에 필요한 과학적 평가를 생각해 봅니다.</p>
+      </div>
+
+      <ul class="res-grid">
+        <li class="res" id="D1">
+          <p class="res__kind">{% include home/icon.html name="graph" %}인터랙티브 유전 시뮬레이터</p>
+          <h3 class="res__title"><span class="res__code">D1</span> <a href="{{ '/gene-drive-simulator/' | relative_url }}">유전자 드라이브는 어떻게 퍼질까?</a></h3>
+          <p class="res__desc">호밍 효율을 조절해 멘델 유전과 유전자 드라이브를 비교하고, 세대별 자손의 유전자형 구성 변화를 관찰합니다.</p>
+          <span class="res__go" aria-hidden="true">시뮬레이션 열기 <span class="arrow">→</span></span>
         </li>
       </ul>
     </section>

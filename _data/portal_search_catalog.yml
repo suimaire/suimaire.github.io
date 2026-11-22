@@ -1,4 +1,4 @@
-# Search entries for A/C resources linked in index.md.
+# Search entries for A/C/D resources linked in index.md.
 # B entries, including prelearning B3, are generated from molecular_explorers.
 # Match public course titles and canonical URLs when updating this catalog.
 
@@ -31,3 +31,9 @@
   url: "/bioinformatics/pcr-primer-design/"
   description: "프라이머 결합 위치, 방향과 PCR 산물을 예측하고 설계의 적합성을 검토하는 웹 학습지입니다."
   keywords: "생물정보학 프라이머 primer PCR DNA 증폭 염기서열 웹 학습지"
+
+- code: D1
+  title: "유전자 드라이브는 어떻게 퍼질까?"
+  url: "/gene-drive-simulator/"
+  description: "호밍 효율에 따른 자손의 유전자형 구성 변화 탐구"
+  keywords: "유전자 편집 CRISPR 호밍 드라이브 유전자 드라이브 멘델 유전 LMO 모기 유전 시뮬레이션"

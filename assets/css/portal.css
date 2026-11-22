@@ -245,6 +245,12 @@
   --c-line: #ecd3c5;
 }
 
+.course--gene {
+  --c: #6a4b9a;
+  --c-tint: #f3eff9;
+  --c-line: #dcd2ee;
+}
+
 /* 테마 기본값 정리: 자동 번호 - 제목 anchor - 목록 기호 */
 .science-portal .heading-number,
 .science-portal .anchor-heading {
@@ -458,7 +464,7 @@
 .home-picker__list {
   display: grid;
   gap: 0.75rem;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .home-picker__list > li {
@@ -778,6 +784,10 @@
   margin-top: 1.6rem !important;
 }
 
+.res-grid > .res:only-child {
+  grid-column: 1 / -1;
+}
+
 .course__sub + .res-grid {
   margin-top: 0 !important;
 }
@@ -821,8 +831,13 @@
   }
 }
 
+@container (max-width: 32rem) {
+  .home-picker__list {
+    grid-template-columns: 1fr;
+  }
+}
+
 @container (max-width: 40rem) {
-  .home-picker__list,
   .res-grid {
     grid-template-columns: 1fr;
   }
